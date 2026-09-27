@@ -1478,6 +1478,7 @@ if (resultadoPendiente.tieneBanderas) {
     await cargarTop20General();
     await cargarRankingContinentes();
     await cargarMejoresMarcas();
+    await cargarTop50Historico();
     
     resultadoPendiente = null;
   }
@@ -2860,6 +2861,39 @@ async function cargarTop20General() {
     errorTop20
   );
 }
+
+
+async function cargarTop50Historico() {
+
+  const { data: top50Historico, error: errorTop50 } =
+    await supabaseClient
+      .from("resultados")
+      .select(`
+        fecha,
+        final_score,
+        jugador_id,
+        ronda_1,
+        ronda_2,
+        ronda_3,
+        ronda_4,
+        ronda_5,
+        jugadores(nombre, alias)
+      `)
+      .order("final_score", { ascending: false })
+      .limit(50);
+
+  const { data: rondasPorFecha } =
+    await supabaseClient
+      .from("rondas_dia")
+      .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5");
+
+  mostrarTop50(
+    top50Historico,
+    rondasPorFecha,
+    errorTop50
+  );
+}
+  
   
 async function abrirPerfilJugador(jugadorId, nombre) {
 
@@ -3363,6 +3397,168 @@ const textoRondas = puntos
     })
     .join("");
 }
+
+
+function mostrarTop50(top50, rondasPorFecha, errorTop50) {
+
+  const contenedor =
+    document.getElementById("rankingTop50");
+
+  if (!contenedor) return;
+
+  if (errorTop50) {
+    contenedor.innerHTML =
+      "No se pudo cargar el Top-50 histórico.";
+    return;
+  }
+
+  if (!top50 || top50.length === 0) {
+    contenedor.innerHTML =
+      "No hay resultados para mostrar.";
+    return;
+  }
+
+  contenedor.innerHTML = top50
+    .map((fila, i) => {
+
+      const fecha =
+        new Date(fila.fecha + "T00:00:00")
+          .toLocaleDateString("es-ES");
+
+      const nombre =
+        fila.jugadores?.alias ||
+        fila.jugadores?.nombre ||
+        "Jugador";
+
+      const rondasDia =
+        rondasPorFecha?.find(
+          ronda => ronda.fecha === fila.fecha
+        );
+
+      const puntos = [
+        fila.ronda_1,
+        fila.ronda_2,
+        fila.ronda_3,
+        fila.ronda_4,
+        fila.ronda_5
+      ];
+
+      const banderas = rondasDia
+        ? [
+            rondasDia.pais_1,
+            rondasDia.pais_2,
+            rondasDia.pais_3,
+            rondasDia.pais_4,
+            rondasDia.pais_5
+          ]
+        : [];
+
+      const textoRondas = puntos
+        .map((puntosRonda, j) => {
+
+          if (puntosRonda === null) return "";
+
+          const codigoPais =
+            banderaACodigo(banderas[j] || "");
+
+          return codigoPais
+            ? `<span style="
+                 display:inline-flex;
+                 align-items:center;
+                 width:20%;
+                 white-space:nowrap;
+                 box-sizing:border-box;
+               "><img
+                 src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
+                 alt="${codigoPais}"
+                 style="
+                   width:20px;
+                   height:15px;
+                   vertical-align:middle;
+                   margin-right:1px;
+                 ">${puntosRonda}</span>`
+            : `<span style="
+                 display:inline-flex;
+                 align-items:center;
+                 width:20%;
+                 white-space:nowrap;
+                 box-sizing:border-box;
+               ">${puntosRonda}</span>`;
+        })
+        .filter(Boolean)
+        .join("");
+
+      return `
+        <div style="
+          padding:8px 0;
+          border-bottom:1px solid #ddd;
+        ">
+
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:8px;
+          ">
+
+            <div style="
+              display:flex;
+              align-items:center;
+              min-width:0;
+              white-space:nowrap;
+            ">
+
+              <span style="
+                display:inline-block;
+                width:16px;
+              ">
+                ${i + 1}
+              </span>
+
+              <strong style="
+                display:inline-block;
+                width:42px;
+              ">
+                ${fila.final_score}
+              </strong>
+
+              <strong
+                onclick="abrirPerfilJugador(${fila.jugador_id}, '${nombre}')"
+                style="
+                  cursor:pointer;
+                  white-space:nowrap;
+                "
+              >
+                ${nombre}
+              </strong>
+
+            </div>
+
+            <span style="
+              font-size:12px;
+              color:#777;
+              white-space:nowrap;
+            ">
+              ${fecha}
+            </span>
+
+          </div>
+
+          <div style="
+            margin-top:4px;
+            margin-left:58px;
+            font-size:13px;
+            width:calc(100% - 58px);
+          ">
+            ${textoRondas}
+          </div>
+
+        </div>
+      `;
+    })
+    .join("");
+}
+
   
 function mostrarEvolucion(resultados, periodo) {
 
@@ -3554,6 +3750,7 @@ plugins: {
     await cargarTop20General();
     await cargarRankingContinentes();
     await cargarMejoresMarcas();
+    await cargarTop50Historico();
   });
 
 async function editarAlias() {
@@ -3614,6 +3811,7 @@ async function editarAlias() {
   await cargarTop20General();
   await cargarRankingContinentes();
   await cargarMejoresMarcas();  
+  await cargarTop50Historico();
 
   alert("Alias actualizado correctamente.");
 }
@@ -3765,6 +3963,8 @@ async function iniciarApp() {
   await cargarRankingContinentes();
 
   await cargarMejoresMarcas();
+
+  await cargarTop50Historico();
   
 }
   
