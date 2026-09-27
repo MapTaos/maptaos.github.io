@@ -656,6 +656,52 @@
   🔥 Top-20
 </h2>
 
+<div style="
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  margin:0 0 10px;
+">
+
+  <button
+    type="button"
+    id="btnTrimestreAnterior"
+    style="
+      width:auto;
+      padding:5px 10px;
+      font-size:12px;
+    "
+  >
+    ◀ Anterior
+  </button>
+
+  <button
+    type="button"
+    id="btnTrimestreActual"
+    style="
+      width:auto;
+      padding:5px 10px;
+      font-size:12px;
+    "
+  >
+    Actual
+  </button>
+
+  <button
+    type="button"
+    id="btnTrimestreSiguiente"
+    style="
+      width:auto;
+      padding:5px 10px;
+      font-size:12px;
+    "
+  >
+    Siguiente ▶
+  </button>
+
+</div>
+  
   <div id="profileTop20" class="placeholder">
     Cargando mejores resultados...
   </div>
@@ -2801,17 +2847,32 @@ contenedor.innerHTML = `
 `;
 
 }
-  
+
+let desplazamientoTrimestreTop20 = 0;
   
 async function cargarTop20General() {
   const hoy = fechaMadridISO();
 
-  const [anio, mes] =
+  const [anioActual, mesActual] =
     hoy.split("-").map(Number);
-
+  
+  const indiceTrimestreActual =
+    Math.floor((mesActual - 1) / 3);
+  
+  const indiceTotal =
+    anioActual * 4 +
+    indiceTrimestreActual +
+    desplazamientoTrimestreTop20;
+  
+  const anio =
+    Math.floor(indiceTotal / 4);
+  
+  const indiceTrimestre =
+    ((indiceTotal % 4) + 4) % 4;
+  
   const mesInicioTrimestre =
-    Math.floor((mes - 1) / 3) * 3 + 1;
-
+    indiceTrimestre * 3 + 1;
+  
   const inicioTrimestre =
     `${anio}-${String(mesInicioTrimestre).padStart(2, "0")}-01`;
 
@@ -2828,8 +2889,14 @@ async function cargarTop20General() {
     document.getElementById("tituloTop20");
   
   if (tituloTop20) {
+  
+    const estadoTrimestre =
+      desplazamientoTrimestreTop20 === 0
+        ? "EN CURSO"
+        : "FINAL";
+  
     tituloTop20.textContent =
-      `🔥 Top-20 · ${nombresMeses[mesInicioTrimestre - 1]}–${nombresMeses[mesFinTrimestre - 1]}`;
+      `🔥 Top-20 · ${nombresMeses[mesInicioTrimestre - 1]}–${nombresMeses[mesFinTrimestre - 1]} ${anio} · ${estadoTrimestre}`;
   }
     
   let anioFin = anio;
@@ -3938,6 +4005,30 @@ document
   .getElementById("btnMejoresMarcas")
   .addEventListener("click", () => mostrarSeccionInicio("mejoresMarcas"));
 
+document
+  .getElementById("btnTrimestreAnterior")
+  .addEventListener("click", async () => {
+    desplazamientoTrimestreTop20--;
+    await cargarTop20General();
+  });
+
+document
+  .getElementById("btnTrimestreActual")
+  .addEventListener("click", async () => {
+    desplazamientoTrimestreTop20 = 0;
+    await cargarTop20General();
+  });
+
+document
+  .getElementById("btnTrimestreSiguiente")
+  .addEventListener("click", async () => {
+
+    if (desplazamientoTrimestreTop20 < 0) {
+      desplazamientoTrimestreTop20++;
+      await cargarTop20General();
+    }
+  });
+  
 document
   .getElementById("btnTop50")
   .addEventListener("click", () => mostrarSeccionInicio("top50"));
