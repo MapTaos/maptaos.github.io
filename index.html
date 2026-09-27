@@ -649,6 +649,18 @@
   </div>
 </div>
 
+<div class="card hidden" id="seccionTop50">
+
+  <h2 class="home-section-title">
+    🏆 Top-50 histórico
+  </h2>
+
+  <div id="rankingTop50" class="placeholder">
+    Cargando mejores resultados históricos...
+  </div>
+
+</div>
+    
 <div class="card hidden" id="seccionContinentes">
 
   <h2 class="home-section-title">
@@ -3645,7 +3657,8 @@ function mostrarSeccionInicio(seccion) {
     mes: "seccionMes",
     top20: "seccionTop20",
     continentes: "seccionContinentes",
-    mejoresMarcas: "seccionMejoresMarcas"
+    mejoresMarcas: "seccionMejoresMarcas",
+    top50: "seccionTop50"
   };
 
 const botones = {
@@ -3654,7 +3667,8 @@ const botones = {
   mes: "btnMes",
   top20: "btnTop20",
   continentes: "btnContinentes",
-  mejoresMarcas: "btnMejoresMarcas"
+  mejoresMarcas: "btnMejoresMarcas",
+  top50: "btnTop50"
 };
 
 Object.values(botones).forEach(id => {
@@ -3708,6 +3722,10 @@ document
 document
   .getElementById("btnMejoresMarcas")
   .addEventListener("click", () => mostrarSeccionInicio("mejoresMarcas"));
+
+document
+  .getElementById("btnTop50")
+  .addEventListener("click", () => mostrarSeccionInicio("top50"));
   
 document
   .getElementById("logoutButton")
