@@ -2849,6 +2849,7 @@ contenedor.innerHTML = `
 }
 
 let desplazamientoTrimestreTop20 = 0;
+
   
 async function cargarTop20General() {
   const hoy = fechaMadridISO();
@@ -2888,17 +2889,19 @@ async function cargarTop20General() {
   const tituloTop20 =
     document.getElementById("tituloTop20");
   
-  if (tituloTop20) {
-  
-    const estadoTrimestre =
-      desplazamientoTrimestreTop20 === 0
-        ? "EN CURSO"
-        : "FINAL";
-  
+   if (tituloTop20) {
     tituloTop20.textContent =
-      `🔥 Top-20 · ${nombresMeses[mesInicioTrimestre - 1]}–${nombresMeses[mesFinTrimestre - 1]} ${anio} · ${estadoTrimestre}`;
+      `🔥 Top-20 · ${nombresMeses[mesInicioTrimestre - 1]}–${nombresMeses[mesFinTrimestre - 1]} ${anio}`;
   }
-    
+
+  const btnTrimestreSiguiente =
+    document.getElementById("btnTrimestreSiguiente");
+
+  if (btnTrimestreSiguiente) {
+    btnTrimestreSiguiente.disabled =
+      desplazamientoTrimestreTop20 === 0;
+  }
+  
   let anioFin = anio;
   let mesSiguienteTrimestre =
     mesInicioTrimestre + 3;
