@@ -332,7 +332,7 @@
     box-sizing:border-box;
   "
 >
-  ⓘ Info
+  ℹ️ Info
 </button>
 <button
   type="button"
@@ -367,6 +367,73 @@
   >
     Cerrar sesión
   </button>
+
+</div>
+
+<div
+  class="card hidden"
+  id="infoCard"
+  style="
+    position:relative;
+    text-align:left;
+    margin-top:8px;
+    margin-bottom:12px;
+  "
+>
+
+  <button
+    type="button"
+    id="btnCerrarInfo"
+    aria-label="Cerrar información"
+    style="
+      position:absolute;
+      top:10px;
+      right:10px;
+      width:auto;
+      padding:4px 8px;
+      font-size:16px;
+    "
+  >
+    ✕
+  </button>
+
+  <h3 style="margin-top:0;">
+    ℹ️ Información de MapTaos
+  </h3>
+
+  <div style="
+    font-size:13px;
+    line-height:1.6;
+  ">
+
+    <p>
+      📊 <strong>Media</strong> — puntuación media del período mostrado.
+    </p>
+
+    <p>
+      🎮 <strong>Partidas</strong> — número de días jugados.
+    </p>
+
+    <p>
+      🔥 <strong>Racha</strong> — días consecutivos jugando.
+    </p>
+
+    <p>
+      🏆 <strong>Top-20 · 3M</strong> — las 20 mejores partidas del trimestre.
+      Se reinicia al comenzar enero, abril, julio y octubre.
+    </p>
+
+    <p>
+      🏅 <strong>Mejores marcas</strong> — muestra la mejor puntuación histórica
+      de cada jugador.
+    </p>
+
+    <p>
+      ✏️ <strong>Cambiar alias</strong> — pulsa el lápiz situado junto a tu nombre.
+      Tus resultados y estadísticas se conservan.
+    </p>
+
+  </div>
 
 </div>
     
@@ -3525,11 +3592,57 @@ async function editarAlias() {
 
   alert("Alias actualizado correctamente.");
 }
+  
+const btnInfo =
+  document.getElementById("btnInfo");
 
+const infoCard =
+  document.getElementById("infoCard");
+
+const btnCerrarInfo =
+  document.getElementById("btnCerrarInfo");
+
+btnInfo.addEventListener(
+  "click",
+  () => {
+    infoCard.classList.remove("hidden");
+  }
+);
+
+btnCerrarInfo.addEventListener(
+  "click",
+  () => {
+    infoCard.classList.add("hidden");
+  }
+);
+  
 document
   .getElementById("btnEditarAlias")
   .addEventListener("click", editarAlias);
 
+const btnInfo =
+  document.getElementById("btnInfo");
+
+const infoCard =
+  document.getElementById("infoCard");
+
+const btnCerrarInfo =
+  document.getElementById("btnCerrarInfo");
+
+btnInfo.addEventListener(
+  "click",
+  () => {
+    infoCard.classList.remove("hidden");
+  }
+);
+
+btnCerrarInfo.addEventListener(
+  "click",
+  () => {
+    infoCard.classList.add("hidden");
+  }
+);
+  
 document
   .getElementById("btnEditarAliasCabecera")
   .addEventListener("click", editarAlias);
