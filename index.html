@@ -2887,8 +2887,9 @@ async function cargarTop50Historico() {
         ronda_5,
         jugadores(nombre, alias)
       `)
-      .order("final_score", { ascending: false })
-      .limit(50);
+        .order("final_score", { ascending: false })
+        .order("fecha", { ascending: true })
+        .limit(50);
 
   const { data: rondasPorFecha } =
     await supabaseClient
