@@ -2844,6 +2844,7 @@ async function cargarTop20General() {
       .from("resultados")
       .select(`
         fecha,
+        created_at,
         final_score,
         jugador_id,
         ronda_1,
@@ -2856,6 +2857,7 @@ async function cargarTop20General() {
       .gte("fecha", inicioTrimestre)
       .lt("fecha", inicioSiguienteTrimestre)
       .order("final_score", { ascending: false })
+      .order("created_at", { ascending: true })
       .limit(20);
 
   const { data: rondasPorFecha } =
@@ -2878,6 +2880,7 @@ async function cargarTop50Historico() {
       .from("resultados")
       .select(`
         fecha,
+        created_at,
         final_score,
         jugador_id,
         ronda_1,
@@ -2889,6 +2892,7 @@ async function cargarTop50Historico() {
       `)
         .order("final_score", { ascending: false })
         .order("fecha", { ascending: true })
+        .order("created_at", { ascending: true })
         .limit(50);
 
   const { data: rondasPorFecha } =
