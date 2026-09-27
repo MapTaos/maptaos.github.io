@@ -1,0 +1,3651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MapTaos</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+#profileView {
+  min-height: auto;
+  padding-top: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+#chartPeriodSelector,
+#homeRankingSelector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+#chartPeriodSelector button,
+#homeRankingSelector button {
+  width: auto;
+  flex: 1;
+  padding: 10px 6px;
+  font-size: 15px;
+}
+    #chartPeriodSelector button.active {
+    background: #222;
+    color: white;
+    font-weight: bold;
+}
+ #profileChart {
+    position: relative;
+   
+    width: 100%;
+    height: 300px;
+    margin-top: 15px;
+ }
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      margin-top: 18px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+#backFromProfile {
+  width: auto;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+}
+    
+    .btn-primary {
+      background: #1f7a5c;
+      color: white;
+      font-weight: bold;
+    }
+
+    .btn-result {
+      background: #111;
+      color: white;
+      font-size: 21px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .btn-secondary {
+      background: #e7ebee;
+      color: #222;
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .small {
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .player {
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 22px;
+    }
+
+    .detected-score {
+      text-align: center;
+      font-size: 42px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .detected-date {
+      text-align: center;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .success {
+      background: #e8f7ef;
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .error {
+      background: #fdecec;
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .home-section-title {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+
+    .placeholder {
+      background: #eef1f3;
+      border-radius: 12px;
+      padding: 16px;
+      color: #666;
+      text-align: center;
+    }
+
+      #rankingHoy,
+      #rankingSemanal,
+      #rankingMensual,
+      #profileTop20 {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      #seccionHoy,
+      #seccionSemana,
+      #seccionMes,
+      #seccionTop20,
+      #seccionContinentes,
+      #seccionMejoresMarcas {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+    
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- LOGIN -->
+  <section id="loginView" class="hidden">
+
+    <div class="card">
+
+      <h1>🌍 MapTaos</h1>
+      <p class="subtitle">Acceso a la Liga</p>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="Correo electrónico"
+      >
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Contraseña"
+      >
+
+      <button
+        class="btn-primary"
+        id="loginButton"
+      >
+        Entrar
+      </button>
+
+      <p class="small">
+        Acceso reservado a miembros autorizados.
+      </p>
+
+    </div>
+
+  </section>
+
+<section id="setPasswordView" class="hidden">
+
+  <div class="card">
+
+    <h1>🌍 MapTaos</h1>
+    <p class="subtitle">
+      Crea tu contraseña
+    </p>
+
+    <input
+      type="password"
+      id="newPassword"
+      placeholder="Nueva contraseña"
+    >
+
+    <input
+      type="password"
+      id="confirmPassword"
+      placeholder="Repite la contraseña"
+    >
+
+    <button
+      class="btn-primary"
+      id="setPasswordButton"
+    >
+      Guardar contraseña
+    </button>
+
+    <p class="small">
+      La utilizarás para entrar en MapTaos.
+    </p>
+
+  </div>
+
+</section>
+  
+  <!-- APP -->
+  <section id="appView" class="hidden">
+
+    <h1>🌍 MapTaos</h1>
+    <p class="subtitle">La liga de los MapTaos</p>
+
+   <div
+  class="player"
+  style="
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+  "
+>
+  <span id="playerName"></span>
+
+  <span
+    id="btnEditarAliasCabecera"
+    role="button"
+    aria-label="Cambiar alias"
+    title="Cambiar alias"
+    style="
+      cursor:pointer;
+      font-size:16px;
+    "
+  >✏️</span>
+</div>
+
+   <div style="
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin:6px auto 12px;
+">
+
+<button
+  type="button"
+  class="btn-secondary"
+  onclick="window.location.href='https://www.maptap.gg'"
+  style="
+    width:auto;
+    height:30px;
+    margin:0;
+    padding:0 10px;
+    font-size:12px;
+    line-height:30px;
+    box-sizing:border-box;
+  "
+>
+  🌍 Ir a MapTap.gg ↗
+</button>
+
+  <button
+    type="button"
+    id="logoutButton"
+    class="btn-secondary"
+    style="
+      width:auto;
+      height:30px;
+      margin:0;
+      padding:0 10px;
+      font-size:12px;
+      line-height:30px;
+      box-sizing:border-box;
+    "
+  >
+    Cerrar sesión
+  </button>
+
+</div>
+    
+    <button
+      class="btn-result"
+      id="pasteResultButton"
+    >
+      📋 Pegar resultado
+    </button>
+
+
+    <!-- PEGADO MANUAL DE RESPALDO -->
+<div
+  class="card hidden"
+  id="manualCard"
+  style="position:relative;"
+>
+
+  <button
+    type="button"
+    id="closeManualButton"
+    aria-label="Cerrar"
+    title="Cerrar"
+    style="
+      position:absolute;
+      top:8px;
+      right:8px;
+      width:auto;
+      padding:2px 7px;
+      margin:0;
+      border:none;
+      background:transparent;
+      font-size:20px;
+      line-height:1;
+      cursor:pointer;
+    "
+  >✕</button>
+  
+    <p class="small">
+      Pega aquí tu resultado de MapTap y pulsa
+      <strong>Analizar resultado</strong>.
+    </p>
+
+      <textarea
+        id="manualText"
+        placeholder="Pega aquí el resultado..."
+      ></textarea>
+
+      <button
+        class="btn-primary"
+        id="analyzeManualButton"
+      >
+        Analizar resultado
+      </button>
+
+    </div>
+
+
+    <!-- CONFIRMACIÓN -->
+    <div
+      class="card hidden"
+      id="confirmationCard"
+    >
+
+      <div class="small">
+        Final Score detectado
+      </div>
+
+      <div
+        class="detected-score"
+        id="detectedScore"
+      ></div>
+
+      <div
+        class="detected-date"
+        id="detectedDate"
+      ></div>
+
+      <button
+        class="btn-primary"
+        id="saveResultButton"
+      >
+        Guardar resultado
+      </button>
+
+      <button
+        class="btn-secondary"
+        id="cancelButton"
+      >
+        Cancelar
+      </button>
+
+    </div>
+
+
+    <div id="messageBox"></div>
+
+<div id="homeRankingSelector">
+
+  <button type="button" id="btnHoy">
+    Hoy
+  </button>
+
+  <button type="button" id="btnSemana" class="hidden">
+    Semana
+  </button>
+
+  <button type="button" id="btnMes">
+    Mes
+  </button>
+
+  <button type="button" id="btnTop20">
+    Top-20 · 3M
+  </button>
+
+</div>
+
+<div style="
+  display:flex;
+  gap:8px;
+  margin-top:8px;
+">
+
+  <button
+    type="button"
+    id="btnContinentes"
+    style="
+      flex:1;
+      padding:10px 6px;
+      font-size:15px;
+      white-space:nowrap;
+    "
+  >
+    🌍 Continentes
+  </button>
+
+  <button
+    type="button"
+    id="btnMejoresMarcas"
+    style="
+      flex:1;
+      padding:10px 6px;
+      font-size:15px;
+      white-space:nowrap;
+    "
+  >
+    🏅 Mejores marcas
+  </button>
+
+</div>
+    
+<div class="card" id="seccionHoy">
+  <h2 class="home-section-title" style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  ">
+    <span>Clasificación de hoy</span>
+  
+    <span id="contadorJugadoresHoy" style="
+      font-size:13px;
+      font-weight:500;
+      color:#777;
+      white-space:nowrap;
+    "></span>
+  </h2>
+
+  <div id="rankingHoy" class="placeholder">
+    Cargando clasificación...
+  </div>
+</div>
+
+<div class="card" id="seccionSemana">
+  <h2 class="home-section-title">
+    Clasificación semanal
+  </h2>
+
+  <div id="rankingSemanal" class="placeholder">
+    Cargando clasificación semanal...
+  </div>
+</div>
+
+<div class="card" id="seccionMes">
+  <h2 class="home-section-title">
+    Clasificación mensual 
+  </h2>
+
+  <div id="rankingMensual" class="placeholder">
+    Cargando clasificación mensual...
+  </div>
+</div>
+
+<div class="card" id="seccionTop20">
+<h2 class="home-section-title" id="tituloTop20">
+  🔥 Top-20
+</h2>
+
+  <div id="profileTop20" class="placeholder">
+    Cargando mejores resultados...
+  </div>
+</div>
+
+<div class="card hidden" id="seccionContinentes">
+
+  <h2 class="home-section-title">
+    🌍 Rankings por continentes
+  </h2>
+
+  <div id="rankingContinentes">
+    Cargando rankings...
+  </div>
+
+</div>
+
+<div class="card hidden" id="seccionMejoresMarcas">
+
+  <h2 class="home-section-title">
+    🏅 Mejores marcas individuales
+  </h2>
+
+  <div id="rankingMejoresMarcas">
+    Cargando mejores marcas...
+  </div>
+
+</div>
+    
+  </section>
+
+</div>
+
+  <section id="profileView" class="hidden">
+
+  <button id="backFromProfile" class="btn-secondary">
+    ← Volver
+  </button>
+
+ <h1 id="profileName" style="text-align:center;">
+  Perfil
+</h1>
+
+<div id="editarAliasContainer" class="hidden" style="text-align:center; margin-bottom:16px;">
+  <button id="btnEditarAlias" type="button" class="btn-secondary">
+    ✏️ Cambiar alias
+  </button>
+</div>
+    
+<div class="card">
+  <h2>📊 Estadísticas</h2>
+
+  <div id="profileContent">
+    Cargando perfil...
+  </div>
+</div>
+
+<div class="card">
+  <h2>📈 Evolución</h2>
+<div id="chartPeriodSelector">
+<button type="button" data-periodo="30d" class="active">30 días</button>
+  <button type="button" data-periodo="3m">3 meses</button>
+  <button type="button" data-periodo="1a">1 año</button>
+  <button type="button" data-periodo="todo">Todo</button>
+</div>
+  <div id="profileChart">
+    Cargando evolución...
+  </div>
+</div>
+
+<div class="card">
+  <h2>🏆 Top-10 personal</h2>
+
+  <div id="profileTop10">
+    Cargando mejores resultados...
+  </div>
+</div>
+   
+  </section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+const SUPABASE_URL =
+  "https://oktfgwieowixtoxbdbmg.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_9LLVrCKy2_fl_vzouJGTfQ_h22GzOGi";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+let jugadorActual = null;
+let resultadoPendiente = null;
+
+const loginView =
+  document.getElementById("loginView");
+
+const setPasswordView =
+  document.getElementById("setPasswordView");
+
+const appView =
+  document.getElementById("appView");
+
+const loginButton =
+  document.getElementById("loginButton");
+
+const pasteResultButton =
+  document.getElementById("pasteResultButton");
+
+const manualCard =
+  document.getElementById("manualCard");
+
+const manualText =
+  document.getElementById("manualText");
+
+const analyzeManualButton =
+  document.getElementById("analyzeManualButton");
+
+const confirmationCard =
+  document.getElementById("confirmationCard");
+
+const detectedScore =
+  document.getElementById("detectedScore");
+
+const detectedDate =
+  document.getElementById("detectedDate");
+
+const saveResultButton =
+  document.getElementById("saveResultButton");
+
+const cancelButton =
+  document.getElementById("cancelButton");
+
+const playerName =
+  document.getElementById("playerName");
+
+const messageBox =
+  document.getElementById("messageBox");
+
+
+function mostrarLogin() {
+  loginView.classList.remove("hidden");
+  appView.classList.add("hidden");
+  setPasswordView.classList.add("hidden");
+}
+
+function mostrarCrearPassword() {
+  loginView.classList.add("hidden");
+  appView.classList.add("hidden");
+  setPasswordView.classList.remove("hidden");
+}
+
+function mostrarApp() {
+  loginView.classList.add("hidden");
+  setPasswordView.classList.add("hidden");
+  appView.classList.remove("hidden");
+}
+
+
+loginButton.addEventListener(
+  "click",
+  async () => {
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+    if (!email || !password) {
+      alert("Introduce correo y contraseña.");
+      return;
+    }
+
+    loginButton.disabled = true;
+    loginButton.textContent = "Entrando...";
+
+    const { error } =
+      await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    loginButton.disabled = false;
+    loginButton.textContent = "Entrar";
+
+    if (error) {
+      alert("No se ha podido iniciar sesión.");
+      return;
+    }
+
+    await iniciarApp();
+  }
+);
+
+  document
+  .getElementById("setPasswordButton")
+  .addEventListener("click", async () => {
+
+    const password =
+      document.getElementById("newPassword").value;
+
+    const confirmacion =
+      document.getElementById("confirmPassword").value;
+
+    if (password.length < 6) {
+      alert("La contraseña debe tener al menos 6 caracteres.");
+      return;
+    }
+
+    if (password !== confirmacion) {
+      alert("Las contraseñas no coinciden.");
+      return;
+    }
+
+    const { error } =
+      await supabaseClient.auth.updateUser({
+        password: password
+      });
+
+    if (error) {
+      alert("No se pudo guardar la contraseña.");
+      return;
+    }
+
+const { error: errorJugador } =
+  await supabaseClient
+    .from("jugadores")
+    .update({
+      password_configurada: true
+    })
+    .eq("id", jugadorActual.id);
+
+if (errorJugador) {
+  alert(
+    "La contraseña se ha guardado, pero no se pudo completar el alta."
+  );
+  return;
+}
+
+jugadorActual.password_configurada = true;
+    
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+
+    await iniciarApp();
+  });
+
+async function cargarJugador() {
+
+  const {
+    data: { user }
+  } = await supabaseClient.auth.getUser();
+
+  if (!user) {
+    return false;
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("jugadores")
+      .select("id, nombre, alias, activo, password_configurada")
+      .eq("auth_user_id", user.id)
+      .single();
+
+  if (error || !data) {
+    mostrarMensaje(
+      "Tu cuenta no está vinculada a ningún jugador.",
+      "error"
+    );
+    return false;
+  }
+
+if (!data.activo) {
+  mostrarMensaje(
+    "Tu jugador está desactivado.",
+    "error"
+  );
+  return false;
+}
+  
+  jugadorActual = data;
+
+playerName.textContent =
+  "👤 " + (data.alias || data.nombre);
+
+  return true;
+}
+
+
+function analizarResultado(texto) {
+
+  const scoreMatch =
+    texto.match(
+      /Final score:\s*(\d+)/i
+    );
+const lineaRondas =
+  texto
+    .split("\n")
+    .find(linea =>
+      !/(?:www\.maptap\.gg|MapTap)\s+[\p{L}]+\s+\d{1,2}/iu.test(linea) &&
+      !/Final score:/i.test(linea) &&
+      /\d/.test(linea)
+    );
+
+if (!lineaRondas) {
+  throw new Error(
+    "No se encontraron las 5 rondas."
+  );
+}
+
+const puntuaciones =
+  [...lineaRondas.matchAll(/(\d{1,3})/g)]
+    .map(resultado => Number(resultado[1]));
+
+if (
+  puntuaciones.length !== 5 ||
+  puntuaciones.some(
+    puntos => puntos < 0 || puntos > 100
+  )
+) {
+  throw new Error(
+    "No se pudieron interpretar las 5 rondas."
+  );
+}
+  const banderas =
+  [...lineaRondas.matchAll(/([\p{Regional_Indicator}]{2})\s*\d{1,3}/gu)]
+    .map(resultado => resultado[1]);
+
+const tieneBanderas = banderas.length === 5;
+const fechaMatch =
+  texto.match(
+    /(?:www\.maptap\.gg|MapTap)\s+([\p{L}]+)\s+(\d{1,2})/iu
+  );
+
+  if (!scoreMatch) {
+    throw new Error(
+      "No se encontró el Final Score."
+    );
+  }
+
+  if (!fechaMatch) {
+    throw new Error(
+      "No se encontró la fecha."
+    );
+  }
+
+  const score =
+    Number(scoreMatch[1]);
+
+  if (
+    !Number.isInteger(score) ||
+    score < 0 ||
+    score > 1000
+  ) {
+    throw new Error(
+      "El Final Score no es válido."
+    );
+  }
+
+  const scoreCalculado =
+    puntuaciones[0] +
+    puntuaciones[1] +
+    (puntuaciones[2] * 2) +
+    (puntuaciones[3] * 3) +
+    (puntuaciones[4] * 3);
+  
+  if (score !== scoreCalculado) {
+    throw new Error(
+      "El Final Score no coincide con las 5 rondas."
+    );
+  }
+    
+const meses = {
+  january: 0,
+  enero: 0,
+  xaneiro: 0,
+  janeiro: 0,
+  janvier: 0,
+
+  february: 1,
+  febrero: 1,
+  febreiro: 1,
+  fevereiro: 1,
+  février: 1,
+
+  march: 2,
+  marzo: 2,
+  março: 2,
+  mars: 2,
+
+  april: 3,
+  abril: 3,
+  avril: 3,
+
+  may: 4,
+  mayo: 4,
+  maio: 4,
+  mai: 4,
+
+  june: 5,
+  junio: 5,
+  xuño: 5,
+  junho: 5,
+  juin: 5,
+
+  july: 6,
+  julio: 6,
+  xullo: 6,
+  julho: 6,
+  juillet: 6,
+
+  august: 7,
+  agosto: 7,
+  août: 7,
+
+  september: 8,
+  septiembre: 8,
+  setiembre: 8,
+  setembro: 8,
+  septembre: 8,
+
+  october: 9,
+  octubre: 9,
+  outubro: 9,
+  octobre: 9,
+
+  november: 10,
+  noviembre: 10,
+  novembro: 10,
+  novembre: 10,
+
+  december: 11,
+  diciembre: 11,
+  decembro: 11,
+  dezembro: 11,
+  décembre: 11
+};
+  const mesTexto =
+    fechaMatch[1].toLowerCase();
+
+  const dia =
+    Number(fechaMatch[2]);
+
+  const mes =
+    meses[mesTexto];
+
+  if (mes === undefined) {
+    throw new Error(
+      "El mes no es válido."
+    );
+  }
+
+const hoy =
+  new Date();
+
+let año =
+  hoy.getFullYear();
+
+const mesActual =
+  hoy.getMonth();
+
+if (
+  mes === 11 &&
+  mesActual === 0
+) {
+  año = año - 1;
+}
+else if (
+  mes === 0 &&
+  mesActual === 11
+) {
+  año = año + 1;
+}
+
+  const fechaSQL =
+    año
+    + "-"
+    + String(mes + 1).padStart(2, "0")
+    + "-"
+    + String(dia).padStart(2, "0");
+
+  return {
+  score,
+  fechaSQL,
+  fechaVisible:
+    dia
+    + "/"
+    + String(mes + 1).padStart(2, "0")
+    + "/"
+    + año,
+
+  ronda1: puntuaciones[0],
+  ronda2: puntuaciones[1],
+  ronda3: puntuaciones[2],
+  ronda4: puntuaciones[3],
+  ronda5: puntuaciones[4],
+tieneBanderas,
+banderas,
+  textoOriginal:
+    texto
+};
+}
+
+
+function prepararResultado(texto) {
+
+  limpiarMensaje();
+
+  try {
+
+    resultadoPendiente =
+      analizarResultado(texto);
+
+    detectedScore.textContent =
+      resultadoPendiente.score;
+
+    detectedDate.textContent =
+      "📅 "
+      + resultadoPendiente.fechaVisible;
+
+    confirmationCard
+      .classList
+      .remove("hidden");
+
+    manualCard
+      .classList
+      .add("hidden");
+
+  }
+  catch (error) {
+
+    resultadoPendiente = null;
+
+    mostrarMensaje(
+      error.message,
+      "error"
+    );
+  }
+}
+
+
+pasteResultButton.addEventListener(
+  "click",
+  async () => {
+
+    limpiarMensaje();
+
+    const fechasHoy =
+      fechasValidasHoy();
+
+    const {
+      data: resultadosHoy,
+      error: errorResultadosHoy
+    } =
+      await supabaseClient
+        .from("resultados")
+        .select("id")
+        .eq(
+          "jugador_id",
+          jugadorActual.id
+        )
+        .in(
+          "fecha",
+          fechasHoy
+        )
+        .limit(1);
+
+    if (errorResultadosHoy) {
+      mostrarMensaje(
+        "No se pudo comprobar si ya tienes resultado.",
+        "error"
+      );
+      return;
+    }
+
+    if (
+      resultadosHoy &&
+      resultadosHoy.length > 0
+    ) {
+      mostrarMensaje(
+        "Ya has guardado tu resultado de hoy.",
+        "error"
+      );
+      return;
+    }
+
+    const esIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (
+        navigator.platform === "MacIntel" &&
+        navigator.maxTouchPoints > 1
+      );
+
+    if (esIOS) {
+    
+      manualCard
+        .classList
+        .remove("hidden");
+    
+      manualText.value = "";
+    
+      manualText.focus();
+    
+      mostrarMensaje(
+        "Pega aquí el resultado copiado de MapTap.",
+        "info"
+      );
+    
+      return;
+}
+    
+    try {
+
+      const texto =
+        await navigator.clipboard.readText();
+
+      if (!texto.trim()) {
+        throw new Error(
+          "El portapapeles está vacío."
+        );
+      }
+
+      prepararResultado(texto);
+
+    }
+    catch (error) {
+
+      manualCard
+        .classList
+        .remove("hidden");
+
+      mostrarMensaje(
+        "No se pudo leer automáticamente el portapapeles.",
+        "error"
+      );
+    }
+  }
+);
+
+
+analyzeManualButton.addEventListener(
+  "click",
+  () => {
+
+    const texto =
+      manualText.value.trim();
+
+    if (!texto) {
+
+      mostrarMensaje(
+        "Pega primero el resultado de MapTap.",
+        "error"
+      );
+
+      return;
+    }
+
+    prepararResultado(texto);
+  }
+);
+
+
+saveResultButton.addEventListener(
+  "click",
+  async () => {
+
+    if (
+      !resultadoPendiente ||
+      !jugadorActual
+    ) {
+      return;
+    }
+
+const fechasHoy =
+  fechasValidasHoy();
+
+if (
+  !fechasHoy.includes(
+    resultadoPendiente.fechaSQL
+  )
+) {
+  mostrarMensaje(
+    "Solo puedes guardar el resultado del día actual.",
+    "error"
+  );
+  return;
+}
+    
+    saveResultButton.disabled = true;
+    saveResultButton.textContent =
+      "Guardando...";
+
+    const {
+      data: existente,
+      error: errorConsulta
+    } =
+      await supabaseClient
+        .from("resultados")
+        .select("id, final_score")
+        .eq(
+          "jugador_id",
+          jugadorActual.id
+        )
+        .eq(
+          "fecha",
+          resultadoPendiente.fechaSQL
+        )
+        .maybeSingle();
+
+    if (errorConsulta) {
+
+      saveResultButton.disabled = false;
+      saveResultButton.textContent =
+        "Guardar resultado";
+
+      mostrarMensaje(
+        "No se pudo comprobar el resultado.",
+        "error"
+      );
+
+      return;
+    }
+
+    if (existente) {
+
+      saveResultButton.disabled = false;
+      saveResultButton.textContent =
+        "Guardar resultado";
+
+      confirmationCard
+        .classList
+        .add("hidden");
+
+      mostrarMensaje(
+        "Ya tienes un resultado guardado para ese día: "
+        + existente.final_score
+        + " puntos.",
+        "error"
+      );
+
+      return;
+    }
+
+    const { error } =
+      await supabaseClient
+        .from("resultados")
+    .insert({
+  jugador_id: jugadorActual.id,
+  fecha: resultadoPendiente.fechaSQL,
+  final_score: resultadoPendiente.score,
+
+  ronda_1: resultadoPendiente.ronda1,
+  ronda_2: resultadoPendiente.ronda2,
+  ronda_3: resultadoPendiente.ronda3,
+  ronda_4: resultadoPendiente.ronda4,
+  ronda_5: resultadoPendiente.ronda5,
+
+  texto_original: resultadoPendiente.textoOriginal
+});
+
+    saveResultButton.disabled = false;
+    saveResultButton.textContent =
+      "Guardar resultado";
+
+    if (error) {
+
+      mostrarMensaje(
+        "No se pudo guardar el resultado.",
+        "error"
+      );
+
+      return;
+    }
+if (resultadoPendiente.tieneBanderas) {
+
+  await supabaseClient
+    .from("rondas_dia")
+    .upsert(
+      {
+        fecha: resultadoPendiente.fechaSQL,
+        pais_1: resultadoPendiente.banderas[0],
+        pais_2: resultadoPendiente.banderas[1],
+        pais_3: resultadoPendiente.banderas[2],
+        pais_4: resultadoPendiente.banderas[3],
+        pais_5: resultadoPendiente.banderas[4]
+      },
+      {
+        onConflict: "fecha",
+        ignoreDuplicates: true
+      }
+    );
+}
+    confirmationCard
+      .classList
+      .add("hidden");
+
+    manualText.value = "";
+
+    mostrarMensaje(
+      "✅ Resultado guardado: "
+      + resultadoPendiente.score
+      + " puntos.",
+      "success"
+    );
+    await cargarRankingHoy();
+    await cargarRankingSemanal();
+    await cargarRankingMensual();
+    await cargarTop20General();
+    await cargarRankingContinentes();
+    await cargarMejoresMarcas();
+    
+    resultadoPendiente = null;
+  }
+);
+
+
+cancelButton.addEventListener(
+  "click",
+  () => {
+
+    resultadoPendiente = null;
+
+    confirmationCard
+      .classList
+      .add("hidden");
+  }
+);
+
+  document
+  .getElementById("closeManualButton")
+  .addEventListener("click", () => {
+
+    manualText.value = "";
+
+    manualCard
+      .classList
+      .add("hidden");
+
+    limpiarMensaje();
+  });
+
+function mostrarMensaje(
+  texto,
+  tipo
+) {
+
+  messageBox.innerHTML =
+    '<div class="'
+    + tipo
+    + '" style="position:relative; padding-right:40px;">'
+    + texto
+    + '<span'
+    + ' onclick="messageBox.innerHTML=\'\'"'
+    + ' role="button"'
+    + ' aria-label="Cerrar aviso"'
+    + ' style="'
+    + 'position:absolute;'
+    + 'right:12px;'
+    + 'top:50%;'
+    + 'transform:translateY(-50%);'
+    + 'font-size:22px;'
+    + 'font-weight:bold;'
+    + 'line-height:1;'
+    + 'cursor:pointer;'
+    + '">×</span>'
+    + '</div>';
+}
+
+function limpiarMensaje() {
+  messageBox.innerHTML = "";
+}
+
+function fechaMadridISO(fecha = new Date()) {
+  return fecha.toISOString().slice(0, 10);
+}
+
+function fechasValidasHoy(fecha = new Date()) {
+
+  const hoyLocal =
+    fecha.getFullYear()
+    + "-"
+    + String(fecha.getMonth() + 1).padStart(2, "0")
+    + "-"
+    + String(fecha.getDate()).padStart(2, "0");
+
+  const hoyUTC =
+    fecha.getUTCFullYear()
+    + "-"
+    + String(fecha.getUTCMonth() + 1).padStart(2, "0")
+    + "-"
+    + String(fecha.getUTCDate()).padStart(2, "0");
+
+  return [...new Set([hoyLocal, hoyUTC])];
+}
+  
+function banderaACodigo(bandera) {
+  if (!bandera) return "";
+
+  const puntos = Array.from(bandera).map(
+    caracter => caracter.codePointAt(0)
+  );
+
+  if (
+    puntos.length !== 2 ||
+    puntos.some(punto => punto < 127462 || punto > 127487)
+  ) {
+    return "";
+  }
+
+  return puntos
+    .map(punto => String.fromCharCode(punto - 127397))
+    .join("");
+}
+  
+async function cargarRankingHoy() {
+
+  const rankingHoy =
+    document.getElementById("rankingHoy");
+
+  const hoy = fechaMadridISO();
+  
+
+  
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("ranking_diario")
+      .select(
+        "fecha, jugador_id, nombre, final_score, posicion,alias"
+      )
+      .eq("fecha", hoy)
+      .order("posicion", {
+        ascending: true
+      });
+
+  const {
+  data: historialAnterior,
+  error: errorHistorial
+} =
+  await supabaseClient
+    .from("ranking_diario")
+    .select(
+      "fecha, jugador_id, nombre, final_score, posicion, alias"
+    )
+    .lt("fecha", hoy)
+    .order("fecha", {
+      ascending: false
+    });
+
+  const {
+    count: totalJugadores
+  } =
+    await supabaseClient
+      .from("jugadores")
+      .select("*", {
+        count: "exact",
+        head: true
+      })
+      .eq("activo", true);
+  
+  const contadorJugadoresHoy =
+    document.getElementById("contadorJugadoresHoy");
+  
+  if (contadorJugadoresHoy) {
+    contadorJugadoresHoy.textContent =
+      `han jugado ${data?.length || 0}/${totalJugadores || 0}`;
+  }
+  
+  if (error) {
+
+    rankingHoy.innerHTML =
+      "No se pudo cargar la clasificación.";
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    rankingHoy.innerHTML =
+      "Todavía no hay resultados hoy.";
+
+    return;
+  }
+const {
+  data: parciales,
+  error: errorParciales
+} =
+  await supabaseClient
+    .from("resultados")
+    .select(
+      "jugador_id, ronda_1, ronda_2, ronda_3, ronda_4, ronda_5"
+    )
+    .eq("fecha", hoy);
+
+const {
+  data: rondasDia
+} =
+  await supabaseClient
+    .from("rondas_dia")
+    .select(
+      "pais_1, pais_2, pais_3, pais_4, pais_5"
+    )
+    .eq("fecha", hoy)
+    .maybeSingle();
+  
+  rankingHoy.innerHTML =
+    data.map(fila => {
+
+      let medalla = "";
+
+      if (fila.posicion === 1) {
+        medalla = "🥇";
+      }
+      else if (fila.posicion === 2) {
+        medalla = "🥈";
+      }
+      else if (fila.posicion === 3) {
+        medalla = "🥉";
+      }
+const parcialJugador =
+  parciales?.find(
+    p => p.jugador_id === fila.jugador_id
+  );
+
+let textoRondas = "";
+
+if (parcialJugador) {
+
+  const puntos = [
+    parcialJugador.ronda_1,
+    parcialJugador.ronda_2,
+    parcialJugador.ronda_3,
+    parcialJugador.ronda_4,
+    parcialJugador.ronda_5
+  ];
+
+  const banderas = rondasDia
+    ? [
+        rondasDia.pais_1,
+        rondasDia.pais_2,
+        rondasDia.pais_3,
+        rondasDia.pais_4,
+        rondasDia.pais_5
+      ]
+    : [];
+
+textoRondas =
+  puntos
+    .map((puntosRonda, i) => {
+
+      if (puntosRonda === null) {
+        return "";
+      }
+
+      const bandera =
+        banderas[i] || "";
+
+      const codigoPais =
+        banderaACodigo(bandera);
+
+      return codigoPais
+        ? `<span style="
+             display:inline-flex;
+             align-items:center;
+             width:20%;
+             white-space:nowrap;
+             box-sizing:border-box;
+           "><img
+             src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
+             alt="${codigoPais}"
+             style="
+               width:20px;
+               height:15px;
+               vertical-align:middle;
+               margin-right:1px;
+             ">${puntosRonda}</span>`
+        : `<span style="
+             display:inline-flex;
+             align-items:center;
+             width:20%;
+             white-space:nowrap;
+             box-sizing:border-box;
+           ">${puntosRonda}</span>`;
+    })
+    .filter(Boolean)
+    .join("");
+           }
+  
+  const filaAnterior =
+  historialAnterior?.find(
+    anterior =>
+      anterior.jugador_id === fila.jugador_id
+  );
+
+let movimiento = "🆕";
+
+if (filaAnterior) {
+
+  const diferencia =
+    filaAnterior.posicion - fila.posicion;
+  
+  if (diferencia > 0) {
+    movimiento = `↑${diferencia}`;
+  }
+  else if (diferencia < 0) {
+    movimiento = `↓${Math.abs(diferencia)}`;
+  }
+  else {
+    movimiento = "=";
+  }
+}
+      return `
+  <div style="
+    padding:10px 0;
+    border-bottom:1px solid #ddd;
+  ">
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    ">
+<span>
+  <span style="
+    display:inline-block;
+    width:28px;
+    text-align:center;
+  ">${medalla}</span>
+  ${fila.posicion}
+<strong
+
+  style="cursor:pointer;"
+onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.alias || fila.nombre}')"
+>
+  ${fila.alias || fila.nombre}
+</strong>
+<span style="
+  margin-left:6px;
+  font-size:13px;
+">
+  ${movimiento}
+</span>
+      </span>
+
+      <strong>
+        ${fila.final_score}
+      </strong>
+    </div>
+
+    ${
+      textoRondas
+        ? `
+    <div style="
+      margin-top:6px;
+      margin-left:47px;
+      font-size:13px;
+      color:#666;
+      width:calc(100% - 47px);
+    ">
+      ${textoRondas}
+    </div>
+        `
+        : ""
+    }
+
+  </div>
+`;
+
+    }).join("");
+}
+async function cargarRankingSemanal() {
+
+  const rankingSemanal =
+    document.getElementById("rankingSemanal");
+
+  const hoy = new Date();
+const fechaMadrid = fechaMadridISO();
+
+const [anio, mes, dia] =
+  fechaMadrid.split("-").map(Number);
+
+// Usamos UTC internamente solo para hacer
+// cálculos de calendario sin depender del móvil
+const hoyMadrid =
+  new Date(Date.UTC(anio, mes - 1, dia));
+
+const diaSemana =
+  hoyMadrid.getUTCDay() === 0
+    ? 7
+    : hoyMadrid.getUTCDay();
+
+const lunesActual =
+  new Date(hoyMadrid);
+
+lunesActual.setUTCDate(
+  hoyMadrid.getUTCDate() - diaSemana + 1
+);
+
+const lunesAnterior =
+  new Date(lunesActual);
+
+lunesAnterior.setUTCDate(
+  lunesActual.getUTCDate() - 7
+);
+
+  const fechaSemanaActual =
+    lunesActual
+      .toISOString()
+      .slice(0, 10);
+
+  const fechaSemanaAnterior =
+    lunesAnterior
+      .toISOString()
+      .slice(0, 10);
+
+
+  const {
+    data: actual,
+    error: errorActual
+  } =
+    await supabaseClient
+      .from("ranking_semanal")
+      .select(
+        "inicio_semana, jugador_id, nombre, puntos, dias_jugados, posicion, alias"
+      )
+      .eq(
+        "inicio_semana",
+        fechaSemanaActual
+      )
+      .order(
+        "posicion",
+        { ascending: true }
+      );
+
+
+  const {
+    data: anterior,
+    error: errorAnterior
+  } =
+    await supabaseClient
+      .from("ranking_semanal")
+      .select(
+        "inicio_semana, jugador_id, nombre, puntos, dias_jugados, posicion, alias"
+      )
+      .eq(
+        "inicio_semana",
+        fechaSemanaAnterior
+      )
+      .order(
+        "posicion",
+        { ascending: true }
+      );
+
+
+  if (errorActual) {
+
+    rankingSemanal.innerHTML =
+      "No se pudo cargar la clasificación semanal.";
+
+    return;
+  }
+
+
+  if (!actual || actual.length === 0) {
+
+    rankingSemanal.innerHTML =
+      "Todavía no hay resultados esta semana.";
+
+    return;
+  }
+
+
+  rankingSemanal.innerHTML =
+    actual.map(fila => {
+
+      let medalla = "";
+
+      if (fila.posicion === 1) {
+        medalla = "🥇";
+      }
+      else if (fila.posicion === 2) {
+        medalla = "🥈";
+      }
+      else if (fila.posicion === 3) {
+        medalla = "🥉";
+      }
+
+
+      const filaAnterior =
+        anterior?.find(
+          anteriorFila =>
+            anteriorFila.jugador_id === fila.jugador_id
+        );
+
+
+      let movimiento = "🆕";
+
+      if (filaAnterior) {
+
+        const diferencia =
+          filaAnterior.posicion - fila.posicion;
+
+        if (diferencia > 0) {
+          movimiento = `↑${diferencia}`;
+        }
+        else if (diferencia < 0) {
+          movimiento = `↓${Math.abs(diferencia)}`;
+        }
+        else {
+          movimiento = "=";
+        }
+      }
+
+
+      return `
+        <div style="
+          padding:10px 0;
+          border-bottom:1px solid #ddd;
+        ">
+
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+          ">
+
+          <span>
+            <span style="
+              display:inline-block;
+              width:28px;
+              text-align:center;
+            ">${medalla}</span>
+           <span style="
+              display:inline-block;
+              width:20px;
+            ">
+              ${fila.posicion}
+            </span>
+            
+            <strong
+              onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.alias || fila.nombre}')"
+              style="cursor:pointer;"
+            >
+              ${fila.alias || fila.nombre}
+            </strong>
+
+              <span style="
+                margin-left:6px;
+                font-size:13px;
+              ">
+                ${movimiento}
+              </span>
+            </span>
+
+            <strong>
+              ${fila.puntos}
+            </strong>
+
+          </div>
+
+          <div style="
+            margin-top:5px;
+            font-size:13px;
+            color:#666;
+          ">
+            ${fila.dias_jugados}
+            ${fila.dias_jugados === 1 ? "día jugado" : "días jugados"}
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+            }
+
+async function cargarRankingMensual() {
+
+  const rankingMensual =
+    document.getElementById("rankingMensual");
+
+  const fechaMadrid = fechaMadridISO();
+
+  const [anio, mes] =
+    fechaMadrid.split("-").map(Number);
+
+  const inicioMesActual =
+    `${anio}-${String(mes).padStart(2, "0")}-01`;
+
+  let anioAnterior = anio;
+  let mesAnterior = mes - 1;
+
+  if (mesAnterior === 0) {
+    mesAnterior = 12;
+    anioAnterior = anio - 1;
+  }
+
+  const inicioMesAnterior =
+    `${anioAnterior}-${String(mesAnterior).padStart(2, "0")}-01`;
+
+
+  const {
+    data: actual,
+    error: errorActual
+  } =
+    await supabaseClient
+      .from("ranking_mensual")
+      .select(
+        "inicio_mes, jugador_id, nombre, puntos, dias_jugados, posicion, alias"
+      )
+      .eq(
+        "inicio_mes",
+        inicioMesActual
+      )
+      .order(
+        "posicion",
+        { ascending: true }
+      );
+
+
+  const {
+    data: anterior
+  } =
+    await supabaseClient
+      .from("ranking_mensual")
+      .select(
+        "inicio_mes, jugador_id, nombre, puntos, dias_jugados, posicion, alias"
+      )
+      .eq(
+        "inicio_mes",
+        inicioMesAnterior
+      )
+      .order(
+        "posicion",
+        { ascending: true }
+      );
+
+  const { data: resultadosHistoricos } =
+    await supabaseClient
+      .from("resultados")
+      .select("jugador_id, fecha")
+      .order("fecha", { ascending: true });
+  
+
+  if (errorActual) {
+
+    rankingMensual.innerHTML =
+      "No se pudo cargar la clasificación mensual.";
+
+    return;
+  }
+
+
+  if (!actual || actual.length === 0) {
+
+    rankingMensual.innerHTML =
+      "Todavía no hay resultados este mes.";
+
+    return;
+  }
+
+
+  rankingMensual.innerHTML =
+    actual.map(fila => {
+
+      let medalla = "";
+
+      if (fila.posicion === 1) {
+        medalla = "🥇";
+      }
+      else if (fila.posicion === 2) {
+        medalla = "🥈";
+      }
+      else if (fila.posicion === 3) {
+        medalla = "🥉";
+      }
+
+
+      const filaAnterior =
+        anterior?.find(
+          anteriorFila =>
+            anteriorFila.jugador_id === fila.jugador_id
+        );
+
+
+      let movimiento = "🆕";
+
+      if (filaAnterior) {
+
+        const diferencia =
+          filaAnterior.posicion - fila.posicion;
+
+        if (diferencia > 0) {
+          movimiento = `↑${diferencia}`;
+        }
+        else if (diferencia < 0) {
+          movimiento = `↓${Math.abs(diferencia)}`;
+        }
+        else {
+          movimiento = "=";
+        }
+      }
+
+    const mediaMes =
+      Math.round(
+        Number(fila.puntos) /
+        Number(fila.dias_jugados)
+      );
+    
+    const resultadosJugador =
+      (resultadosHistoricos || [])
+        .filter(
+          resultado =>
+            resultado.jugador_id === fila.jugador_id
+        );
+    
+    let racha = resultadosJugador.length > 0 ? 1 : 0;
+    
+    for (
+      let i = resultadosJugador.length - 1;
+      i > 0;
+      i--
+    ) {
+    
+      const fechaActual =
+        new Date(
+          resultadosJugador[i].fecha + "T00:00:00"
+        );
+    
+      const fechaAnterior =
+        new Date(
+          resultadosJugador[i - 1].fecha + "T00:00:00"
+        );
+    
+      const diferenciaDias =
+        Math.round(
+          (fechaActual - fechaAnterior) /
+          (1000 * 60 * 60 * 24)
+        );
+    
+      if (diferenciaDias === 1) {
+        racha++;
+      }
+      else {
+        break;
+      }
+    }
+
+      return `
+        <div style="
+          padding:10px 0;
+          border-bottom:1px solid #ddd;
+        ">
+
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+          ">
+
+          <span>
+            <span style="
+              display:inline-block;
+              width:28px;
+              text-align:center;
+            ">${medalla}</span>
+          <span style="
+            display:inline-block;
+            width:20px;
+          ">
+          ${fila.posicion}
+        </span>
+        
+        <strong
+          onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.alias || fila.nombre}')"
+          style="cursor:pointer;"
+        >
+          ${fila.alias || fila.nombre}
+        </strong>
+
+              <span style="
+                margin-left:6px;
+                font-size:13px;
+              ">
+                ${movimiento}
+              </span>
+            </span>
+
+            <strong>
+              ${fila.puntos}
+            </strong>
+
+          </div>
+
+          <div style="
+            display:flex;
+            margin-top:5px;
+            font-size:12px;
+            color:#666;
+          ">
+            <span style="
+              width:28px;
+              flex-shrink:0;
+            "></span>
+          
+            <span style="
+              width:28px;
+              flex-shrink:0;
+            "></span>
+          
+            <span>
+              📊 <strong>${mediaMes}</strong>
+              &nbsp;·&nbsp;
+              🎮 <strong>${fila.dias_jugados}</strong>
+              &nbsp;·&nbsp;
+              🔥 <strong>${racha}</strong>
+            </span>
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+}
+
+async function cargarRankingContinentes() {
+
+  const contenedor =
+    document.getElementById("rankingContinentes");
+
+  const { data, error } =
+    await supabaseClient
+      .from("ranking_continentes")
+      .select(
+        "continente, posicion, jugador_id, nombre, alias, rondas_jugadas, porcentaje"
+      )
+      .order("continente", { ascending: true })
+      .order("posicion", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    contenedor.innerHTML =
+      "No se pudieron cargar los rankings por continentes.";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    contenedor.innerHTML =
+      "Todavía no hay datos por continentes.";
+    return;
+  }
+const continentes = [
+  "África",
+  "América",
+  "Asia",
+  "Europa",
+  "Oceanía"
+];
+
+contenedor.innerHTML =
+  continentes.map(continente => {
+  const claveContinente =
+    continente
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+    
+    const jugadores =
+      data.filter(
+        fila => fila.continente === continente
+      );
+
+    const filas =
+      jugadores.map((fila, indice) => {
+
+        let medalla = "";
+
+        if (fila.posicion === 1) {
+          medalla = "🥇";
+        }
+        else if (fila.posicion === 2) {
+          medalla = "🥈";
+        }
+        else if (fila.posicion === 3) {
+          medalla = "🥉";
+        }
+
+        const nombre =
+          fila.alias || fila.nombre;
+
+        return `
+          <div
+          class="${indice >= 5 ? `extra-${claveContinente}` : ""}"
+          style="
+            display:${indice >= 5 ? "none" : "flex"};
+            justify-content:space-between;
+            align-items:center;
+            padding:7px 0;
+            border-bottom:1px solid #ddd;
+          ">
+
+            <span>
+              <span style="
+                display:inline-block;
+                width:28px;
+                text-align:center;
+              ">${medalla}</span>
+
+              ${fila.posicion}
+
+              <strong
+                onclick="abrirPerfilJugador(${fila.jugador_id}, '${nombre}')"
+                style="cursor:pointer;"
+              >
+                ${nombre}
+              </strong>
+            </span>
+
+            <div style="
+              display:grid;
+              grid-template-columns:58px 42px;
+              text-align:right;
+              align-items:center;
+              flex-shrink:0;
+            ">
+              <strong>
+                ${Number(fila.porcentaje).toFixed(1).replace(".", ",")} %
+              </strong>
+            
+              <span style="
+                font-size:12px;
+                color:#777;
+              ">
+                ${fila.rondas_jugadas}
+              </span>
+            </div>
+
+          </div>
+        `;
+      })
+      .join("");
+
+    return `
+      <div style="
+        background:#eef1f3;
+        border-radius:12px;
+        padding:12px;
+        margin-bottom:14px;
+      ">
+
+        <h3 style="
+          margin:0 0 6px 0;
+        ">
+          ${continente}
+        </h3>
+
+        <div style="
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:2px;
+  font-size:11px;
+  color:#777;
+">
+  <div style="
+    display:grid;
+    grid-template-columns:58px 42px;
+    text-align:right;
+  ">
+    <span>%</span>
+    <span>Rondas</span>
+  </div>
+</div>
+        
+        ${filas}
+      ${jugadores.length > 5
+  ? `
+    <button
+      type="button"
+      onclick="toggleContinente('${claveContinente}', this)"
+      style="
+        margin-top:8px;
+        width:100%;
+        padding:7px;
+        border:1px solid #ccc;
+        border-radius:8px;
+        background:#e1e4e6;
+        font-weight:600;
+        cursor:pointer;
+      "
+    >
+      Más
+    </button>
+  `
+  : ""
+}
+      </div>
+    `;
+  })
+  .join("");
+}
+
+
+function toggleContinente(continente, boton) {
+
+  const filas =
+    document.querySelectorAll(
+      `.extra-${continente}`
+    );
+
+  const mostrar =
+    boton.textContent.trim() === "Más";
+
+  filas.forEach(fila => {
+    fila.style.display =
+      mostrar ? "flex" : "none";
+  });
+
+  boton.textContent =
+    mostrar ? "Menos" : "Más";
+}
+
+  
+async function cargarMejoresMarcas() {
+
+  const contenedor =
+    document.getElementById("rankingMejoresMarcas");
+
+  const { data: resultados, error } =
+    await supabaseClient
+      .from("resultados")
+      .select(`
+        fecha,
+        final_score,
+        jugador_id,
+        ronda_1,
+        ronda_2,
+        ronda_3,
+        ronda_4,
+        ronda_5,
+        jugadores(nombre, alias, activo)
+      `)
+      .order("fecha", { ascending: true });
+
+  if (error) {
+    console.error(error);
+
+    contenedor.innerHTML =
+      "No se pudo cargar el ranking de mejores marcas.";
+
+    return;
+  }
+
+  if (!resultados || resultados.length === 0) {
+    contenedor.innerHTML =
+      "Todavía no hay resultados.";
+
+    return;
+  }
+
+  const { data: rondasPorFecha } =
+    await supabaseClient
+      .from("rondas_dia")
+      .select(
+        "fecha, pais_1, pais_2, pais_3, pais_4, pais_5"
+      );
+  const porJugador = {};
+
+resultados.forEach(fila => {
+
+  if (!fila.jugadores?.activo) {
+    return;
+  }
+
+  if (!porJugador[fila.jugador_id]) {
+    porJugador[fila.jugador_id] = [];
+  }
+
+  porJugador[fila.jugador_id].push(fila);
+});
+
+const ranking = Object.values(porJugador)
+  .map(partidasJugador => {
+
+    const partidas = partidasJugador.length;
+
+    const totalPuntos =
+      partidasJugador.reduce(
+        (suma, fila) =>
+          suma + Number(fila.final_score),
+        0
+      );
+
+    const media =
+      Math.round(totalPuntos / partidas);
+
+    const mejorResultado =
+      partidasJugador.reduce(
+        (mejor, fila) =>
+          Number(fila.final_score) >
+          Number(mejor.final_score)
+            ? fila
+            : mejor
+      );
+
+    let racha = 1;
+
+    for (
+      let i = partidasJugador.length - 1;
+      i > 0;
+      i--
+    ) {
+
+      const fechaActual =
+        new Date(
+          partidasJugador[i].fecha + "T00:00:00"
+        );
+
+      const fechaAnterior =
+        new Date(
+          partidasJugador[i - 1].fecha + "T00:00:00"
+        );
+
+      const diferenciaDias =
+        Math.round(
+          (fechaActual - fechaAnterior) /
+          (1000 * 60 * 60 * 24)
+        );
+
+      if (diferenciaDias === 1) {
+        racha++;
+      }
+      else {
+        break;
+      }
+    }
+
+    return {
+      jugador_id: mejorResultado.jugador_id,
+      nombre:
+        mejorResultado.jugadores.alias ||
+        mejorResultado.jugadores.nombre,
+      mejor: Number(mejorResultado.final_score),
+      fecha: mejorResultado.fecha,
+      media,
+      partidas,
+      racha,
+      resultado: mejorResultado
+    };
+  })
+  .sort((a, b) => {
+
+    if (b.mejor !== a.mejor) {
+      return b.mejor - a.mejor;
+    }
+
+    return a.fecha.localeCompare(b.fecha);
+  });
+
+contenedor.innerHTML = ranking
+  .map((fila, i) => {
+
+    const fecha =
+      new Date(fila.fecha + "T00:00:00")
+        .toLocaleDateString("es-ES");
+
+    const rondasDia =
+      rondasPorFecha?.find(
+        ronda => ronda.fecha === fila.fecha
+      );
+
+    const puntos = [
+      fila.resultado.ronda_1,
+      fila.resultado.ronda_2,
+      fila.resultado.ronda_3,
+      fila.resultado.ronda_4,
+      fila.resultado.ronda_5
+    ];
+
+    const banderas = rondasDia
+      ? [
+          rondasDia.pais_1,
+          rondasDia.pais_2,
+          rondasDia.pais_3,
+          rondasDia.pais_4,
+          rondasDia.pais_5
+        ]
+      : [];
+
+    const textoRondas = puntos
+      .map((puntosRonda, j) => {
+
+        if (puntosRonda === null) {
+          return "";
+        }
+
+        const codigoPais =
+          banderaACodigo(banderas[j] || "");
+
+        return codigoPais
+          ? `<span style="
+               display:inline-flex;
+               align-items:center;
+               width:20%;
+               white-space:nowrap;
+               box-sizing:border-box;
+             "><img
+               src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
+               alt="${codigoPais}"
+               style="
+                 width:20px;
+                 height:15px;
+                 vertical-align:middle;
+                 margin-right:1px;
+               ">${puntosRonda}</span>`
+          : `<span style="
+               display:inline-flex;
+               align-items:center;
+               width:20%;
+               white-space:nowrap;
+               box-sizing:border-box;
+             ">${puntosRonda}</span>`;
+      })
+      .filter(Boolean)
+      .join("");
+
+    return `
+      <div style="
+        padding:8px 0;
+        border-bottom:1px solid #ddd;
+      ">
+
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:8px;
+        ">
+
+          <div style="
+            display:flex;
+            align-items:center;
+            min-width:0;
+            white-space:nowrap;
+          ">
+
+            <span style="
+              display:inline-block;
+              width:24px;
+            ">
+              ${i + 1}
+            </span>
+
+            <strong style="
+              display:inline-block;
+              width:42px;
+            ">
+              ${fila.mejor}
+            </strong>
+
+            <strong
+              onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.nombre}')"
+              style="
+                cursor:pointer;
+                white-space:nowrap;
+              "
+            >
+              ${fila.nombre}
+            </strong>
+
+          </div>
+
+          <span style="
+            font-size:12px;
+            color:#777;
+            white-space:nowrap;
+          ">
+            ${fecha}
+          </span>
+
+        </div>
+
+        <div style="
+          margin-top:4px;
+          margin-left:66px;
+          font-size:13px;
+          width:calc(100% - 66px);
+        ">
+          ${textoRondas}
+        </div>
+
+        <div style="
+          margin-top:5px;
+          margin-left:66px;
+          font-size:12px;
+          color:#666;
+        ">
+          📊 <strong>${fila.media}</strong>
+          &nbsp;·&nbsp;
+          🎮 <strong>${fila.partidas}</strong> días
+          &nbsp;·&nbsp;
+          🔥 <strong>${fila.racha}</strong>
+        </div>
+
+      </div>
+    `;
+  })
+  .join("");
+
+contenedor.innerHTML = `
+  <div style="
+    background:#eef1f3;
+    border-radius:12px;
+    padding:10px;
+  ">
+    ${contenedor.innerHTML}
+  </div>
+`;
+
+}
+  
+  
+async function cargarTop20General() {
+  const hoy = fechaMadridISO();
+
+  const [anio, mes] =
+    hoy.split("-").map(Number);
+
+  const mesInicioTrimestre =
+    Math.floor((mes - 1) / 3) * 3 + 1;
+
+  const inicioTrimestre =
+    `${anio}-${String(mesInicioTrimestre).padStart(2, "0")}-01`;
+
+  const nombresMeses = [
+    "Ene", "Feb", "Mar", "Abr",
+    "May", "Jun", "Jul", "Ago",
+    "Sep", "Oct", "Nov", "Dic"
+  ];
+  
+  const mesFinTrimestre =
+    mesInicioTrimestre + 2;
+  
+  const tituloTop20 =
+    document.getElementById("tituloTop20");
+  
+  if (tituloTop20) {
+    tituloTop20.textContent =
+      `🔥 Top-20 · ${nombresMeses[mesInicioTrimestre - 1]}–${nombresMeses[mesFinTrimestre - 1]}`;
+  }
+    
+  let anioFin = anio;
+  let mesSiguienteTrimestre =
+    mesInicioTrimestre + 3;
+
+  if (mesSiguienteTrimestre > 12) {
+    mesSiguienteTrimestre = 1;
+    anioFin++;
+  }
+
+  const inicioSiguienteTrimestre =
+    `${anioFin}-${String(mesSiguienteTrimestre).padStart(2, "0")}-01`;
+  const { data: top20General, error: errorTop20 } =
+    await supabaseClient
+      .from("resultados")
+      .select(`
+        fecha,
+        final_score,
+        jugador_id,
+        ronda_1,
+        ronda_2,
+        ronda_3,
+        ronda_4,
+        ronda_5,
+        jugadores(nombre, alias)
+      `)
+      .gte("fecha", inicioTrimestre)
+      .lt("fecha", inicioSiguienteTrimestre)
+      .order("final_score", { ascending: false })
+      .limit(20);
+
+  const { data: rondasPorFecha } =
+    await supabaseClient
+      .from("rondas_dia")
+      .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5");
+
+  mostrarTop20(
+    top20General,
+    rondasPorFecha,
+    errorTop20
+  );
+}
+  
+async function abrirPerfilJugador(jugadorId, nombre) {
+
+  const appView =
+    document.getElementById("appView");
+
+  const profileView =
+    document.getElementById("profileView");
+
+  const profileName =
+    document.getElementById("profileName");
+
+  const profileContent =
+    document.getElementById("profileContent");
+
+  const editarAliasContainer =
+  document.getElementById("editarAliasContainer");
+
+  if (Number(jugadorId) === Number(jugadorActual.id)) {
+    editarAliasContainer.classList.remove("hidden");
+  } else {
+    editarAliasContainer.classList.add("hidden");
+  }
+
+  profileName.textContent =
+    `Perfil de ${nombre}`;
+
+  profileContent.innerHTML =
+    "Cargando estadísticas...";
+
+const { data: resultados, error } =
+    await supabaseClient
+        .from("resultados")
+        .select("fecha, final_score, ronda_1, ronda_2, ronda_3, ronda_4, ronda_5")
+        .eq("jugador_id", jugadorId)
+        .order("fecha", { ascending: true });
+ 
+const hoy = fechaMadridISO();
+
+const { data: rondasPorFecha } =
+  await supabaseClient
+    .from("rondas_dia")
+    .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5");
+
+const rondasHoy =
+  rondasPorFecha?.find(fila => fila.fecha === hoy);
+
+const { data: rankingHoyJugador } =
+  await supabaseClient
+    .from("ranking_diario")
+    .select("posicion")
+    .eq("fecha", hoy)
+    .eq("jugador_id", jugadorId)
+    .maybeSingle();
+
+const { count: jugadoresHoy } =
+  await supabaseClient
+    .from("ranking_diario")
+    .select("*", { count: "exact", head: true })
+    .eq("fecha", hoy);
+  
+if (error) {
+    profileContent.innerHTML =
+        "No se pudieron cargar las estadísticas.";
+    return;
+}
+
+if (!resultados || resultados.length === 0) {
+    profileContent.innerHTML =
+        "Este jugador todavía no tiene resultados.";
+    return;
+}
+  
+window.resultadosPerfilActual = resultados;
+
+const resultadoHoy =
+  resultados.find(fila => fila.fecha === hoy);  
+
+const top10 = [...resultados]
+  .sort((a, b) =>
+    Number(b.final_score) - Number(a.final_score)
+  )
+  .slice(0, 10);
+  
+const partidas = resultados.length;
+
+const totalPuntos = resultados.reduce(
+    (suma, fila) => suma + Number(fila.final_score),
+    0
+);
+
+const media = Math.round(totalPuntos / partidas);
+
+const mejorResultado = resultados.reduce(
+  (mejor, fila) =>
+    Number(fila.final_score) > Number(mejor.final_score)
+      ? fila
+      : mejor
+);
+
+const mejor = Number(mejorResultado.final_score);
+
+const fechaMejor =
+  new Date(mejorResultado.fecha + "T00:00:00")
+    .toLocaleDateString("es-ES");
+
+const ultimo =
+    Number(resultados[resultados.length - 1].final_score);
+
+let racha = 1;
+
+for (let i = resultados.length - 1; i > 0; i--) {
+
+    const fechaActual =
+        new Date(resultados[i].fecha + "T00:00:00");
+
+    const fechaAnterior =
+        new Date(resultados[i - 1].fecha + "T00:00:00");
+
+    const diferenciaDias =
+        Math.round(
+            (fechaActual - fechaAnterior) /
+            (1000 * 60 * 60 * 24)
+        );
+
+    if (diferenciaDias === 1) {
+        racha++;
+    } else {
+        break;
+    }
+}
+
+let rondasHoyTexto = "";
+
+if (resultadoHoy) {
+  const puntosHoy = [
+    resultadoHoy.ronda_1,
+    resultadoHoy.ronda_2,
+    resultadoHoy.ronda_3,
+    resultadoHoy.ronda_4,
+    resultadoHoy.ronda_5
+  ];
+
+  const banderasHoy = rondasHoy
+    ? [
+        rondasHoy.pais_1,
+        rondasHoy.pais_2,
+        rondasHoy.pais_3,
+        rondasHoy.pais_4,
+        rondasHoy.pais_5
+      ]
+    : [];
+
+  rondasHoyTexto = puntosHoy
+    .map((puntos, i) => {
+      if (puntos === null) return "";
+
+      const codigoPais =
+        banderaACodigo(banderasHoy[i] || "");
+
+      return codigoPais
+        ? `<img src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
+             alt="${codigoPais}"
+             style="width:20px;height:15px;vertical-align:middle;margin-right:3px;"> ${puntos}`
+        : `${puntos}`;
+    })
+    .filter(Boolean)
+    .join(" · ");
+}
+  
+profileContent.innerHTML = `
+    <div style="font-size:18px; line-height:2;">
+            ${resultadoHoy ? `
+              <div style="margin-bottom:12px;">
+              <strong>📍 Hoy: ${resultadoHoy.final_score}${rankingHoyJugador ? ` — ${rankingHoyJugador.posicion}º / ${jugadoresHoy}` : ""}</strong>
+              <div style="font-size:14px;">
+                ${rondasHoyTexto}
+            </div>
+          </div>
+        ` : `
+          <div style="margin-bottom:12px;">
+            📍 Todavía no ha jugado hoy
+          </div>
+        `}
+<div style="
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px 20px;
+  margin-top:12px;
+  line-height:1.4;
+">
+
+  <div>
+    <div style="font-size:13px;">🎮 Partidas</div>
+    <strong>${partidas}</strong>
+  </div>
+
+<div>
+  <div style="font-size:13px;">🔥 Racha actual</div>
+  <strong>${racha} días</strong>
+</div>
+
+  <div>
+    <div style="font-size:13px;">🏆 Mejor resultado</div>
+    <strong>${mejor}</strong>
+    <span style="font-size:12px; color:#777;">
+      — ${fechaMejor}
+    </span>
+  </div>
+
+  <div>
+    <div style="font-size:13px;">🕐 Último resultado</div>
+    <strong>${ultimo}</strong>
+  </div>
+
+<div>
+  <div style="font-size:13px;">📊 Media histórica</div>
+  <strong>${media}</strong>
+</div>
+
+</div>
+</div>
+`;
+  
+  appView.classList.add("hidden");
+  profileView.classList.remove("hidden");
+  mostrarEvolucion(resultados, "30d");
+mostrarTop10(top10, rondasPorFecha);
+ }
+
+function mostrarTop10(top10, rondasPorFecha) {
+
+  const contenedor =
+    document.getElementById("profileTop10");
+
+  if (!contenedor) return;
+
+  if (!top10 || top10.length === 0) {
+    contenedor.innerHTML =
+      "No hay resultados para mostrar.";
+    return;
+  }
+
+const totalTop10 = top10.reduce(
+  (suma, fila) => suma + Number(fila.final_score),
+  0
+);
+  
+contenedor.innerHTML = `
+  <div style="
+    text-align:center;
+    margin-bottom:12px;
+    font-size:20px;
+    font-weight:bold;
+  ">
+    ${totalTop10.toLocaleString("es-ES")}
+    <span style="
+      font-size:13px;
+      font-weight:normal;
+      color:#777;
+    ">
+      / 10.000
+    </span>
+  </div>
+` + top10
+  .map((fila, i) => {
+
+      const fecha =
+        new Date(fila.fecha + "T00:00:00")
+          .toLocaleDateString("es-ES");
+
+      const rondasDia =
+  rondasPorFecha?.find(ronda => ronda.fecha === fila.fecha);
+
+const puntos = [
+  fila.ronda_1,
+  fila.ronda_2,
+  fila.ronda_3,
+  fila.ronda_4,
+  fila.ronda_5
+];
+
+const banderas = rondasDia
+  ? [
+      rondasDia.pais_1,
+      rondasDia.pais_2,
+      rondasDia.pais_3,
+      rondasDia.pais_4,
+      rondasDia.pais_5
+    ]
+  : [];
+      const textoRondas = puntos
+  .map((puntosRonda, j) => {
+    if (puntosRonda === null) return "";
+
+    const codigoPais =
+      banderaACodigo(banderas[j] || "");
+
+return codigoPais
+  ? `<span style="white-space:nowrap;"><img
+       src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
+       alt="${codigoPais}"
+       style="width:20px;height:15px;vertical-align:middle;margin-right:1px;">${puntosRonda}</span>`
+  : `<span style="white-space:nowrap;">${puntosRonda}</span>`;
+  })
+        
+  .filter(Boolean)
+  .join("·");
+return `
+  <div style="padding:8px 0; border-bottom:1px solid #ddd;">
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    ">
+    <div>
+      <span style="
+        display:inline-block;
+        width:24px;
+        font-weight:normal;
+      ">
+        ${i + 1}
+      </span>
+    
+      <strong>${fila.final_score}</strong>
+    </div>
+      <span style="
+        font-size:12px;
+        color:#777;
+        white-space:nowrap;
+      ">
+        ${fecha}
+      </span>
+    </div>
+
+    <div style="
+      margin-top:4px;
+      font-size:13px;
+      text-align:right;
+      white-space:nowrap;
+    ">
+      ${textoRondas}
+    </div>
+
+  </div>
+`;
+    })
+    .join("");
+}
+function mostrarTop20(top20, rondasPorFecha, errorTop20) {
+
+  const contenedor =
+    document.getElementById("profileTop20");
+
+  if (!contenedor) return;
+
+  if (errorTop20) {
+    contenedor.innerHTML =
+      "No se pudo cargar el Top-20.";
+    return;
+  }
+
+  if (!top20 || top20.length === 0) {
+    contenedor.innerHTML =
+      "No hay resultados para mostrar.";
+    return;
+  }
+
+  contenedor.innerHTML = top20
+    .map((fila, i) => {
+
+      const fecha =
+        new Date(fila.fecha + "T00:00:00")
+          .toLocaleDateString("es-ES");
+
+      const nombre =
+        fila.jugadores?.alias ||
+        fila.jugadores?.nombre ||
+        "Jugador";
+
+      const rondasDia =
+        rondasPorFecha?.find(
+          ronda => ronda.fecha === fila.fecha
+        );
+
+      const puntos = [
+        fila.ronda_1,
+        fila.ronda_2,
+        fila.ronda_3,
+        fila.ronda_4,
+        fila.ronda_5
+      ];
+
+      const banderas = rondasDia
+        ? [
+            rondasDia.pais_1,
+            rondasDia.pais_2,
+            rondasDia.pais_3,
+            rondasDia.pais_4,
+            rondasDia.pais_5
+          ]
+        : [];
+
+const textoRondas = puntos
+  .map((puntosRonda, j) => {
+
+    if (puntosRonda === null) return "";
+
+    const codigoPais =
+      banderaACodigo(banderas[j] || "");
+
+    return codigoPais
+      ? `<span style="
+           display:inline-flex;
+           align-items:center;
+           width:20%;
+           white-space:nowrap;
+           box-sizing:border-box;
+         "><img
+           src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
+           alt="${codigoPais}"
+           style="
+             width:20px;
+             height:15px;
+             vertical-align:middle;
+             margin-right:1px;
+           ">${puntosRonda}</span>`
+      : `<span style="
+           display:inline-flex;
+           align-items:center;
+           width:20%;
+           white-space:nowrap;
+           box-sizing:border-box;
+         ">${puntosRonda}</span>`;
+  })
+  .filter(Boolean)
+  .join("");
+
+     return `
+  <div style="padding:8px 0; border-bottom:1px solid #ddd;">
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+  ">
+<div style="
+  display:flex;
+  align-items:center;
+  min-width:0;
+  white-space:nowrap;
+">
+    <span style="
+    display:inline-block;
+    width:16px;
+  ">
+    ${i + 1}
+  </span>
+
+  <strong style="
+    display:inline-block;
+    width:42px;
+  ">
+    ${fila.final_score}
+  </strong>
+
+ <strong
+  onclick="abrirPerfilJugador(${fila.jugador_id}, '${nombre}')"
+  style="
+    cursor:pointer;
+    white-space:nowrap;
+  "
+>
+  ${nombre}
+</strong>
+</div>
+  
+    <span style="
+      font-size:12px;
+      color:#777;
+      white-space:nowrap;
+    ">
+      ${fecha}
+    </span>
+  </div>
+
+<div style="
+  margin-top:4px;
+  margin-left:58px;
+  font-size:13px;
+  width:calc(100% - 58px);
+">
+  ${textoRondas}
+</div>
+
+  </div>
+`;
+    })
+    .join("");
+}
+  
+function mostrarEvolucion(resultados, periodo) {
+
+  const contenedor = document.getElementById("profileChart");
+
+  if (!contenedor) return;
+
+  contenedor.innerHTML = "";
+
+  if (!resultados || resultados.length === 0) {
+    contenedor.innerHTML = "No hay datos para mostrar.";
+    return;
+  }
+
+  let etiquetas = [];
+  let puntuaciones = [];
+
+ // Todos los periodos muestran puntuaciones DIARIAS.
+// El periodo solo determina cuántos días se muestran.
+
+const fechaHoy = fechaMadridISO();
+const hoy = new Date(fechaHoy + "T00:00:00");
+
+let diasAMostrar = null;
+
+if (periodo === "30d") {
+  diasAMostrar = 30;
+} else if (periodo === "3m") {
+  diasAMostrar = 90;
+} else if (periodo === "1a") {
+  diasAMostrar = 365;
+}
+
+let resultadosPeriodo;
+
+if (periodo === "todo") {
+
+  resultadosPeriodo = resultados
+    .filter(fila => {
+      const fecha = new Date(fila.fecha + "T00:00:00");
+      return fecha <= hoy;
+    })
+    .sort((a, b) =>
+      new Date(a.fecha + "T00:00:00") -
+      new Date(b.fecha + "T00:00:00")
+    );
+
+} else {
+
+  const fechaLimite = new Date(hoy);
+  fechaLimite.setDate(hoy.getDate() - (diasAMostrar - 1));
+
+  resultadosPeriodo = resultados
+    .filter(fila => {
+      const fecha = new Date(fila.fecha + "T00:00:00");
+      return fecha >= fechaLimite && fecha <= hoy;
+    })
+    .sort((a, b) =>
+      new Date(a.fecha + "T00:00:00") -
+      new Date(b.fecha + "T00:00:00")
+    );
+}
+etiquetas = resultadosPeriodo.map(fila => {
+  const fecha = new Date(fila.fecha + "T00:00:00");
+
+  return fecha.toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "numeric"
+  });
+});
+
+puntuaciones = resultadosPeriodo.map(
+  fila => Number(fila.final_score)
+);
+
+const mediaPeriodo =
+  puntuaciones.length > 0
+    ? Math.round(
+        puntuaciones.reduce((suma, puntos) => suma + puntos, 0) /
+        puntuaciones.length
+      )
+    : 0;
+  
+contenedor.innerHTML = `
+  <div style="text-align:center; margin-bottom:10px;">
+    <strong>Media del período: ${mediaPeriodo} puntos</strong>
+  </div>
+  <canvas id="evolutionChart"></canvas>
+`;
+
+  const canvas =
+    document.getElementById("evolutionChart");
+
+  new Chart(canvas, {
+    type: "line",
+
+    data: {
+      labels: etiquetas,
+
+datasets: [
+  {
+    label: "Final Score",
+    data: puntuaciones,
+    tension: 0.25,
+    pointHitRadius: 18,
+    pointHoverRadius: 6,
+  },
+  {
+    label: `Media: ${mediaPeriodo}`,
+    data: puntuaciones.map(() => mediaPeriodo),
+    borderDash: [6, 6],
+    pointRadius: 0,
+    pointHoverRadius: 0,
+    tension: 0
+  }
+]
+    },
+
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+
+plugins: {
+ legend: {
+  display: false
+},
+  
+  tooltip: {
+    callbacks: {
+      title: function(context) {
+        return context[0].label;
+      },
+      label: function(context) {
+        if (context.dataset.label.startsWith("Media")) {
+          return `Media del período: ${context.parsed.y}`;
+        }
+        return `Puntuación: ${context.parsed.y}`;
+      }
+    }
+  }
+},
+      
+      scales: {
+        y: {
+          beginAtZero: false
+        }
+      }
+    }
+  });
+}
+
+ document
+  .getElementById("chartPeriodSelector")
+  .addEventListener("click", (event) => {
+
+    const boton = event.target.closest("button");
+    if (!boton) return;
+
+    document
+      .querySelectorAll("#chartPeriodSelector button")
+      .forEach(b => b.classList.remove("active"));
+
+    boton.classList.add("active");
+
+    const periodo = boton.dataset.periodo;
+
+    if (periodo && window.resultadosPerfilActual) {
+      mostrarEvolucion(window.resultadosPerfilActual, periodo);
+    }
+  });
+  
+ document
+  .getElementById("backFromProfile")
+  .addEventListener("click", async () => {
+
+    document
+      .getElementById("profileView")
+      .classList
+      .add("hidden");
+
+    document
+      .getElementById("appView")
+      .classList
+      .remove("hidden");
+
+    await cargarRankingHoy();
+    await cargarRankingSemanal();
+    await cargarRankingMensual();
+    await cargarTop20General();
+    await cargarRankingContinentes();
+    await cargarMejoresMarcas();
+  });
+
+async function editarAlias() {
+
+  const nuevoAlias = prompt(
+    "Introduce tu nuevo alias:",
+    jugadorActual.alias || jugadorActual.nombre
+  );
+
+  if (nuevoAlias === null) return;
+
+  const aliasLimpio = nuevoAlias.trim();
+
+  if (!aliasLimpio) {
+    alert("El alias no puede estar vacío.");
+    return;
+  }
+
+  if (aliasLimpio.length > 15) {
+    alert(
+      "El alias puede tener un máximo de 15 caracteres."
+    );
+    return;
+  }
+  
+  const { error } =
+    await supabaseClient
+      .from("jugadores")
+      .update({
+        alias: aliasLimpio
+      })
+      .eq("id", jugadorActual.id);
+
+  if (error) {
+    if (error.code === "23505") {
+      alert(
+        "Ese alias ya está siendo utilizado por otro jugador. Elige otro."
+      );
+    } else {
+      alert(
+        "No se pudo cambiar el alias. Inténtalo de nuevo."
+      );
+    }
+    return;
+  }
+
+  jugadorActual.alias = aliasLimpio;
+
+  document.getElementById("playerName").textContent =
+    "👤 " + aliasLimpio;
+
+  document.getElementById("profileName").textContent =
+    "Perfil de " + aliasLimpio;
+
+  await cargarRankingHoy();
+  await cargarRankingSemanal();
+  await cargarRankingMensual();
+  await cargarTop20General();
+  await cargarRankingContinentes();
+  await cargarMejoresMarcas();  
+
+  alert("Alias actualizado correctamente.");
+}
+
+document
+  .getElementById("btnEditarAlias")
+  .addEventListener("click", editarAlias);
+
+document
+  .getElementById("btnEditarAliasCabecera")
+  .addEventListener("click", editarAlias);
+  
+function mostrarSeccionInicio(seccion) {
+
+  const secciones = {
+    hoy: "seccionHoy",
+    semana: "seccionSemana",
+    mes: "seccionMes",
+    top20: "seccionTop20",
+    continentes: "seccionContinentes",
+    mejoresMarcas: "seccionMejoresMarcas"
+  };
+
+const botones = {
+  hoy: "btnHoy",
+  semana: "btnSemana",
+  mes: "btnMes",
+  top20: "btnTop20",
+  continentes: "btnContinentes",
+  mejoresMarcas: "btnMejoresMarcas"
+};
+
+Object.values(botones).forEach(id => {
+  const boton = document.getElementById(id);
+
+if (boton) {
+  boton.style.background = "#e1e4e6";
+  boton.style.color = "#111";
+  boton.style.border = "1px solid #c5c9cc";
+}
+});
+
+const botonActivo =
+  document.getElementById(botones[seccion]);
+
+if (botonActivo) {
+  botonActivo.style.background = "#111";
+  botonActivo.style.color = "#fff";
+  botonActivo.style.border = "1px solid #111";
+}
+  
+  Object.values(secciones).forEach(id => {
+    document.getElementById(id)?.classList.add("hidden");
+  });
+
+  document
+    .getElementById(secciones[seccion])
+    ?.classList.remove("hidden");
+}
+
+document
+  .getElementById("btnHoy")
+  .addEventListener("click", () => mostrarSeccionInicio("hoy"));
+
+document
+  .getElementById("btnSemana")
+  .addEventListener("click", () => mostrarSeccionInicio("semana"));
+
+document
+  .getElementById("btnMes")
+  .addEventListener("click", () => mostrarSeccionInicio("mes"));
+
+document
+  .getElementById("btnTop20")
+  .addEventListener("click", () => mostrarSeccionInicio("top20"));
+
+document
+  .getElementById("btnContinentes")
+  .addEventListener("click", () => mostrarSeccionInicio("continentes"));
+
+document
+  .getElementById("btnMejoresMarcas")
+  .addEventListener("click", () => mostrarSeccionInicio("mejoresMarcas"));
+  
+document
+  .getElementById("logoutButton")
+  .addEventListener("click", async () => {
+
+  await supabaseClient.auth.signOut();
+
+  window.location.reload();
+  });
+  
+async function iniciarApp() {
+
+  const jugadorCargado =
+    await cargarJugador();
+
+  if (!jugadorCargado) {
+    return;
+  }
+
+  if (!jugadorActual.password_configurada) {
+    mostrarCrearPassword();
+    return;
+  }
+
+  mostrarApp();
+
+  mostrarSeccionInicio("hoy");
+
+  await cargarRankingHoy();
+
+  await cargarRankingSemanal();
+
+  await cargarRankingMensual();
+
+  await cargarTop20General();
+
+  await cargarRankingContinentes();
+
+  await cargarMejoresMarcas();
+  
+}
+  
+async function comprobarSesion() {
+
+  const { data } =
+    await supabaseClient.auth.getSession();
+
+  if (data.session) {
+    await iniciarApp();
+  } else {
+    mostrarLogin();
+  }
+}
+comprobarSesion();
+
+</script>
+
+</body>
+</html> 
