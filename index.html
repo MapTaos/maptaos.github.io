@@ -425,7 +425,13 @@
       clasificación. Puedes consultar otros meses con los botones
       Anterior y Siguiente, y volver al mes en curso pulsando Actual.
     </p>
-        
+    
+    <p>
+      🌍 <strong>Continentes</strong> — los rankings por continente se calculan
+      cada mes. Puedes consultar los meses anteriores con Anterior y Siguiente,
+      y volver al mes en curso pulsando Actual.
+    </p>  
+    
     <p>
       🔥 <strong>Top-20 · 3M</strong> — muestra las 20 mejores partidas
       de cada trimestre natural (Ene–Mar, Abr–Jun, Jul–Sep y Oct–Dic).
@@ -778,8 +784,15 @@
     
 <div class="card hidden" id="seccionContinentes">
 
-  <h2 class="home-section-title" id="tituloContinentes">
-    🌍 Rankings por continentes
+  <h2
+    class="home-section-title"
+    id="tituloContinentes"
+    style="
+      white-space:nowrap;
+      font-size:18px;
+    "
+  >
+    🌍 Continentes
   </h2>
 
   <div style="
@@ -2547,7 +2560,13 @@ async function cargarRankingContinentes() {
     tituloContinentes.textContent =
       `🌍 Continentes · ${nombresMesesCompletos[mes - 1]} ${anio}`;
   }
-
+  const btnContinentesSiguiente =
+    document.getElementById("btnContinentesSiguiente");
+  
+  if (btnContinentesSiguiente) {
+    btnContinentesSiguiente.disabled =
+      desplazamientoMesContinentes === 0;
+  }
   const { data, error } =
     await supabaseClient
       .from("ranking_continentes")
