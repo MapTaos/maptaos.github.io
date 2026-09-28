@@ -645,13 +645,61 @@
 </div>
 
 <div class="card" id="seccionMes">
-  <h2 class="home-section-title">
-    Clasificación mensual 
+
+  <h2 class="home-section-title" id="tituloMes">
+    Clasificación mensual
   </h2>
+
+  <div style="
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin:0 0 10px;
+  ">
+
+    <button
+      type="button"
+      id="btnMesAnterior"
+      style="
+        width:auto;
+        padding:5px 10px;
+        font-size:12px;
+      "
+    >
+      ◀ Anterior
+    </button>
+
+    <button
+      type="button"
+      id="btnMesActual"
+      style="
+        width:auto;
+        padding:5px 10px;
+        font-size:12px;
+      "
+    >
+      Actual
+    </button>
+
+    <button
+      type="button"
+      id="btnMesSiguiente"
+      style="
+        width:auto;
+        padding:5px 10px;
+        font-size:12px;
+      "
+    >
+      Siguiente ▶
+    </button>
+
+  </div>
 
   <div id="rankingMensual" class="placeholder">
     Cargando clasificación mensual...
   </div>
+
 </div>
 
 <div class="card" id="seccionTop20">
@@ -2115,31 +2163,65 @@ lunesAnterior.setUTCDate(
     }).join("");
             }
 
+let desplazamientoMes = 0;
+  
+  
 async function cargarRankingMensual() {
 
   const rankingMensual =
     document.getElementById("rankingMensual");
 
-  const fechaMadrid = fechaMadridISO();
+ const fechaMadrid = fechaMadridISO();
 
-  const [anio, mes] =
-    fechaMadrid.split("-").map(Number);
+const [anioActual, mesActual] =
+  fechaMadrid.split("-").map(Number);
 
-  const inicioMesActual =
-    `${anio}-${String(mes).padStart(2, "0")}-01`;
+const fechaSeleccionada =
+  new Date(
+    anioActual,
+    mesActual - 1 + desplazamientoMes,
+    1
+  );
 
-  let anioAnterior = anio;
-  let mesAnterior = mes - 1;
+const anio =
+  fechaSeleccionada.getFullYear();
 
-  if (mesAnterior === 0) {
-    mesAnterior = 12;
-    anioAnterior = anio - 1;
-  }
+const mes =
+  fechaSeleccionada.getMonth() + 1;
 
-  const inicioMesAnterior =
-    `${anioAnterior}-${String(mesAnterior).padStart(2, "0")}-01`;
+const inicioMesActual =
+  `${anio}-${String(mes).padStart(2, "0")}-01`;
 
+const fechaAnterior =
+  new Date(
+    anio,
+    mes - 2,
+    1
+  );
 
+const anioAnterior =
+  fechaAnterior.getFullYear();
+
+const mesAnterior =
+  fechaAnterior.getMonth() + 1;
+
+const inicioMesAnterior =
+  `${anioAnterior}-${String(mesAnterior).padStart(2, "0")}-01`;
+
+const nombresMesesCompletos = [
+  "Enero", "Febrero", "Marzo", "Abril",
+  "Mayo", "Junio", "Julio", "Agosto",
+  "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+const tituloMes =
+  document.getElementById("tituloMes");
+
+if (tituloMes) {
+  tituloMes.textContent =
+    `Clasificación · ${nombresMesesCompletos[mes - 1]} ${anio}`;
+}
+  
   const {
     data: actual,
     error: errorActual
@@ -4046,7 +4128,32 @@ document
 document
   .getElementById("btnTop50")
   .addEventListener("click", () => mostrarSeccionInicio("top50"));
-  
+
+document
+  .getElementById("btnMesAnterior")
+  .addEventListener("click", async () => {
+    desplazamientoMes--;
+    await cargarRankingMensual();
+  });
+
+document
+  .getElementById("btnMesActual")
+  .addEventListener("click", async () => {
+    desplazamientoMes = 0;
+    await cargarRankingMensual();
+  });
+
+document
+  .getElementById("btnMesSiguiente")
+  .addEventListener("click", async () => {
+
+    if (desplazamientoMes < 0) {
+      desplazamientoMes++;
+      await cargarRankingMensual();
+    }
+  });
+
+
 document
   .getElementById("logoutButton")
   .addEventListener("click", async () => {
