@@ -2199,29 +2199,37 @@ const fechaAnterior =
     1
   );
 
-const anioAnterior =
-  fechaAnterior.getFullYear();
-
-const mesAnterior =
-  fechaAnterior.getMonth() + 1;
-
-const inicioMesAnterior =
-  `${anioAnterior}-${String(mesAnterior).padStart(2, "0")}-01`;
-
-const nombresMesesCompletos = [
-  "Enero", "Febrero", "Marzo", "Abril",
-  "Mayo", "Junio", "Julio", "Agosto",
-  "Septiembre", "Octubre", "Noviembre", "Diciembre"
-];
-
-const tituloMes =
-  document.getElementById("tituloMes");
-
-if (tituloMes) {
-  tituloMes.textContent =
-    `Clasificación · ${nombresMesesCompletos[mes - 1]} ${anio}`;
-}
+  const anioAnterior =
+    fechaAnterior.getFullYear();
   
+  const mesAnterior =
+    fechaAnterior.getMonth() + 1;
+  
+  const inicioMesAnterior =
+    `${anioAnterior}-${String(mesAnterior).padStart(2, "0")}-01`;
+  
+  const nombresMesesCompletos = [
+    "Enero", "Febrero", "Marzo", "Abril",
+    "Mayo", "Junio", "Julio", "Agosto",
+    "Septiembre", "Octubre", "Noviembre", "Diciembre"
+  ];
+
+  const tituloMes =
+    document.getElementById("tituloMes");
+  
+  if (tituloMes) {
+    tituloMes.textContent =
+      `Clasificación · ${nombresMesesCompletos[mes - 1]} ${anio}`;
+  }
+  
+  const btnMesSiguiente =
+    document.getElementById("btnMesSiguiente");
+  
+  if (btnMesSiguiente) {
+    btnMesSiguiente.disabled =
+      desplazamientoMes === 0;
+  }
+    
   const {
     data: actual,
     error: errorActual
