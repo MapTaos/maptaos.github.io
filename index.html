@@ -778,9 +778,55 @@
     
 <div class="card hidden" id="seccionContinentes">
 
-  <h2 class="home-section-title">
+  <h2 class="home-section-title" id="tituloContinentes">
     🌍 Rankings por continentes
   </h2>
+
+  <div style="
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin:0 0 10px;
+  ">
+
+    <button
+      type="button"
+      id="btnContinentesAnterior"
+      style="
+        width:auto;
+        padding:5px 10px;
+        font-size:12px;
+      "
+    >
+      ◀ Anterior
+    </button>
+
+    <button
+      type="button"
+      id="btnContinentesActual"
+      style="
+        width:auto;
+        padding:5px 10px;
+        font-size:12px;
+      "
+    >
+      Actual
+    </button>
+
+    <button
+      type="button"
+      id="btnContinentesSiguiente"
+      style="
+        width:auto;
+        padding:5px 10px;
+        font-size:12px;
+      "
+    >
+      Siguiente ▶
+    </button>
+
+  </div>
 
   <div id="rankingContinentes">
     Cargando rankings...
@@ -2460,16 +2506,43 @@ const fechaAnterior =
     }).join("");
 }
 
+let desplazamientoMesContinentes = 0;
+  
 async function cargarRankingContinentes() {
 
   const contenedor =
     document.getElementById("rankingContinentes");
 
+  const fechaMadrid = fechaMadridISO();
+
+  const [anioActual, mesActual] =
+    fechaMadrid.split("-").map(Number);
+  
+  const fechaSeleccionada =
+    new Date(
+      anioActual,
+      mesActual - 1 + desplazamientoMesContinentes,
+      1
+    );
+  
+  const anio =
+    fechaSeleccionada.getFullYear();
+  
+  const mes =
+    fechaSeleccionada.getMonth() + 1;
+  
+  const inicioMesSeleccionado =
+    `${anio}-${String(mes).padStart(2, "0")}-01`;
+
   const { data, error } =
     await supabaseClient
       .from("ranking_continentes")
       .select(
-        "continente, posicion, jugador_id, nombre, alias, rondas_jugadas, porcentaje"
+        "continente, posicion, jugador_id, nombre, alias, rondas_jugadas, porcentaje, inicio_mes"
+      )
+      .eq(
+        "inicio_mes",
+        inicioMesSeleccionado
       )
       .order("continente", { ascending: true })
       .order("posicion", { ascending: true });
