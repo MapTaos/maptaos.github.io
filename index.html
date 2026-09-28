@@ -2534,6 +2534,20 @@ async function cargarRankingContinentes() {
   const inicioMesSeleccionado =
     `${anio}-${String(mes).padStart(2, "0")}-01`;
 
+  const nombresMesesCompletos = [
+  "Enero", "Febrero", "Marzo", "Abril",
+  "Mayo", "Junio", "Julio", "Agosto",
+  "Septiembre", "Octubre", "Noviembre", "Diciembre"
+  ];
+  
+  const tituloContinentes =
+    document.getElementById("tituloContinentes");
+  
+  if (tituloContinentes) {
+    tituloContinentes.textContent =
+      `🌍 Continentes · ${nombresMesesCompletos[mes - 1]} ${anio}`;
+  }
+
   const { data, error } =
     await supabaseClient
       .from("ranking_continentes")
@@ -4240,6 +4254,29 @@ document
     }
   });
 
+  document
+  .getElementById("btnContinentesAnterior")
+  .addEventListener("click", async () => {
+    desplazamientoMesContinentes--;
+    await cargarRankingContinentes();
+  });
+
+document
+  .getElementById("btnContinentesActual")
+  .addEventListener("click", async () => {
+    desplazamientoMesContinentes = 0;
+    await cargarRankingContinentes();
+  });
+
+document
+  .getElementById("btnContinentesSiguiente")
+  .addEventListener("click", async () => {
+
+    if (desplazamientoMesContinentes < 0) {
+      desplazamientoMesContinentes++;
+      await cargarRankingContinentes();
+    }
+  });
 
 document
   .getElementById("logoutButton")
