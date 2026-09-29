@@ -4189,7 +4189,7 @@ btnCerrarAvisoGeneral.addEventListener("click", () => {
 async function cargarAvisoGeneral() {
   const { data, error } = await supabaseClient
     .from("avisos")
-    .select("id, mensaje")
+    .select("id, mensaje, creado_en")
     .eq("activo", true)
     .order("creado_en", { ascending: false })
     .limit(1)
