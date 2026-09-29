@@ -311,7 +311,19 @@
       cursor:pointer;
       font-size:24px;
     "
-  >📢</span>
+    >
+    📢
+    <span
+      id="indicadorAvisoNuevo"
+      style="
+        position:absolute;
+        right:-7px;
+        top:-9px;
+        font-size:13px;
+        line-height:1;
+      "
+    >⚠️</span>
+  </span>
 </div>
   <!-- AVISO GENERAL -->
 <div
@@ -1160,7 +1172,7 @@ async function cargarJugador() {
   } =
     await supabaseClient
       .from("jugadores")
-      .select("id, nombre, alias, activo, password_configurada")
+      .select("id, nombre, alias, activo, password_configurada, ultimo_aviso_visto")
       .eq("auth_user_id", user.id)
       .single();
 
@@ -4174,6 +4186,8 @@ async function editarAlias() {
   alert("Alias actualizado correctamente.");
 }
 
+let avisoActualId = null;
+  
 const btnAvisos = document.getElementById("btnAvisos");
 const avisoGeneral = document.getElementById("avisoGeneral");
 const btnCerrarAvisoGeneral =
@@ -4183,10 +4197,27 @@ btnAvisos.addEventListener("click", () => {
   avisoGeneral.classList.remove("hidden");
 });
 
-btnCerrarAvisoGeneral.addEventListener("click", () => {
+btnCerrarAvisoGeneral.addEventListener("click", async () => {
   avisoGeneral.classList.add("hidden");
+
+  const indicadorAvisoNuevo =
+    document.getElementById("indicadorAvisoNuevo");
+
+  indicadorAvisoNuevo.style.display = "none";
+
+  const { error } = await supabaseClient.rpc(
+    "marcar_aviso_visto",
+    { p_aviso_id: avisoActualId }
+  );
+
+  if (error) {
+    console.error("Error marcando aviso como visto:", error);
+  } else {
+    jugadorActual.ultimo_aviso_visto = avisoActualId;
+  }
 });
 
+  
 async function cargarAvisoGeneral() {
   const { data, error } = await supabaseClient
     .from("avisos")
@@ -4212,10 +4243,25 @@ async function cargarAvisoGeneral() {
     return;
   }
 
+  avisoActualId = data.id;
+  
   document.getElementById("textoAvisoGeneral").textContent =
     data.mensaje;
-
-  avisoGeneral.classList.remove("hidden");
+  
+  const indicadorAvisoNuevo =
+    document.getElementById("indicadorAvisoNuevo");
+  
+  const avisoEsNuevo =
+    jugadorActual.ultimo_aviso_visto === null ||
+    data.id > jugadorActual.ultimo_aviso_visto;
+  
+  if (avisoEsNuevo) {
+    indicadorAvisoNuevo.style.display = "block";
+    avisoGeneral.classList.remove("hidden");
+  } else {
+    indicadorAvisoNuevo.style.display = "none";
+    avisoGeneral.classList.add("hidden");
+  }
 }
   
 const btnInfo =
