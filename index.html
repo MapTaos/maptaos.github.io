@@ -330,6 +330,7 @@
     <span
       id="indicadorAvisoNuevo"
       style="
+        display:none;
         position:absolute;
         right:-7px;
         top:-9px;
@@ -339,7 +340,7 @@
     >⚠️</span>
   </span>
 </div>
-  <!-- AVISO GENERAL -->
+<!-- AVISO GENERAL -->
 <div
   id="avisoGeneral"
   class="hidden"
@@ -354,7 +355,26 @@
     text-align:left;
   "
 >
-  <!-- ADMINISTRACIÓN DE AVISOS -->
+  <div id="textoAvisoGeneral"></div>
+
+  <span
+    id="btnCerrarAvisoGeneral"
+    role="button"
+    aria-label="Cerrar aviso"
+    title="Cerrar"
+    style="
+      position:absolute;
+      right:12px;
+      top:10px;
+      cursor:pointer;
+      font-size:22px;
+      font-weight:bold;
+      line-height:1;
+    "
+  >×</span>
+</div>
+
+<!-- ADMINISTRACIÓN DE AVISOS -->
 <div
   id="adminAvisos"
   class="hidden"
@@ -398,25 +418,6 @@
       Publicar
     </button>
   </div>
-</div>
-  
-  <div id="textoAvisoGeneral"></div>
-
-  <span
-    id="btnCerrarAvisoGeneral"
-    role="button"
-    aria-label="Cerrar aviso"
-    title="Cerrar"
-    style="
-      position:absolute;
-      right:12px;
-      top:10px;
-      cursor:pointer;
-      font-size:22px;
-      font-weight:bold;
-      line-height:1;
-    "
-  >×</span>
 </div>
     
     <p class="subtitle">La liga de los MapTaos</p>
