@@ -288,7 +288,64 @@
   <!-- APP -->
   <section id="appView" class="hidden">
 
-    <h1>🌍 MapTaos</h1>
+    <div
+  style="
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  "
+>
+  <h1 style="margin-left:45px; margin-right:45px;">
+    🌍 MapTaos
+  </h1>
+
+  <span
+    id="btnAvisos"
+    role="button"
+    aria-label="Avisos"
+    title="Avisos"
+    style="
+      position:absolute;
+      right:0;
+      cursor:pointer;
+      font-size:24px;
+    "
+  >📢</span>
+</div>
+  <!-- AVISO GENERAL -->
+<div
+  id="avisoGeneral"
+  class="hidden"
+  style="
+    position:relative;
+    max-width:520px;
+    margin:8px auto 12px;
+    padding:12px 42px 12px 14px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    text-align:left;
+  "
+>
+  <div id="textoAvisoGeneral"></div>
+
+  <span
+    id="btnCerrarAvisoGeneral"
+    role="button"
+    aria-label="Cerrar aviso"
+    title="Cerrar"
+    style="
+      position:absolute;
+      right:12px;
+      top:10px;
+      cursor:pointer;
+      font-size:22px;
+      font-weight:bold;
+      line-height:1;
+    "
+  >×</span>
+</div>
+    
     <p class="subtitle">La liga de los MapTaos</p>
 
    <div
@@ -4115,6 +4172,44 @@ async function editarAlias() {
 
   alert("Alias actualizado correctamente.");
 }
+
+const btnAvisos = document.getElementById("btnAvisos");
+const avisoGeneral = document.getElementById("avisoGeneral");
+const btnCerrarAvisoGeneral =
+  document.getElementById("btnCerrarAvisoGeneral");
+
+btnAvisos.addEventListener("click", () => {
+  avisoGeneral.classList.remove("hidden");
+});
+
+btnCerrarAvisoGeneral.addEventListener("click", () => {
+  avisoGeneral.classList.add("hidden");
+});
+
+async function cargarAvisoGeneral() {
+  const { data, error } = await supabaseClient
+    .from("avisos")
+    .select("id, mensaje")
+    .eq("activo", true)
+    .order("creado_en", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error cargando aviso:", error);
+    return;
+  }
+
+  if (!data) {
+    avisoGeneral.classList.add("hidden");
+    return;
+  }
+
+  document.getElementById("textoAvisoGeneral").textContent =
+    data.mensaje;
+
+  avisoGeneral.classList.remove("hidden");
+}
   
 const btnInfo =
   document.getElementById("btnInfo");
@@ -4321,6 +4416,8 @@ async function iniciarApp() {
   }
 
   mostrarApp();
+
+  await cargarAvisoGeneral();
 
   mostrarSeccionInicio("hoy");
 
