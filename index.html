@@ -301,6 +301,20 @@
   </h1>
 
   <span
+    id="btnAdminAvisos"
+    role="button"
+    aria-label="Administrar avisos"
+    title="Administrar avisos"
+    style="
+      display:none;
+      position:absolute;
+      right:38px;
+      cursor:pointer;
+      font-size:18px;
+    "
+  >✏️</span>
+      
+  <span
     id="btnAvisos"
     role="button"
     aria-label="Avisos"
@@ -340,6 +354,52 @@
     text-align:left;
   "
 >
+  <!-- ADMINISTRACIÓN DE AVISOS -->
+<div
+  id="adminAvisos"
+  class="hidden"
+  style="
+    max-width:520px;
+    margin:8px auto 12px;
+    padding:12px;
+    background:#f5f5f5;
+    border:1px solid #ccc;
+    border-radius:10px;
+  "
+>
+  <strong>📢 Administrar aviso</strong>
+
+  <textarea
+    id="textoAdminAviso"
+    rows="4"
+    placeholder="Escribe aquí el aviso..."
+    style="
+      width:100%;
+      box-sizing:border-box;
+      margin-top:10px;
+      padding:8px;
+      resize:vertical;
+    "
+  ></textarea>
+
+  <div
+    style="
+      display:flex;
+      gap:8px;
+      justify-content:flex-end;
+      margin-top:8px;
+    "
+  >
+    <button type="button" id="btnCancelarAdminAviso">
+      Cancelar
+    </button>
+
+    <button type="button" id="btnPublicarAviso">
+      Publicar
+    </button>
+  </div>
+</div>
+  
   <div id="textoAvisoGeneral"></div>
 
   <span
@@ -1177,7 +1237,7 @@ async function cargarJugador() {
   } =
     await supabaseClient
       .from("jugadores")
-      .select("id, nombre, alias, activo, password_configurada, ultimo_aviso_visto")
+      .select("id, nombre, alias, activo, password_configurada, ultimo_aviso_visto, es_admin")
       .eq("auth_user_id", user.id)
       .single();
 
@@ -4192,6 +4252,51 @@ async function editarAlias() {
 }
 
 let avisoActualId = null;
+
+  const btnAdminAvisos =
+    document.getElementById("btnAdminAvisos");
+  
+  const adminAvisos =
+    document.getElementById("adminAvisos");
+  
+  const btnCancelarAdminAviso =
+    document.getElementById("btnCancelarAdminAviso");
+  
+  btnAdminAvisos.addEventListener("click", () => {
+    adminAvisos.classList.remove("hidden");
+  });
+  
+  btnCancelarAdminAviso.addEventListener("click", () => {
+    adminAvisos.classList.add("hidden");
+  });
+
+document
+  .getElementById("btnPublicarAviso")
+  .addEventListener("click", async () => {
+
+    const texto =
+      document.getElementById("textoAdminAviso").value.trim();
+
+    if (!texto) {
+      alert("Escribe un aviso antes de publicarlo.");
+      return;
+    }
+
+    const { error } = await supabaseClient.rpc(
+      "publicar_aviso",
+      { p_mensaje: texto }
+    );
+    if (error) {
+      console.error("Error publicando aviso:", error);
+      alert("No se pudo publicar el aviso.");
+      return;
+    }
+
+    document.getElementById("textoAdminAviso").value = "";
+    adminAvisos.classList.add("hidden");
+
+    await cargarAvisoGeneral();
+  });
   
 const btnAvisos = document.getElementById("btnAvisos");
 const avisoGeneral = document.getElementById("avisoGeneral");
@@ -4474,7 +4579,11 @@ async function iniciarApp() {
   }
 
   mostrarApp();
-
+  
+  if (jugadorActual.es_admin) {
+    document.getElementById("btnAdminAvisos").style.display = "block";
+  }
+  
   await cargarAvisoGeneral();
 
   mostrarSeccionInicio("hoy");
