@@ -1584,14 +1584,7 @@ pasteResultButton.addEventListener(
         .remove("hidden");
     
       manualText.value = "";
-    
       manualText.focus();
-    
-      mostrarMensaje(
-        "Pega aquí el resultado copiado de MapTap.",
-        "info"
-      );
-    
       return;
 }
     
@@ -1615,9 +1608,6 @@ pasteResultButton.addEventListener(
         .classList
         .remove("hidden");
 
-      mostrarMensaje(
-        "No se pudo leer automáticamente el portapapeles.",
-        "error"
       );
     }
   }
