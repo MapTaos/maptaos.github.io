@@ -1260,9 +1260,20 @@ if (!data.activo) {
   
   jugadorActual = data;
 
-playerName.textContent =
-  "👤 " + (data.alias || data.nombre);
+playerName.innerHTML =
+  '<span id="btnMiPerfil" role="button" title="Mi perfil" ' +
+  'style="cursor:pointer; background:#e9ecef; padding:4px 7px; border-radius:8px;">👤</span> ' +
+  (data.alias || data.nombre);
 
+  document
+    .getElementById("btnMiPerfil")
+    .addEventListener("click", () => {
+      abrirPerfilJugador(
+        jugadorActual.id,
+        jugadorActual.alias || jugadorActual.nombre
+      );
+    });
+  
   return true;
 }
 
@@ -4235,11 +4246,22 @@ async function editarAlias() {
 
   jugadorActual.alias = aliasLimpio;
 
-  document.getElementById("playerName").textContent =
-    "👤 " + aliasLimpio;
+document.getElementById("playerName").innerHTML =
+  '<span id="btnMiPerfil" role="button" title="Mi perfil" ' +
+  'style="cursor:pointer; background:#e9ecef; padding:4px 7px; border-radius:8px;">👤</span> ' +
+  aliasLimpio;
 
-  document.getElementById("profileName").textContent =
-    "Perfil de " + aliasLimpio;
+document
+  .getElementById("btnMiPerfil")
+  .addEventListener("click", () => {
+    abrirPerfilJugador(
+      jugadorActual.id,
+      jugadorActual.alias || jugadorActual.nombre
+    );
+  });
+
+document.getElementById("profileName").textContent =
+  "Perfil de " + aliasLimpio;
 
   await cargarRankingHoy();
   await cargarRankingSemanal();
