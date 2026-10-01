@@ -414,6 +414,25 @@
       Cancelar
     </button>
 
+    <button type="button" id="btnCancelarAdminAviso">
+      Cancelar
+    </button>
+    
+    <button
+      type="button"
+      id="btnDesactivarAviso"
+      style="
+        background:#fee2e2;
+        border:1px solid #fca5a5;
+      "
+    >
+      Desactivar aviso
+    </button>
+    
+    <button type="button" id="btnPublicarAviso">
+      Publicar
+    </button>
+    
     <button type="button" id="btnPublicarAviso">
       Publicar
     </button>
@@ -4287,6 +4306,38 @@ let avisoActualId = null;
   });
 
 document
+  .getElementById("btnDesactivarAviso")
+  .addEventListener("click", async () => {
+
+    const confirmar =
+      confirm("¿Quieres desactivar el aviso actual?");
+
+    if (!confirmar) {
+      return;
+    }
+
+    const { error } =
+      await supabaseClient.rpc("desactivar_aviso");
+
+    if (error) {
+      console.error("Error desactivando aviso:", error);
+      alert("No se pudo desactivar el aviso.");
+      return;
+    }
+
+    adminAvisos.classList.add("hidden");
+    avisoGeneral.classList.add("hidden");
+
+    document
+      .getElementById("indicadorAvisoNuevo")
+      .style.display = "none";
+
+    avisoActualId = null;
+
+    alert("Aviso desactivado.");
+  });
+  
+document
   .getElementById("btnPublicarAviso")
   .addEventListener("click", async () => {
 
@@ -4320,6 +4371,12 @@ const btnCerrarAvisoGeneral =
   document.getElementById("btnCerrarAvisoGeneral");
 
 btnAvisos.addEventListener("click", () => {
+
+  if (avisoActualId === null) {
+    alert("No hay avisos activos.");
+    return;
+  }
+
   avisoGeneral.classList.remove("hidden");
 });
 
@@ -4364,10 +4421,17 @@ async function cargarAvisoGeneral() {
     return;
   }
 
-  if (!data) {
-    avisoGeneral.classList.add("hidden");
-    return;
-  }
+if (!data) {
+  avisoActualId = null;
+
+  avisoGeneral.classList.add("hidden");
+
+  document
+    .getElementById("indicadorAvisoNuevo")
+    .style.display = "none";
+
+  return;
+}
 
   avisoActualId = data.id;
   
