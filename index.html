@@ -1887,22 +1887,7 @@ function fechaMadridISO(fecha = new Date()) {
 }
 
 function fechasValidasHoy(fecha = new Date()) {
-
-  const hoyLocal =
-    fecha.getFullYear()
-    + "-"
-    + String(fecha.getMonth() + 1).padStart(2, "0")
-    + "-"
-    + String(fecha.getDate()).padStart(2, "0");
-
-  const hoyUTC =
-    fecha.getUTCFullYear()
-    + "-"
-    + String(fecha.getUTCMonth() + 1).padStart(2, "0")
-    + "-"
-    + String(fecha.getUTCDate()).padStart(2, "0");
-
-  return [...new Set([hoyLocal, hoyUTC])];
+  return [fechaMadridISO(fecha)];
 }
   
 function banderaACodigo(bandera) {
