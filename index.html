@@ -554,6 +554,13 @@
       tu perfil, estadísticas y mejores resultados. También puedes consultar el <strong>perfil
       de otro jugador</strong> pulsando su nombre en las clasificaciones.
     </p>
+
+    <p>
+      📋 <strong>Pegar resultado</strong> — copia tu resultado en MapTap y pulsa
+      “Pegar resultado”. En Android, si permites a MapTaos acceder al portapapeles,
+      el resultado se leerá automáticamente. Si no tiene permiso, puedes pegarlo
+      manualmente. En Chrome -> configuración del sitio -> Portapapeles -> Permitir a MapTaos
+    </p>
     
     <p>
       📊 <strong>Media</strong> — puntuación media del período mostrado.
@@ -1278,8 +1285,7 @@ if (!data.activo) {
 
 playerName.innerHTML =
   '<span id="btnMiPerfil" role="button" title="Mi perfil" ' +
-  'style="cursor:pointer; background:#e9ecef; padding:4px 7px; border-radius:8px;">👤 Ver perfil</span> ' +
-  (data.alias || data.nombre);
+  'style="cursor:pointer; background:#e9ecef; padding:4px 7px; border-radius:8px; font-size:13px; font-weight:400;">👤 Perfil</span> '
 
   document
     .getElementById("btnMiPerfil")
@@ -1635,6 +1641,15 @@ catch (error) {
   manualCard
     .classList
     .remove("hidden");
+
+  if (error.name === "NotAllowedError") {
+    mostrarMensaje(
+      "📋 MapTaos no tiene permiso para leer el portapapeles. "
+      + "Puedes pegar el resultado manualmente o permitir el acceso "
+      + "al portapapeles para activar el pegado automático.",
+      "info"
+    );
+  }
 
 }
   }
@@ -4245,7 +4260,7 @@ async function editarAlias() {
 
 document.getElementById("playerName").innerHTML =
   '<span id="btnMiPerfil" role="button" title="Mi perfil" ' +
-  'style="cursor:pointer; background:#e9ecef; padding:4px 7px; border-radius:8px;">👤</span> ' +
+  'style="cursor:pointer; background:#e9ecef; padding:4px 7px; border-radius:8px; font-size:13px; font-weight:400;">👤 Perfil</span> ' +
   aliasLimpio;
 
 document
