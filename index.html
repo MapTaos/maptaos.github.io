@@ -1623,13 +1623,20 @@ pasteResultButton.addEventListener(
       prepararResultado(texto);
 
     }
-    catch (error) {
+catch (error) {
 
-      manualCard
-        .classList
-        .remove("hidden");
+  console.error(
+    "ERROR PORTAPAPELES:",
+    error.name,
+    error.message,
+    error
+  );
 
-    }
+  manualCard
+    .classList
+    .remove("hidden");
+
+}
   }
 );
 
