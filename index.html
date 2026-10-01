@@ -1281,22 +1281,23 @@ if (!data.activo) {
   return false;
 }
   
-  jugadorActual = data;
+jugadorActual = data;
 
 playerName.innerHTML =
   '<span id="btnMiPerfil" role="button" title="Mi perfil" ' +
-  'style="cursor:pointer; background:#e9ecef; padding:4px 7px; border-radius:8px; font-size:13px; font-weight:400;">👤 Perfil</span> '
+  'style="cursor:pointer; background:#e9ecef; padding:4px 7px; border-radius:8px; font-size:13px; font-weight:400;">👤 Perfil</span> ' +
+  (data.alias || data.nombre);
 
-  document
-    .getElementById("btnMiPerfil")
-    .addEventListener("click", () => {
-      abrirPerfilJugador(
-        jugadorActual.id,
-        jugadorActual.alias || jugadorActual.nombre
-      );
-    });
-  
-  return true;
+document
+  .getElementById("btnMiPerfil")
+  .addEventListener("click", () => {
+    abrirPerfilJugador(
+      jugadorActual.id,
+      jugadorActual.alias || jugadorActual.nombre
+    );
+  });
+
+return true;
 }
 
 
