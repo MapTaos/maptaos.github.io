@@ -2720,7 +2720,7 @@ async function cargarRankingContinentes() {
     await supabaseClient
       .from("ranking_continentes")
       .select(
-        "continente, posicion, jugador_id, nombre, alias, rondas_jugadas, porcentaje, inicio_mes"
+        "continente, posicion, jugador_id, nombre, alias, rondas_jugadas, apariciones, porcentaje, inicio_mes"
       )
       .eq(
         "inicio_mes",
@@ -2810,7 +2810,7 @@ contenedor.innerHTML =
 
             <div style="
               display:grid;
-              grid-template-columns:58px 42px;
+              grid-template-columns:58px 42px 42px;
               text-align:right;
               align-items:center;
               flex-shrink:0;
@@ -2824,6 +2824,12 @@ contenedor.innerHTML =
                 color:#777;
               ">
                 ${fila.rondas_jugadas}
+              </span>
+              <span style="
+                font-size:12px;
+                color:#777;
+              ">
+                ${fila.apariciones}
               </span>
             </div>
 
@@ -2855,11 +2861,12 @@ contenedor.innerHTML =
 ">
   <div style="
     display:grid;
-    grid-template-columns:58px 42px;
+    grid-template-columns:58px 42px 42px;
     text-align:right;
   ">
     <span>%</span>
-    <span>Rondas</span>
+    <span>Jug.</span>
+    <span>Apar.</span>
   </div>
 </div>
         
