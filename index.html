@@ -659,8 +659,7 @@
   >✕</button>
   
     <p class="small">
-      Pega aquí tu resultado de MapTap y pulsa
-      <strong>Analizar resultado</strong>.
+      Pega aquí tu resultado de MapTap.
     </p>
 
       <textarea
@@ -1678,6 +1677,26 @@ analyzeManualButton.addEventListener(
   }
 );
 
+manualText.addEventListener("paste", () => {
+
+  setTimeout(() => {
+
+    const texto =
+      manualText.value.trim();
+
+    if (!texto) {
+      return;
+    }
+
+    if (
+      /final\s*score\s*:/i.test(texto)
+    ) {
+      prepararResultado(texto);
+    }
+
+  }, 100);
+});
+  
 
 saveResultButton.addEventListener(
   "click",
