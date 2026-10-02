@@ -667,13 +667,6 @@
         placeholder="Pega aquí el resultado..."
       ></textarea>
 
-      <button
-        class="btn-primary"
-        id="analyzeManualButton"
-      >
-        Analizar resultado
-      </button>
-
     </div>
 
 
@@ -1107,9 +1100,6 @@ const manualCard =
 
 const manualText =
   document.getElementById("manualText");
-
-const analyzeManualButton =
-  document.getElementById("analyzeManualButton");
 
 const confirmationCard =
   document.getElementById("confirmationCard");
@@ -1656,26 +1646,6 @@ catch (error) {
 );
 
 
-analyzeManualButton.addEventListener(
-  "click",
-  () => {
-
-    const texto =
-      manualText.value.trim();
-
-    if (!texto) {
-
-      mostrarMensaje(
-        "Pega primero el resultado de MapTap.",
-        "error"
-      );
-
-      return;
-    }
-
-    prepararResultado(texto);
-  }
-);
 
 manualText.addEventListener("paste", () => {
 
