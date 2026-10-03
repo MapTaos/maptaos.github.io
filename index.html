@@ -779,9 +779,13 @@
       🌍 Continentes
     </button>
 
-    <button type="button" id="btnMasRankings">
-      ☰ Más
-    </button>
+<button
+  type="button"
+  id="btnMasRankings"
+  style="white-space:nowrap;"
+>
+  ☰ Más
+</button>
 
   </div>
 
@@ -4574,6 +4578,10 @@ if (
   btnMasRankings.style.background = "#111";
   btnMasRankings.style.color = "#fff";
   btnMasRankings.style.border = "1px solid #111";
+} else {
+  btnMasRankings.style.background = "#e1e4e6";
+  btnMasRankings.style.color = "#111";
+  btnMasRankings.style.border = "1px solid #c5c9cc";
 }
   
   Object.values(secciones).forEach(id => {
