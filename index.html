@@ -4525,9 +4525,13 @@ document
   .addEventListener("click", editarAlias);
 
 
+let seccionInicioActiva = "hoy";
+
   
 function mostrarSeccionInicio(seccion) {
 
+  seccionInicioActiva = seccion;
+  
   const secciones = {
     hoy: "seccionHoy",
     semana: "seccionSemana",
@@ -4603,7 +4607,35 @@ const menuMasRankings =
   document.getElementById("menuMasRankings");
 
 btnMasRankings.addEventListener("click", () => {
+
+  const seAbre =
+    menuMasRankings.classList.contains("hidden");
+
   menuMasRankings.classList.toggle("hidden");
+
+  if (seAbre) {
+
+    // Al abrir "Más", marcar Más y apagar el botón principal activo
+    ["btnHoy", "btnMes", "btnContinentes"].forEach(id => {
+      const boton = document.getElementById(id);
+
+      if (boton) {
+        boton.style.background = "#e1e4e6";
+        boton.style.color = "#111";
+        boton.style.border = "1px solid #c5c9cc";
+      }
+    });
+
+    btnMasRankings.style.background = "#111";
+    btnMasRankings.style.color = "#fff";
+    btnMasRankings.style.border = "1px solid #111";
+
+  } else {
+
+    // Al cerrar sin elegir, recuperar la sección que estaba activa
+    mostrarSeccionInicio(seccionInicioActiva);
+  }
+
 });
   
 document
