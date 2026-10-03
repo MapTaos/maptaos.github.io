@@ -812,13 +812,14 @@
 </div>
     
 <div class="card" id="seccionHoy">
+
   <h2 class="home-section-title" style="
     display:flex;
     justify-content:space-between;
     align-items:center;
   ">
-    <span>Clasificación de hoy</span>
-  
+    <span id="tituloRankingHoy">Clasificación de hoy</span>
+
     <span id="contadorJugadoresHoy" style="
       font-size:13px;
       font-weight:500;
@@ -827,9 +828,43 @@
     "></span>
   </h2>
 
+  <!-- NAVEGACIÓN POR DÍAS -->
+  <div style="
+    display:flex;
+    gap:8px;
+    margin-bottom:14px;
+  ">
+
+    <button
+      type="button"
+      id="btnDiaAnterior"
+      style="flex:1;"
+    >
+      ◀ Anterior
+    </button>
+
+    <button
+      type="button"
+      id="btnDiaActual"
+      style="flex:1;"
+    >
+      Hoy
+    </button>
+
+    <button
+      type="button"
+      id="btnDiaSiguiente"
+      style="flex:1;"
+    >
+      Siguiente ▶
+    </button>
+
+  </div>
+
   <div id="rankingHoy" class="placeholder">
     Cargando clasificación...
   </div>
+
 </div>
 
 <div class="card hidden" id="seccionSemana">
@@ -1948,13 +1983,14 @@ function banderaACodigo(bandera) {
     .map(punto => String.fromCharCode(punto - 127397))
     .join("");
 }
+
   
-async function cargarRankingHoy() {
+async function cargarRankingHoy(fecha = fechaMadridISO()) {
 
   const rankingHoy =
     document.getElementById("rankingHoy");
 
-  const hoy = fechaMadridISO();
+  const hoy = fecha;
   
 
   
@@ -2212,6 +2248,8 @@ onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.alias || fila.nombre}')"
 
     }).join("");
 }
+
+  
 async function cargarRankingSemanal() {
 
   const rankingSemanal =
