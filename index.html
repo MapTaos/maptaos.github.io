@@ -132,6 +132,10 @@
       display: none;
     }
 
+    #menuMasRankings:not(.hidden) {
+      display: flex;
+    }
+    
     .small {
       font-size: 14px;
       color: #666;
@@ -720,69 +724,66 @@
 
 <div id="homeRankingSelector">
 
-  <button type="button" id="btnHoy">
-    Hoy
-  </button>
+  <!-- NAVEGACIÓN PRINCIPAL -->
+  <div style="
+    display:flex;
+    gap:8px;
+  ">
 
-  <button type="button" id="btnSemana" class="hidden">
-    Semana
-  </button>
+    <button type="button" id="btnHoy" style="flex:1;">
+      Hoy
+    </button>
 
-  <button type="button" id="btnMes">
-    Mes
-  </button>
+    <button type="button" id="btnSemana" class="hidden">
+      Semana
+    </button>
 
-  <button type="button" id="btnTop20">
-    Top-20 · 3M
-  </button>
+    <button type="button" id="btnMes" style="flex:1;">
+      Mes
+    </button>
 
-</div>
+    <button
+      type="button"
+      id="btnContinentes"
+      style="flex:1;"
+    >
+      🌍 Continentes
+    </button>
 
-<div style="
-  display:flex;
-  gap:8px;
-  margin-top:8px;
-">
+    <button
+      type="button"
+      id="btnMasRankings"
+      style="flex:1;"
+    >
+      ☰ Más
+    </button>
 
-  <button
-    type="button"
-    id="btnContinentes"
+  </div>
+
+  <!-- MENÚ MÁS -->
+  <div
+    id="menuMasRankings"
+    class="hidden"
     style="
-      flex:1;
-      padding:10px 6px;
-      font-size:15px;
-      white-space:nowrap;
+      gap:8px;
+      margin-top:8px;
     "
   >
-    🌍 Continentes
-  </button>
 
-  <button
-    type="button"
-    id="btnMejoresMarcas"
-    style="
-      flex:1;
-      padding:10px 6px;
-      font-size:15px;
-      white-space:nowrap;
-    "
-  >
-    🏅 Marcas
-  </button>
-  
-  <button
-    type="button"
-    id="btnTop50"
-    style="
-      flex:1;
-      padding:10px 6px;
-      font-size:15px;
-      white-space:nowrap;
-    "
-  >
-    🏆 Histórico
-  </button>
-  
+    <button type="button" id="btnTop20" style="flex:1;">
+      Top-20 · 3M
+    </button>
+
+    <button type="button" id="btnMejoresMarcas" style="flex:1;">
+      🏅 Marcas
+    </button>
+
+    <button type="button" id="btnTop50" style="flex:1;">
+      🏆 Histórico
+    </button>
+
+  </div>
+
 </div>
     
 <div class="card" id="seccionHoy">
@@ -4522,6 +4523,44 @@ const botones = {
   top50: "btnTop50"
 };
 
+const btnMasRankings =
+  document.getElementById("btnMasRankings");
+
+const menuMasRankings =
+  document.getElementById("menuMasRankings");
+
+btnMasRankings.addEventListener("click", () => {
+  menuMasRankings.classList.toggle("hidden");
+});
+
+  const estaOculto =
+    menuMasRankings.classList.contains("hidden");
+
+  if (estaOculto) {
+    menuMasRankings.classList.remove("hidden");
+    menuMasRankings.style.display = "flex";
+  }
+  else {
+    menuMasRankings.classList.add("hidden");
+    menuMasRankings.style.display = "";
+  }
+
+});
+  
+  const estaOculto =
+    menuMasRankings.classList.contains("hidden");
+
+  if (estaOculto) {
+    menuMasRankings.classList.remove("hidden");
+    menuMasRankings.style.display = "flex";
+  }
+  else {
+    menuMasRankings.classList.add("hidden");
+    menuMasRankings.style.display = "";
+  }
+
+});
+  
 Object.values(botones).forEach(id => {
   const boton = document.getElementById(id);
 
