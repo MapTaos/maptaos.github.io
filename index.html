@@ -4554,7 +4554,7 @@ if (boton) {
   boton.style.border = "1px solid #c5c9cc";
 }
 });
-
+  
 const botonActivo =
   document.getElementById(botones[seccion]);
 
@@ -4562,6 +4562,18 @@ if (botonActivo) {
   botonActivo.style.background = "#111";
   botonActivo.style.color = "#fff";
   botonActivo.style.border = "1px solid #111";
+}
+
+// Si estamos en una sección del menú "Más",
+// marcar también el botón principal "Más"
+if (
+  seccion === "top20" ||
+  seccion === "mejoresMarcas" ||
+  seccion === "top50"
+) {
+  btnMasRankings.style.background = "#111";
+  btnMasRankings.style.color = "#fff";
+  btnMasRankings.style.border = "1px solid #111";
 }
   
   Object.values(secciones).forEach(id => {
