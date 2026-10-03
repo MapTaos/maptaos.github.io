@@ -135,13 +135,30 @@
       display: none;
     }
 
+#homeRankingSelector {
+  position: relative;
+}
+
 #menuMasRankings:not(.hidden) {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
-  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  top: 48px;
+  width: 190px;
+  gap: 4px;
+  padding: 6px;
+  background: white;
+  border: 1px solid #c5c9cc;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 100;
+}
+
+#menuMasRankings button {
   width: 100%;
-  box-sizing: border-box;
+  flex: none;
+  text-align: left;
 }
 
 #menuMasRankings button {
