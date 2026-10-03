@@ -4532,34 +4532,6 @@ const menuMasRankings =
 btnMasRankings.addEventListener("click", () => {
   menuMasRankings.classList.toggle("hidden");
 });
-
-  const estaOculto =
-    menuMasRankings.classList.contains("hidden");
-
-  if (estaOculto) {
-    menuMasRankings.classList.remove("hidden");
-    menuMasRankings.style.display = "flex";
-  }
-  else {
-    menuMasRankings.classList.add("hidden");
-    menuMasRankings.style.display = "";
-  }
-
-};
-  
-  const estaOculto =
-    menuMasRankings.classList.contains("hidden");
-
-  if (estaOculto) {
-    menuMasRankings.classList.remove("hidden");
-    menuMasRankings.style.display = "flex";
-  }
-  else {
-    menuMasRankings.classList.add("hidden");
-    menuMasRankings.style.display = "";
-  }
-
-});
   
 Object.values(botones).forEach(id => {
   const boton = document.getElementById(id);
