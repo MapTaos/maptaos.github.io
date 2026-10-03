@@ -132,9 +132,19 @@
       display: none;
     }
 
-    #menuMasRankings:not(.hidden) {
-      display: flex;
-    }
+#menuMasRankings:not(.hidden) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#menuMasRankings button {
+  min-width: 0;
+  width: 100%;
+}
     
     .small {
       font-size: 14px;
@@ -726,11 +736,14 @@
 
   <!-- NAVEGACIÓN PRINCIPAL -->
   <div style="
-    display:flex;
-    gap:8px;
+    display:grid;
+    grid-template-columns: 0.8fr 0.8fr 1.7fr 0.8fr;
+    gap:6px;
+    width:100%;
+    box-sizing:border-box;
   ">
 
-    <button type="button" id="btnHoy" style="flex:1;">
+    <button type="button" id="btnHoy">
       Hoy
     </button>
 
@@ -738,23 +751,15 @@
       Semana
     </button>
 
-    <button type="button" id="btnMes" style="flex:1;">
+    <button type="button" id="btnMes">
       Mes
     </button>
 
-    <button
-      type="button"
-      id="btnContinentes"
-      style="flex:1;"
-    >
+    <button type="button" id="btnContinentes">
       🌍 Continentes
     </button>
 
-    <button
-      type="button"
-      id="btnMasRankings"
-      style="flex:1;"
-    >
+    <button type="button" id="btnMasRankings">
       ☰ Más
     </button>
 
@@ -764,21 +769,17 @@
   <div
     id="menuMasRankings"
     class="hidden"
-    style="
-      gap:8px;
-      margin-top:8px;
-    "
   >
 
-    <button type="button" id="btnTop20" style="flex:1;">
+    <button type="button" id="btnTop20">
       Top-20 · 3M
     </button>
 
-    <button type="button" id="btnMejoresMarcas" style="flex:1;">
+    <button type="button" id="btnMejoresMarcas">
       🏅 Marcas
     </button>
 
-    <button type="button" id="btnTop50" style="flex:1;">
+    <button type="button" id="btnTop50">
       🏆 Histórico
     </button>
 
