@@ -2824,7 +2824,7 @@ contenedor.innerHTML =
 
             <div style="
               display:grid;
-              grid-template-columns:50px 28px 32px;
+              grid-template-columns:62px 48px;
               text-align:right;
               align-items:center;
               flex-shrink:0;
@@ -2839,12 +2839,7 @@ contenedor.innerHTML =
               ">
                 ${fila.rondas_jugadas}
               </span>
-              <span style="
-                font-size:12px;
-                color:#777;
-              ">
-                ${fila.apariciones}
-              </span>
+              
             </div>
 
           </div>
@@ -2860,11 +2855,24 @@ contenedor.innerHTML =
         margin-bottom:14px;
       ">
 
-        <h3 style="
-          margin:0 0 6px 0;
-        ">
-          ${continente}
-        </h3>
+<div style="
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:0 0 6px 0;
+">
+  <h3 style="margin:0;">
+    ${continente}
+  </h3>
+
+  <span style="
+    font-size:11px;
+    font-weight:400;
+    color:#777;
+  ">
+    ${jugadores.length > 0 ? jugadores[0].apariciones : 0} apariciones
+  </span>
+</div>
 
         <div style="
   display:flex;
@@ -2875,12 +2883,11 @@ contenedor.innerHTML =
 ">
   <div style="
     display:grid;
-    grid-template-columns:50px 28px 32px;
+    grid-template-columns:62px 48px;
     text-align:right;
   ">
     <span>%</span>
-    <span>Jug.</span>
-    <span>Apar.</span>
+    <span>Jugadas</span>
   </div>
 </div>
         
