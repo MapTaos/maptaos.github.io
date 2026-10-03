@@ -4577,9 +4577,12 @@ if (botonActivo) {
     document.getElementById(id)?.classList.add("hidden");
   });
 
-  document
+    document
     .getElementById(secciones[seccion])
     ?.classList.remove("hidden");
+
+  // Cerrar el menú "Más" después de elegir una sección
+  menuMasRankings.classList.add("hidden");
 }
 
 document
