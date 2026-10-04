@@ -1916,6 +1916,7 @@ if (resultadoPendiente.tieneBanderas) {
     await cargarTop20General();
     await cargarRankingContinentes();
     await cargarMejoresMarcas();
+    await cargarMediaHistorica();
     await cargarTop50Historico();
     
     resultadoPendiente = null;
@@ -3377,6 +3378,139 @@ contenedor.innerHTML = `
 
 }
 
+
+async function cargarMediaHistorica() {
+
+  const contenedor =
+    document.getElementById("rankingMediaHistorica");
+
+  const { data, error } =
+    await supabaseClient
+      .from("ranking_media_historica")
+      .select(
+        "posicion, jugador_id, nombre, alias, media, partidas"
+      )
+      .order("posicion", { ascending: true });
+
+  if (error) {
+    console.error(error);
+
+    contenedor.innerHTML =
+      "No se pudo cargar la media histórica.";
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    contenedor.innerHTML =
+      "Todavía no hay resultados.";
+
+    return;
+  }
+
+  contenedor.innerHTML = `
+    <div style="
+      background:#eef1f3;
+      border-radius:12px;
+      padding:10px;
+    ">
+
+      ${data.map(fila => {
+
+        let medalla = "";
+
+        if (fila.posicion === 1) {
+          medalla = "🥇";
+        }
+        else if (fila.posicion === 2) {
+          medalla = "🥈";
+        }
+        else if (fila.posicion === 3) {
+          medalla = "🥉";
+        }
+
+        const nombre =
+          fila.alias || fila.nombre;
+
+        return `
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:10px 0;
+            border-bottom:1px solid #ddd;
+            gap:8px;
+          ">
+
+            <div style="
+              display:flex;
+              align-items:center;
+              min-width:0;
+            ">
+
+              <span style="
+                display:inline-block;
+                width:28px;
+                text-align:center;
+                flex-shrink:0;
+              ">
+                ${medalla}
+              </span>
+
+              <span style="
+                display:inline-block;
+                width:28px;
+                flex-shrink:0;
+              ">
+                ${fila.posicion}
+              </span>
+
+              <strong
+                onclick="abrirPerfilJugador(${fila.jugador_id}, '${nombre}')"
+                style="
+                  cursor:pointer;
+                  white-space:nowrap;
+                  overflow:hidden;
+                  text-overflow:ellipsis;
+                "
+              >
+                ${nombre}
+              </strong>
+
+            </div>
+
+            <div style="
+              display:flex;
+              align-items:center;
+              gap:10px;
+              white-space:nowrap;
+              flex-shrink:0;
+            ">
+
+              <strong>
+                ${fila.media}
+              </strong>
+
+              <span style="
+                font-size:12px;
+                color:#666;
+              ">
+                🎮${fila.partidas}
+              </span>
+
+            </div>
+
+          </div>
+        `;
+
+      }).join("")}
+
+    </div>
+  `;
+}
+
+  
+  
 let desplazamientoTrimestreTop20 = 0;
 
   
@@ -4366,6 +4500,7 @@ plugins: {
     await cargarTop20General();
     await cargarRankingContinentes();
     await cargarMejoresMarcas();
+    await cargarMediaHistorica();
     await cargarTop50Historico();
   });
 
@@ -4438,6 +4573,7 @@ document.getElementById("profileName").textContent =
   await cargarTop20General();
   await cargarRankingContinentes();
   await cargarMejoresMarcas();  
+  await cargarMediaHistorica();
   await cargarTop50Historico();
 
   alert("Alias actualizado correctamente.");
@@ -4928,6 +5064,8 @@ async function iniciarApp() {
 
   await cargarMejoresMarcas();
 
+  await cargarMediaHistorica();
+  
   await cargarTop50Historico();
   
 }
