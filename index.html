@@ -3479,27 +3479,33 @@ async function cargarMediaHistorica() {
 
             </div>
 
-            <div style="
-              display:flex;
-              align-items:center;
-              gap:10px;
-              white-space:nowrap;
-              flex-shrink:0;
-            ">
+ <div style="
+  display:flex;
+  align-items:center;
+  white-space:nowrap;
+  flex-shrink:0;
+">
 
-              <strong>
-                ${fila.media}
-              </strong>
+  <strong style="
+    display:inline-block;
+    width:42px;
+    text-align:right;
+  ">
+    ${fila.media}
+  </strong>
 
-              <span style="
-                font-size:12px;
-                color:#666;
-              ">
-                🎮${fila.partidas}
-              </span>
+  <span style="
+    display:inline-block;
+    width:36px;
+    margin-left:8px;
+    font-size:12px;
+    color:#666;
+    text-align:left;
+  ">
+    🎮${fila.partidas}
+  </span>
 
-            </div>
-
+</div>
           </div>
         `;
 
