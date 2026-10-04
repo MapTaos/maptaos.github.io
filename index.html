@@ -803,6 +803,10 @@
       🏅 Marcas
     </button>
 
+    <button type="button" id="btnMediaHistorica">
+      📊 Media
+    </button>
+    
     <button type="button" id="btnTop50">
       🏆 Histórico
     </button>
@@ -1090,6 +1094,18 @@
 
   <div id="rankingMejoresMarcas">
     Cargando mejores marcas...
+  </div>
+
+</div>
+
+<div class="card hidden" id="seccionMediaHistorica">
+
+  <h2 class="home-section-title">
+    📊 Media histórica
+  </h2>
+
+  <div id="rankingMediaHistorica">
+    Cargando media histórica...
   </div>
 
 </div>
@@ -4637,6 +4653,7 @@ function mostrarSeccionInicio(seccion) {
     top20: "seccionTop20",
     continentes: "seccionContinentes",
     mejoresMarcas: "seccionMejoresMarcas",
+    mediaHistorica: "seccionMediaHistorica",
     top50: "seccionTop50"
   };
 
@@ -4647,6 +4664,7 @@ const botones = {
   top20: "btnTop20",
   continentes: "btnContinentes",
   mejoresMarcas: "btnMejoresMarcas",
+  ediaHistorica: "btnMediaHistorica",
   top50: "btnTop50"
 };
 
@@ -4675,6 +4693,7 @@ if (botonActivo) {
 if (
   seccion === "top20" ||
   seccion === "mejoresMarcas" ||
+  seccion === "mediaHistorica" ||
   seccion === "top50"
 ) {
   btnMasRankings.style.background = "#111";
@@ -4760,6 +4779,10 @@ document
   .getElementById("btnMejoresMarcas")
   .addEventListener("click", () => mostrarSeccionInicio("mejoresMarcas"));
 
+document
+  .getElementById("btnMediaHistorica")
+  .addEventListener("click", () => mostrarSeccionInicio("mediaHistorica"));
+  
 document
   .getElementById("btnTrimestreAnterior")
   .addEventListener("click", async () => {
