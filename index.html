@@ -2116,16 +2116,29 @@ if (btnDiaSiguiente) {
       ascending: false
     });
 
-  const {
-    count: totalJugadores
-  } =
-    await supabaseClient
-      .from("jugadores")
-      .select("*", {
-        count: "exact",
-        head: true
-      })
-      .eq("activo", true);
+ const {
+  data: jugadoresHistoricos,
+  error: errorJugadoresHistoricos
+} =
+  await supabaseClient
+    .from("jugadores")
+    .select("id, fecha_alta, fecha_baja");
+
+const totalJugadores =
+  (jugadoresHistoricos || [])
+    .filter(jugador => {
+
+      const dadoDeAlta =
+        !jugador.fecha_alta ||
+        jugador.fecha_alta <= hoy;
+
+      const noDadoDeBaja =
+        !jugador.fecha_baja ||
+        jugador.fecha_baja > hoy;
+
+      return dadoDeAlta && noDadoDeBaja;
+    })
+    .length;
   
   const contadorJugadoresHoy =
     document.getElementById("contadorJugadoresHoy");
