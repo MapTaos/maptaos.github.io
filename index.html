@@ -2873,6 +2873,175 @@ const fechaAnterior =
     }).join("");
 }
 
+
+async function cargarMedalleroMensual() {
+
+  const contenedor =
+    document.getElementById("rankingMedallero");
+
+  if (!contenedor) return;
+
+  contenedor.innerHTML = "Cargando medallero...";
+
+  const { data, error } =
+    await supabaseClient
+      .from("ranking_mensual")
+      .select(
+        "inicio_mes, jugador_id, nombre, alias, puntos, posicion"
+      )
+      .in("posicion", [1, 2, 3])
+      .order("inicio_mes", { ascending: false })
+      .order("posicion", { ascending: true });
+
+  if (error) {
+    console.error(
+      "Error cargando medallero mensual:",
+      error
+    );
+
+    contenedor.innerHTML =
+      "No se pudo cargar el medallero.";
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    contenedor.innerHTML =
+      "Todavía no hay medallas.";
+    return;
+  }
+
+  const meses = {};
+
+  data.forEach(fila => {
+
+    if (!meses[fila.inicio_mes]) {
+      meses[fila.inicio_mes] = {};
+    }
+
+    meses[fila.inicio_mes][fila.posicion] = fila;
+  });
+
+  const nombresMeses = [
+    "ENERO", "FEBRERO", "MARZO", "ABRIL",
+    "MAYO", "JUNIO", "JULIO", "AGOSTO",
+    "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
+  ];
+
+  const fechaActual = fechaMadridISO();
+
+  const inicioMesActual =
+    `${fechaActual.slice(0, 7)}-01`;
+
+  let html = "";
+
+  Object.keys(meses)
+    .sort((a, b) => b.localeCompare(a))
+    .forEach((inicioMes, indice) => {
+
+      const [anio, mes] =
+        inicioMes.split("-").map(Number);
+
+      const esMesActual =
+        inicioMes === inicioMesActual;
+
+      const podio = meses[inicioMes];
+
+      const medallas = [
+        { posicion: 1, simbolo: "🥇" },
+        { posicion: 2, simbolo: "🥈" },
+        { posicion: 3, simbolo: "🥉" }
+      ];
+
+      html += `
+        <div style="
+          ${indice > 0
+            ? "border-top:1px solid #d5d8da; padding-top:16px;"
+            : ""}
+          margin-bottom:16px;
+        ">
+
+          <div style="
+            font-size:13px;
+            font-weight:700;
+            margin-bottom:12px;
+          ">
+            ${nombresMeses[mes - 1]} ${anio}
+            ${esMesActual
+              ? '<span style="font-weight:500; color:#777;"> · PROVISIONAL</span>'
+              : ""}
+          </div>
+
+          <div style="
+            display:grid;
+            grid-template-columns:repeat(3, minmax(0, 1fr));
+            gap:6px;
+            text-align:center;
+          ">
+
+            ${medallas.map(medalla => {
+
+              const jugador =
+                podio[medalla.posicion];
+
+              if (!jugador) {
+                return `
+                  <div>
+                    <div style="font-size:22px;">
+                      ${medalla.simbolo}
+                    </div>
+
+                    <div style="
+                      margin-top:5px;
+                      color:#999;
+                    ">
+                      —
+                    </div>
+                  </div>
+                `;
+              }
+
+              const nombre =
+                jugador.alias || jugador.nombre;
+
+              return `
+                <div>
+                  <div style="font-size:22px;">
+                    ${medalla.simbolo}
+                  </div>
+
+                  <div style="
+                    margin-top:5px;
+                    font-weight:600;
+                    overflow:hidden;
+                    text-overflow:ellipsis;
+                    white-space:nowrap;
+                  ">
+                    ${nombre}
+                  </div>
+
+                  <div style="
+                    margin-top:2px;
+                    font-size:12px;
+                    color:#777;
+                  ">
+                    ${Number(jugador.puntos).toLocaleString("es-ES")}
+                  </div>
+                </div>
+              `;
+
+            }).join("")}
+
+          </div>
+
+        </div>
+      `;
+    });
+
+  contenedor.innerHTML = html;
+}
+
+  
 let desplazamientoMesContinentes = 0;
   
 async function cargarRankingContinentes() {
