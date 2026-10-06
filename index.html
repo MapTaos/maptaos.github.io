@@ -2905,7 +2905,12 @@ async function cargarMedalleroMensual() {
     return;
   }
 
-  if (!data || data.length === 0) {
+  const datosMedallero =
+    (data || []).filter(fila =>
+    fila.inicio_mes >= "2026-10-01"
+  );
+  
+  if (datosMedallero.length === 0) {
     contenedor.innerHTML =
       "Todavía no hay medallas.";
     return;
@@ -2913,7 +2918,7 @@ async function cargarMedalleroMensual() {
 
   const meses = {};
 
-  data.forEach(fila => {
+  datosMedallero.forEach(fila => {
 
     if (!meses[fila.inicio_mes]) {
       meses[fila.inicio_mes] = {};
@@ -3013,10 +3018,16 @@ async function cargarMedalleroMensual() {
                   <div style="
                     margin-top:5px;
                     font-weight:600;
-                    overflow:hidden;
-                    text-overflow:ellipsis;
-                    white-space:nowrap;
-                  ">
+                    <div style="
+                      margin-top:5px;
+                      font-weight:600;
+                      font-size:13px;
+                      line-height:1.15;
+                      overflow-wrap:anywhere;
+                    ">
+                      ${nombre}
+                    </div>
+                                      ">
                     ${nombre}
                   </div>
 
