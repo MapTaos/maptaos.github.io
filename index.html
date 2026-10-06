@@ -3745,6 +3745,21 @@ const { count: jugadoresHoy } =
     .from("ranking_diario")
     .select("*", { count: "exact", head: true })
     .eq("fecha", hoy);
+
+const { data: mediaHistoricaJugador } =
+  await supabaseClient
+    .from("ranking_media_historica")
+    .select("posicion, media")
+    .eq("jugador_id", jugadorId)
+    .maybeSingle();
+
+const { count: totalMediaHistorica } =
+  await supabaseClient
+    .from("ranking_media_historica")
+    .select("*", {
+      count: "exact",
+      head: true
+    });
   
 if (error) {
     profileContent.innerHTML =
@@ -3902,7 +3917,18 @@ profileContent.innerHTML = `
 
 <div>
   <div style="font-size:13px;">📊 Media histórica</div>
-  <strong>${media}</strong>
+  <strong>
+    ${mediaHistoricaJugador?.media ?? media}
+  </strong>
+  ${
+    mediaHistoricaJugador
+      ? `
+        <span style="font-size:12px; color:#777;">
+          — ${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}
+        </span>
+      `
+      : ""
+  }
 </div>
 
 </div>
