@@ -1113,49 +1113,49 @@
 
 <div class="card hidden" id="seccionMedallero">
 
-  <h2 class="home-section-title">
-    🏅 Medallero
-  </h2>
-
   <div style="
     display:flex;
-    justify-content:center;
-    gap:6px;
-    margin-bottom:14px;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
   ">
+
+    <h2
+      id="tituloMedallero"
+      class="home-section-title"
+      style="margin:0;"
+    >
+      🏅 Medallero mensual
+    </h2>
+
     <button
       type="button"
-      id="btnMedalleroGlobal"
+      id="btnCambiarMedallero"
       style="
-        background:#111;
-        color:#fff;
-        border:1px solid #111;
+        width:auto;
+        padding:5px 10px;
+        font-size:12px;
+        white-space:nowrap;
       "
     >
       Global
     </button>
 
-    <button
-      type="button"
-      id="btnMedalleroMensual"
-    >
-      Mensual
-    </button>
   </div>
 
-  <div id="rankingMedalleroGlobal">
+  <div id="rankingMedallero">
     Cargando medallero...
   </div>
 
   <div
-    id="rankingMedallero"
+    id="rankingMedalleroGlobal"
     class="hidden"
   >
     Cargando medallero...
   </div>
 
-</div>
-    
+</div>    
 <div class="card hidden" id="seccionMejoresMarcas">
 
   <h2 class="home-section-title">
