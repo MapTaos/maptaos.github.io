@@ -661,6 +661,20 @@
       🎮 indica el número de partidas utilizadas para calcular la media.
     </p>
     <p>
+      🏅 <strong>Medallero</strong> — recoge las medallas obtenidas en las
+      clasificaciones mensuales desde octubre de 2026.
+      <br>
+      <strong>Mensual:</strong> muestra el podio 🥇 🥈 🥉 de cada mes y los
+      puntos obtenidos por cada jugador. El mes en curso aparece como
+      PROVISIONAL hasta que finaliza.
+      <br>
+      <strong>Global:</strong> suma las medallas mensuales conseguidas por cada
+      jugador. La clasificación se ordena por número de 🥇, 🥈 y 🥉. 
+      Si coinciden las cantidades, los jugadores comparten posición.
+      <br>
+      <strong>Total</strong> indica la suma de todas las medallas conseguidas.
+    </p>
+    <p>
       🏆 <strong>Histórico</strong> — muestra las 50 mejores partidas de toda
       la historia de MapTaos. Un mismo jugador puede aparecer varias veces
       si tiene varias partidas entre las 50 mejores.
@@ -3148,7 +3162,6 @@ async function cargarMedalleroMensual() {
         oros: 0,
         platas: 0,
         bronces: 0,
-        meses: 0
       };
     }
 
@@ -3157,7 +3170,7 @@ async function cargarMedalleroMensual() {
 
     // Cada fila de ranking_mensual representa
     // la participación del jugador en ese mes.
-    jugador.meses++;
+    
 
     if (fila.posicion === 1) {
       jugador.oros++;
