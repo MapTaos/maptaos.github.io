@@ -1991,6 +1991,7 @@ if (resultadoPendiente.tieneBanderas) {
     await cargarMejoresMarcas();
     await cargarMediaHistorica();
     await cargarMedalleroMensual();
+    await cargarMedalleroGlobal();
     await cargarTop50Historico();
     
     resultadoPendiente = null;
@@ -5600,6 +5601,7 @@ async function iniciarApp() {
   await cargarMejoresMarcas();
   await cargarMediaHistorica();
   await cargarMedalleroMensual();
+  await cargarMedalleroGlobal();
   await cargarTop50Historico();
   
 }
