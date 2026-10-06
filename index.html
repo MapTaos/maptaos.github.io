@@ -1114,10 +1114,43 @@
 <div class="card hidden" id="seccionMedallero">
 
   <h2 class="home-section-title">
-    🏅 Medallero mensual
+    🏅 Medallero
   </h2>
 
-  <div id="rankingMedallero">
+  <div style="
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    margin-bottom:14px;
+  ">
+    <button
+      type="button"
+      id="btnMedalleroGlobal"
+      style="
+        background:#111;
+        color:#fff;
+        border:1px solid #111;
+      "
+    >
+      Global
+    </button>
+
+    <button
+      type="button"
+      id="btnMedalleroMensual"
+    >
+      Mensual
+    </button>
+  </div>
+
+  <div id="rankingMedalleroGlobal">
+    Cargando medallero...
+  </div>
+
+  <div
+    id="rankingMedallero"
+    class="hidden"
+  >
     Cargando medallero...
   </div>
 
