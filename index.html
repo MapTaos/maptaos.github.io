@@ -4752,7 +4752,7 @@ plugins: {
   
  document
   .getElementById("backFromProfile")
-  .addEventListener("click", async () => {
+  .addEventListener("click", () => {
 
     document
       .getElementById("profileView")
@@ -4764,16 +4764,7 @@ plugins: {
       .classList
       .remove("hidden");
 
-    await cargarRankingHoy();
-    await cargarRankingSemanal();
-    await cargarRankingMensual();
-    await cargarTop20General();
-    await cargarRankingContinentes();
-    await cargarMejoresMarcas();
-    await cargarMediaHistorica();
-    await cargarMedalleroMensual();
-    await cargarTop50Historico();
-  });
+    });
 
 async function editarAlias() {
 
