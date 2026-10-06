@@ -5224,6 +5224,49 @@ document
 document
   .getElementById("btnMedallero")
   .addEventListener("click", () => mostrarSeccionInicio("medallero"));
+
+document
+  .getElementById("btnCambiarMedallero")
+  .addEventListener("click", () => {
+
+    const mensual =
+      document.getElementById("rankingMedallero");
+
+    const global =
+      document.getElementById("rankingMedalleroGlobal");
+
+    const titulo =
+      document.getElementById("tituloMedallero");
+
+    const boton =
+      document.getElementById("btnCambiarMedallero");
+
+    const mostrandoMensual =
+      !mensual.classList.contains("hidden");
+
+    if (mostrandoMensual) {
+
+      mensual.classList.add("hidden");
+      global.classList.remove("hidden");
+
+      titulo.textContent =
+        "🏅 Medallero global";
+
+      boton.textContent =
+        "Mensual";
+
+    } else {
+
+      global.classList.add("hidden");
+      mensual.classList.remove("hidden");
+
+      titulo.textContent =
+        "🏅 Medallero mensual";
+
+      boton.textContent =
+        "Global";
+    }
+  });
   
 document
   .getElementById("btnTrimestreAnterior")
