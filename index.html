@@ -3221,7 +3221,7 @@ async function cargarMedalleroMensual() {
       <strong>🥇</strong>
       <strong>🥈</strong>
       <strong>🥉</strong>
-      <span title="Meses disputados">📅</span>
+      <strong>Total</strong>
     </div>
   `;
 
@@ -3276,9 +3276,9 @@ async function cargarMedalleroMensual() {
 
         <div style="
           text-align:center;
-          color:#666;
+          font-weight:600;
         ">
-          ${jugador.meses}
+          ${jugador.oros + jugador.platas + jugador.bronces}
         </div>
 
       </div>
