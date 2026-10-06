@@ -3152,38 +3152,57 @@ async function cargarMedalleroMensual() {
 
   const jugadores = {};
 
-  data.forEach(fila => {
+const fechaActual = fechaMadridISO();
 
-    if (!jugadores[fila.jugador_id]) {
-      jugadores[fila.jugador_id] = {
-        jugador_id: fila.jugador_id,
-        nombre: fila.nombre,
-        alias: fila.alias,
-        oros: 0,
-        platas: 0,
-        bronces: 0,
-      };
+const inicioMesActual =
+  `${fechaActual.slice(0, 7)}-01`;
+
+data.forEach(fila => {
+
+  if (!jugadores[fila.jugador_id]) {
+    jugadores[fila.jugador_id] = {
+      jugador_id: fila.jugador_id,
+      nombre: fila.nombre,
+      alias: fila.alias,
+      oros: 0,
+      platas: 0,
+      bronces: 0,
+      oroProvisional: false,
+      plataProvisional: false,
+      bronceProvisional: false
+    };
+  }
+
+  const jugador =
+    jugadores[fila.jugador_id];
+
+  const esMesActual =
+    fila.inicio_mes === inicioMesActual;
+
+  if (fila.posicion === 1) {
+    jugador.oros++;
+
+    if (esMesActual) {
+      jugador.oroProvisional = true;
     }
+  }
 
-    const jugador =
-      jugadores[fila.jugador_id];
+  if (fila.posicion === 2) {
+    jugador.platas++;
 
-    // Cada fila de ranking_mensual representa
-    // la participación del jugador en ese mes.
-    
-
-    if (fila.posicion === 1) {
-      jugador.oros++;
+    if (esMesActual) {
+      jugador.plataProvisional = true;
     }
+  }
 
-    if (fila.posicion === 2) {
-      jugador.platas++;
-    }
+  if (fila.posicion === 3) {
+    jugador.bronces++;
 
-    if (fila.posicion === 3) {
-      jugador.bronces++;
+    if (esMesActual) {
+      jugador.bronceProvisional = true;
     }
-  });
+  }
+});
 
   const clasificacion =
     Object.values(jugadores)
@@ -3276,15 +3295,15 @@ async function cargarMedalleroMensual() {
         </div>
 
         <div style="text-align:center;">
-          ${jugador.oros}
+          ${jugador.oros}${jugador.oroProvisional ? "*" : ""}
         </div>
 
         <div style="text-align:center;">
-          ${jugador.platas}
+          ${jugador.platas}${jugador.plataProvisional ? "*" : ""}
         </div>
 
         <div style="text-align:center;">
-          ${jugador.bronces}
+          ${jugador.bronces}${jugador.bronceProvisional ? "*" : ""}
         </div>
 
         <div style="
@@ -3298,6 +3317,16 @@ async function cargarMedalleroMensual() {
     `;
   });
 
+html += `
+  <div style="
+    margin-top:8px;
+    font-size:11px;
+    color:#777;
+  ">
+    * Medalla provisional del mes actual
+  </div>
+`;
+    
   contenedor.innerHTML = html;
 }
   
