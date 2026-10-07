@@ -3784,31 +3784,42 @@ continentes.forEach(continente => {
   const podio =
     meses[inicioMes][continente] || {};
 
-  html += `
+html += `
+  <div style="
+    background:#f3f4f5;
+    border-radius:10px;
+    margin-bottom:3px;
+    overflow:hidden;
+  ">
+
     <div style="
-      background:#f3f4f5;
-      border-radius:10px;
-      padding:7px 6px 8px;
-      margin-bottom:6px;
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
     ">
 
-      <div style="
-        font-size:12px;
-        font-weight:700;
-        color:#444;
-        text-align:center;
-        margin-bottom:6px;
-      ">
-        ${continente}
-      </div>
+      <div></div>
 
       <div style="
-        display:grid;
-        grid-template-columns:repeat(3, minmax(0, 1fr));
-        gap:6px;
-        align-items:center;
+        text-align:center;
+        font-size:13px;
+        font-weight:700;
+        padding:4px 2px 3px;
+        border-left:2px solid #fff;
+        border-right:2px solid #fff;
       ">
-  `;
+        ${continente.toUpperCase()}
+      </div>
+
+      <div></div>
+
+    </div>
+
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      align-items:stretch;
+    ">
+`;
 
 
   medallas.forEach((medalla, indiceMedalla) => {
@@ -3843,6 +3854,7 @@ continentes.forEach(continente => {
           font-weight:600;
           font-size:12px;
           ${indiceMedalla > 0 ? "border-left:2px solid #fff;" : ""}
+          padding:4px 2px 5px;
           line-height:1.15;
           white-space:nowrap;
           overflow:hidden;
