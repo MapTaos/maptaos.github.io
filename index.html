@@ -1127,52 +1127,109 @@
 
 <div class="card hidden" id="seccionMedallero">
 
+  <!-- SELECTOR GENERAL / CONTINENTES -->
   <div style="
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:10px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    margin-bottom:14px;
   ">
-
-    <h2
-      id="tituloMedallero"
-      class="home-section-title"
-      style="margin:0;"
-    >
-      🏅 Medallero mensual
-    </h2>
 
     <button
       type="button"
-      id="btnCambiarMedallero"
+      id="btnMedalleroGeneral"
       style="
-        width:90px;
-        padding:7px 12px;
+        padding:8px 10px;
         font-size:13px;
         font-weight:600;
         border-radius:8px;
-        white-space:nowrap;
-        border:1px solid #c5c9cc;
+        border:1px solid #111;
+        background:#111;
+        color:#fff;
       "
     >
-      Global
+      General
+    </button>
+
+    <button
+      type="button"
+      id="btnMedalleroContinentes"
+      style="
+        padding:8px 10px;
+        font-size:13px;
+        font-weight:600;
+        border-radius:8px;
+        border:1px solid #c5c9cc;
+        background:#e1e4e6;
+        color:#111;
+      "
+    >
+      🌍 Continentes
     </button>
 
   </div>
 
-  <div id="rankingMedallero">
-    Cargando medallero...
+
+  <!-- MEDALLERO GENERAL -->
+  <div id="bloqueMedalleroGeneral">
+
+    <div style="
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    ">
+
+      <h2
+        id="tituloMedallero"
+        class="home-section-title"
+        style="margin:0;"
+      >
+        🏅 Medallero mensual
+      </h2>
+
+      <button
+        type="button"
+        id="btnCambiarMedallero"
+        style="
+          width:90px;
+          padding:7px 12px;
+          font-size:13px;
+          font-weight:600;
+          border-radius:8px;
+          white-space:nowrap;
+          border:1px solid #c5c9cc;
+        "
+      >
+        Global
+      </button>
+
+    </div>
+
+    <div id="rankingMedallero">
+      Cargando medallero...
+    </div>
+
+    <div
+      id="rankingMedalleroGlobal"
+      class="hidden"
+    >
+      Cargando medallero...
+    </div>
+
   </div>
 
+
+  <!-- MEDALLERO DE CONTINENTES -->
   <div
-    id="rankingMedalleroGlobal"
+    id="bloqueMedalleroContinentes"
     class="hidden"
   >
-    Cargando medallero...
+    Cargando medallero de continentes...
   </div>
 
-</div>    
+</div> 
 <div class="card hidden" id="seccionMejoresMarcas">
 
   <h2 class="home-section-title">
