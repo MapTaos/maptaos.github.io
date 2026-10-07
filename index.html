@@ -3786,38 +3786,27 @@ continentes.forEach(continente => {
 
 html += `
   <div style="
-    background:#f3f4f5;
-    border-radius:10px;
-    margin-bottom:3px;
+    margin-bottom:2px;
     overflow:hidden;
   ">
 
     <div style="
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
+      background:#fff;
+      text-align:center;
+      font-size:13px;
+      font-weight:700;
+      padding:3px 2px;
     ">
-
-      <div></div>
-
-      <div style="
-        text-align:center;
-        font-size:13px;
-        font-weight:700;
-        padding:4px 2px 3px;
-        border-left:2px solid #fff;
-        border-right:2px solid #fff;
-      ">
-        ${continente.toUpperCase()}
-      </div>
-
-      <div></div>
-
+      ${continente.toUpperCase()}
     </div>
 
     <div style="
       display:grid;
       grid-template-columns:repeat(3, minmax(0, 1fr));
       align-items:stretch;
+      background:#f3f4f5;
+      border-radius:8px;
+      overflow:hidden;
     ">
 `;
 
