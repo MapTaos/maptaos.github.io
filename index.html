@@ -1148,7 +1148,7 @@
         color:#fff;
       "
     >
-      General
+      🏅 General
     </button>
 
     <button
@@ -1164,7 +1164,7 @@
         color:#111;
       "
     >
-      🌍 Continentes
+      🏅 Continentes
     </button>
 
   </div>
@@ -5559,6 +5559,63 @@ document
       boton.textContent =
         "Global";
     }
+  });
+
+document
+  .getElementById("btnMedalleroGeneral")
+  .addEventListener("click", () => {
+
+    const general =
+      document.getElementById("bloqueMedalleroGeneral");
+
+    const continentes =
+      document.getElementById("bloqueMedalleroContinentes");
+
+    const btnGeneral =
+      document.getElementById("btnMedalleroGeneral");
+
+    const btnContinentes =
+      document.getElementById("btnMedalleroContinentes");
+
+    general.classList.remove("hidden");
+    continentes.classList.add("hidden");
+
+    btnGeneral.style.background = "#111";
+    btnGeneral.style.color = "#fff";
+    btnGeneral.style.border = "1px solid #111";
+
+    btnContinentes.style.background = "#e1e4e6";
+    btnContinentes.style.color = "#111";
+    btnContinentes.style.border = "1px solid #c5c9cc";
+  });
+
+
+document
+  .getElementById("btnMedalleroContinentes")
+  .addEventListener("click", () => {
+
+    const general =
+      document.getElementById("bloqueMedalleroGeneral");
+
+    const continentes =
+      document.getElementById("bloqueMedalleroContinentes");
+
+    const btnGeneral =
+      document.getElementById("btnMedalleroGeneral");
+
+    const btnContinentes =
+      document.getElementById("btnMedalleroContinentes");
+
+    general.classList.add("hidden");
+    continentes.classList.remove("hidden");
+
+    btnGeneral.style.background = "#e1e4e6";
+    btnGeneral.style.color = "#111";
+    btnGeneral.style.border = "1px solid #c5c9cc";
+
+    btnContinentes.style.background = "#111";
+    btnContinentes.style.color = "#fff";
+    btnContinentes.style.border = "1px solid #111";
   });
   
 document
