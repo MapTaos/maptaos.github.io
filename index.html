@@ -3648,6 +3648,232 @@ contenedor.innerHTML =
 }
 
 
+  async function cargarMedalleroContinentesMensual() {
+
+  const contenedor =
+    document.getElementById("rankingMedalleroContinentes");
+
+  if (!contenedor) return;
+
+  contenedor.innerHTML = "Cargando medallero...";
+
+  const { data, error } =
+    await supabaseClient
+      .from("ranking_continentes")
+      .select(
+        "inicio_mes, continente, posicion, jugador_id, nombre, alias"
+      )
+      .gte("inicio_mes", "2026-10-01")
+      .in("posicion", [1, 2, 3])
+      .order("inicio_mes", { ascending: false })
+      .order("continente", { ascending: true })
+      .order("posicion", { ascending: true });
+
+  if (error) {
+    console.error(
+      "Error cargando medallero mensual de continentes:",
+      error
+    );
+
+    contenedor.innerHTML =
+      "No se pudo cargar el medallero.";
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    contenedor.innerHTML =
+      "Todavía no hay medallas.";
+    return;
+  }
+
+  const meses = {};
+
+  data.forEach(fila => {
+
+    if (!meses[fila.inicio_mes]) {
+      meses[fila.inicio_mes] = {};
+    }
+
+    if (!meses[fila.inicio_mes][fila.continente]) {
+      meses[fila.inicio_mes][fila.continente] = {};
+    }
+
+    meses[fila.inicio_mes][fila.continente][fila.posicion] =
+      fila;
+  });
+
+
+  const nombresMeses = [
+    "ENERO", "FEBRERO", "MARZO", "ABRIL",
+    "MAYO", "JUNIO", "JULIO", "AGOSTO",
+    "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
+  ];
+
+  const continentes = [
+    "África",
+    "América",
+    "Asia",
+    "Europa",
+    "Oceanía"
+  ];
+
+  const fechaActual = fechaMadridISO();
+
+  const inicioMesActual =
+    `${fechaActual.slice(0, 7)}-01`;
+
+  const medallas = [
+    { posicion: 1, simbolo: "🥇" },
+    { posicion: 2, simbolo: "🥈" },
+    { posicion: 3, simbolo: "🥉" }
+  ];
+
+  let html = "";
+
+  Object.keys(meses)
+    .sort((a, b) => b.localeCompare(a))
+    .forEach((inicioMes, indiceMes) => {
+
+      const [anio, mes] =
+        inicioMes.split("-").map(Number);
+
+      const esMesActual =
+        inicioMes === inicioMesActual;
+
+      html += `
+        <div style="
+          ${indiceMes > 0
+            ? "border-top:1px solid #d5d8da; padding-top:16px;"
+            : ""}
+          margin-bottom:10px;
+        ">
+
+          <div style="
+            font-size:13px;
+            font-weight:700;
+            margin-bottom:9px;
+          ">
+            ${nombresMeses[mes - 1]} ${anio}
+            ${esMesActual
+              ? '<span style="font-weight:500; color:#777;"> · PROVISIONAL</span>'
+              : ""}
+          </div>
+      `;
+
+
+      continentes.forEach(continente => {
+
+        const podio =
+          meses[inicioMes][continente] || {};
+
+        html += `
+          <div style="
+            margin-bottom:10px;
+          ">
+
+            <div style="
+              font-size:13px;
+              font-weight:700;
+              margin-bottom:5px;
+            ">
+              ${continente}
+            </div>
+
+            <div style="
+              display:grid;
+              grid-template-columns:repeat(3, minmax(0, 1fr));
+              gap:6px;
+              text-align:center;
+            ">
+        `;
+
+
+        medallas.forEach(medalla => {
+
+          const jugador =
+            podio[medalla.posicion];
+
+          if (!jugador) {
+
+            html += `
+              <div style="
+                background:#f3f4f5;
+                border-radius:10px;
+                padding:6px 3px 5px;
+              ">
+                <div style="font-size:22px;">
+                  ${medalla.simbolo}
+                </div>
+
+                <div style="
+                  margin-top:5px;
+                  color:#999;
+                ">
+                  —
+                </div>
+              </div>
+            `;
+
+            return;
+          }
+
+          const nombre =
+            jugador.alias || jugador.nombre;
+
+          html += `
+            <div style="
+              min-width:0;
+              background:#f3f4f5;
+              border-radius:10px;
+              padding:6px 3px 5px;
+            ">
+
+              <div style="font-size:22px;">
+                ${medalla.simbolo}
+              </div>
+
+              <div
+                onclick="abrirPerfilJugador(${jugador.jugador_id}, '${nombre.replace(/'/g, "\\'")}')"
+                style="
+                  margin-top:5px;
+                  font-weight:600;
+                  font-size:13px;
+                  line-height:1.15;
+                  white-space:nowrap;
+                  overflow:hidden;
+                  text-overflow:ellipsis;
+                  letter-spacing:-0.2px;
+                  cursor:pointer;
+                "
+              >
+                ${nombre}
+              </div>
+
+            </div>
+          `;
+
+        });
+
+
+        html += `
+            </div>
+          </div>
+        `;
+
+      });
+
+
+      html += `
+        </div>
+      `;
+
+    });
+
+  contenedor.innerHTML = html;
+}
+  
+
 function toggleContinente(continente, boton) {
 
   const filas =
