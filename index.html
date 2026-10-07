@@ -3811,7 +3811,7 @@ continentes.forEach(continente => {
   `;
 
 
-  medallas.forEach(medalla => {
+  medallas.forEach((medalla, indiceMedalla) => {
 
     const jugador =
       podio[medalla.posicion];
@@ -3842,6 +3842,7 @@ continentes.forEach(continente => {
           text-align:center;
           font-weight:600;
           font-size:12px;
+          ${indiceMedalla > 0 ? "border-left:1px solid #d5d8da;" : ""}
           line-height:1.15;
           white-space:nowrap;
           overflow:hidden;
