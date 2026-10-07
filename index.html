@@ -3766,13 +3766,12 @@ contenedor.innerHTML =
 html += `
   <div style="
     display:grid;
-    grid-template-columns:68px repeat(3, minmax(0, 1fr));
+    grid-template-columns:repeat(3, minmax(0, 1fr));
     gap:4px;
     align-items:center;
     text-align:center;
     margin-bottom:5px;
   ">
-    <div></div>
     <div style="font-size:20px;">🥇</div>
     <div style="font-size:20px;">🥈</div>
     <div style="font-size:20px;">🥉</div>
@@ -3785,23 +3784,25 @@ continentes.forEach(continente => {
   const podio =
     meses[inicioMes][continente] || {};
 
-  html += `
-    <div style="
-      display:grid;
-      grid-template-columns:68px repeat(3, minmax(0, 1fr));
-      gap:4px;
-      align-items:center;
-      min-height:34px;
-      border-bottom:1px solid #eee;
-    ">
+    html += `
+      <div style="
+        padding:6px 0 7px;
+      ">
 
       <div style="
         font-size:12px;
         font-weight:700;
-        white-space:nowrap;
+        margin-bottom:5px;
       ">
         ${continente}
       </div>
+
+      <div style="
+        display:grid;
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+        gap:6px;
+        align-items:center;
+      ">
   `;
 
 
@@ -3836,9 +3837,7 @@ continentes.forEach(continente => {
           text-align:center;
           font-weight:600;
           font-size:11px;
-          line-height:1.1;
-          overflow:hidden;
-          text-overflow:ellipsis;
+          line-height:1.15;
           white-space:nowrap;
           cursor:pointer;
         "
@@ -3851,11 +3850,11 @@ continentes.forEach(continente => {
 
 
   html += `
+      </div>
     </div>
   `;
 
 });
-
 
       html += `
         </div>
