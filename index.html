@@ -1218,6 +1218,13 @@
       Cargando medallero...
     </div>
 
+    <div
+      id="rankingMedalleroContinentesGlobal"
+      class="hidden"
+    >
+      Cargando medallero global...
+    </div>
+    
   </div>
 
 
@@ -3409,6 +3416,223 @@ html += `
   contenedor.innerHTML = html;
 }
   
+
+async function cargarMedalleroContinentesGlobal() {
+
+  const contenedor =
+    document.getElementById("rankingMedalleroContinentesGlobal");
+
+  if (!contenedor) return;
+
+  contenedor.innerHTML = "Cargando medallero global...";
+
+  const { data, error } =
+    await supabaseClient
+      .from("ranking_continentes")
+      .select(
+        "inicio_mes, continente, jugador_id, nombre, alias, posicion"
+      )
+      .gte("inicio_mes", "2026-10-01")
+      .in("posicion", [1, 2, 3])
+      .order("inicio_mes", { ascending: true });
+
+  if (error) {
+    console.error(
+      "Error cargando medallero global de continentes:",
+      error
+    );
+
+    contenedor.innerHTML =
+      "No se pudo cargar el medallero.";
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    contenedor.innerHTML =
+      "Todavía no hay medallas.";
+    return;
+  }
+
+  const jugadores = {};
+
+  const fechaActual = fechaMadridISO();
+
+  const inicioMesActual =
+    `${fechaActual.slice(0, 7)}-01`;
+
+  data.forEach(fila => {
+
+    if (!jugadores[fila.jugador_id]) {
+      jugadores[fila.jugador_id] = {
+        jugador_id: fila.jugador_id,
+        nombre: fila.nombre,
+        alias: fila.alias,
+        oros: 0,
+        platas: 0,
+        bronces: 0,
+        oroProvisional: false,
+        plataProvisional: false,
+        bronceProvisional: false
+      };
+    }
+
+    const jugador =
+      jugadores[fila.jugador_id];
+
+    const esMesActual =
+      fila.inicio_mes === inicioMesActual;
+
+    if (fila.posicion === 1) {
+      jugador.oros++;
+
+      if (esMesActual) {
+        jugador.oroProvisional = true;
+      }
+    }
+
+    if (fila.posicion === 2) {
+      jugador.platas++;
+
+      if (esMesActual) {
+        jugador.plataProvisional = true;
+      }
+    }
+
+    if (fila.posicion === 3) {
+      jugador.bronces++;
+
+      if (esMesActual) {
+        jugador.bronceProvisional = true;
+      }
+    }
+  });
+
+  const clasificacion =
+    Object.values(jugadores)
+      .filter(jugador =>
+        jugador.oros > 0 ||
+        jugador.platas > 0 ||
+        jugador.bronces > 0
+      )
+      .sort((a, b) =>
+        b.oros - a.oros ||
+        b.platas - a.platas ||
+        b.bronces - a.bronces
+      );
+
+  let posicionAnterior = 0;
+  let jugadorAnterior = null;
+
+  clasificacion.forEach((jugador, indice) => {
+
+    if (
+      jugadorAnterior &&
+      jugador.oros === jugadorAnterior.oros &&
+      jugador.platas === jugadorAnterior.platas &&
+      jugador.bronces === jugadorAnterior.bronces
+    ) {
+      jugador.posicion = posicionAnterior;
+    } else {
+      jugador.posicion = indice + 1;
+      posicionAnterior = jugador.posicion;
+    }
+
+    jugadorAnterior = jugador;
+  });
+
+  let html = `
+    <div style="
+      display:grid;
+      grid-template-columns:28px minmax(0,1fr) 34px 34px 34px 42px;
+      gap:4px;
+      align-items:center;
+      padding:0 4px 7px;
+      font-size:13px;
+      text-align:center;
+      border-bottom:1px solid #d5d8da;
+    ">
+      <div></div>
+      <div></div>
+      <strong>🥇</strong>
+      <strong>🥈</strong>
+      <strong>🥉</strong>
+      <strong>Total</strong>
+    </div>
+  `;
+
+  clasificacion.forEach(jugador => {
+
+    const nombre =
+      jugador.alias || jugador.nombre;
+
+    html += `
+      <div style="
+        display:grid;
+        grid-template-columns:28px minmax(0,1fr) 34px 34px 34px 42px;
+        gap:4px;
+        align-items:center;
+        padding:9px 4px;
+        border-bottom:1px solid #eee;
+        font-size:13px;
+      ">
+
+        <div style="
+          text-align:center;
+          color:#666;
+        ">
+          ${jugador.posicion}
+        </div>
+
+        <div
+          onclick="abrirPerfilJugador(${jugador.jugador_id}, '${nombre.replace(/'/g, "\\'")}')"
+          style="
+            min-width:0;
+            font-weight:600;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            cursor:pointer;
+          "
+        >
+          ${nombre}
+        </div>
+
+        <div style="text-align:center;">
+          ${jugador.oros}${jugador.oroProvisional ? "*" : ""}
+        </div>
+
+        <div style="text-align:center;">
+          ${jugador.platas}${jugador.plataProvisional ? "*" : ""}
+        </div>
+
+        <div style="text-align:center;">
+          ${jugador.bronces}${jugador.bronceProvisional ? "*" : ""}
+        </div>
+
+        <div style="
+          text-align:center;
+          font-weight:600;
+        ">
+          ${jugador.oros + jugador.platas + jugador.bronces}
+        </div>
+
+      </div>
+    `;
+  });
+
+  html += `
+    <div style="
+      margin-top:8px;
+      font-size:11px;
+      color:#777;
+    ">
+      * Incluye medallas provisionales del mes actual
+    </div>
+  `;
+
+  contenedor.innerHTML = html;
+}
   
   
 let desplazamientoMesContinentes = 0;
