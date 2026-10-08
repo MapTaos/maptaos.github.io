@@ -6046,6 +6046,37 @@ document
     }
   });
 
+document.getElementById("btnCambiarMedalleroContinentes")
+  .addEventListener("click", () => {
+
+    const mensual =
+      document.getElementById("rankingMedalleroContinentes");
+
+    const global =
+      document.getElementById("rankingMedalleroContinentesGlobal");
+
+    const titulo =
+      document.getElementById("tituloMedalleroContinentes");
+
+    const boton =
+      document.getElementById("btnCambiarMedalleroContinentes");
+
+    const mostrarGlobal =
+      global.classList.contains("hidden");
+
+    mensual.classList.toggle("hidden", mostrarGlobal);
+    global.classList.toggle("hidden", !mostrarGlobal);
+
+    titulo.textContent = mostrarGlobal
+      ? "🌍 Medallero global"
+      : "🌍 Medallero mensual";
+
+    boton.textContent = mostrarGlobal
+      ? "Mensual"
+      : "Global";
+
+  });
+  
 document
   .getElementById("btnMedalleroGeneral")
   .addEventListener("click", () => {
