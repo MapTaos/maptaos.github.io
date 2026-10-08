@@ -824,10 +824,14 @@
 
   </div>
 
-  <!-- MENÚ MÁS -->
+ <!-- MENÚ MÁS -->
   <div
     id="menuMasRankings"
     class="hidden"
+    style="
+      position:relative;
+      z-index:1001;
+    "
   >
 
     <button type="button" id="btnTop20">
@@ -1276,22 +1280,25 @@
       background:#fff;
       border:1px solid #c5c9cc;
       border-radius:8px;
-      padding:5px;
+      padding:6px;
       box-shadow:0 4px 12px rgba(0,0,0,0.15);
-      z-index:100;
+      z-index:1000;
     "
   >
-    <button type="button" data-vista-medallero="mensual">
-      Mensual
-    </button>
+<button type="button" data-vista-medallero="mensual"
+  style="display:block;width:100%;margin:0 0 5px;padding:9px 6px;border:1px solid #c5c9cc;border-radius:8px;background:#e1e4e6;color:#111;cursor:pointer;">
+  Mensual
+</button>
 
-    <button type="button" data-vista-medallero="global">
-      Global
-    </button>
+<button type="button" data-vista-medallero="global"
+  style="display:block;width:100%;margin:0 0 5px;padding:9px 6px;border:1px solid #c5c9cc;border-radius:8px;background:#e1e4e6;color:#111;cursor:pointer;">
+  Global
+</button>
 
-    <button type="button" data-vista-medallero="porContinente">
-      Por continente
-    </button>
+<button type="button" data-vista-medallero="porContinente"
+  style="display:block;width:100%;margin:0;padding:9px 6px;border:1px solid #c5c9cc;border-radius:8px;background:#e1e4e6;color:#111;cursor:pointer;">
+  Por continente
+</button>
   </div>
 
 </div>
@@ -5980,6 +5987,8 @@ const menuMasRankings =
   document.getElementById("menuMasRankings");
 
 btnMasRankings.addEventListener("click", () => {
+  document.getElementById("menuMedalleroContinentes")
+  ?.classList.add("hidden");
 
   const seAbre =
     menuMasRankings.classList.contains("hidden");
@@ -6093,6 +6102,7 @@ const menuMedalleroContinentes =
   document.getElementById("menuMedalleroContinentes");
 
 btnMenuMedalleroContinentes.addEventListener("click", () => {
+  menuMasRankings.classList.add("hidden");
   menuMedalleroContinentes.classList.toggle("hidden");
 });
 
