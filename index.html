@@ -3776,6 +3776,38 @@ async function cargarMedalleroPorContinente() {
 
   const inicioMesActual = fechaMadridISO().slice(0, 7) + "-01";
 
+  const mostrarMedallas = (definitivas, provisionales) => `
+      <span style="
+        display:grid;
+        grid-template-columns:1fr;
+        align-items:center;
+        justify-items:center;
+        position:relative;
+        width:100%;
+        white-space:nowrap;
+      ">
+        <span style="
+          font-size:12px;
+          font-variant-numeric:tabular-nums;
+          text-align:center;
+        ">
+          ${definitivas}
+        </span>
+        ${provisionales > 0 ? `
+          <span style="
+            position:absolute;
+            left:calc(50% + 6px);
+            top:50%;
+            transform:translateY(-50%);
+            font-size:8px;
+            color:#777;
+          ">
+            +${provisionales}
+          </span>
+        ` : ""}
+      </span>
+    `;
+
   let html = "";
 
   continentes.forEach(continente => {
@@ -3794,28 +3826,37 @@ async function cargarMedalleroPorContinente() {
             oros: 0,
             platas: 0,
             bronces: 0,
-            oroProvisional: false,
-            plataProvisional: false,
-            bronceProvisional: false
+            orosProv: 0,
+            platasProv: 0,
+            broncesProv: 0
           };
         }
 
         const jugador = jugadores[fila.jugador_id];
         const provisional = fila.inicio_mes === inicioMesActual;
 
-        if (fila.posicion === 1) {
-          jugador.oros++;
-          if (provisional) jugador.oroProvisional = true;
+       if (fila.posicion === 1) {
+          if (provisional) {
+            jugador.orosProv++;
+          } else {
+            jugador.oros++;
+          }
         }
-
+        
         if (fila.posicion === 2) {
-          jugador.platas++;
-          if (provisional) jugador.plataProvisional = true;
+          if (provisional) {
+            jugador.platasProv++;
+          } else {
+            jugador.platas++;
+          }
         }
-
+        
         if (fila.posicion === 3) {
-          jugador.bronces++;
-          if (provisional) jugador.bronceProvisional = true;
+          if (provisional) {
+            jugador.broncesProv++;
+          } else {
+            jugador.bronces++;
+          }
         }
       });
 
@@ -3858,8 +3899,8 @@ async function cargarMedalleroPorContinente() {
 
       <div style="
         display:grid;
-        grid-template-columns:28px minmax(0,1fr) 34px 34px 34px 42px;
-        gap:4px;
+        grid-template-columns:20px minmax(0,1fr) 42px 42px 42px 47px;
+        gap:3px;
         align-items:center;
         padding:9px 4px 7px;
         font-size:13px;
@@ -3891,15 +3932,18 @@ async function cargarMedalleroPorContinente() {
       html += `
         <div style="
           display:grid;
-          grid-template-columns:28px minmax(0,1fr) 34px 34px 34px 42px;
-          gap:4px;
+          grid-template-columns:20px minmax(0,1fr) 42px 42px 42px 47px;
+          gap:3px;
           align-items:center;
           padding:9px 4px;
           border-bottom:1px solid #eee;
           font-size:13px;
         ">
           <div style="text-align:center;color:#666;">
-            ${jugador.posicion}
+            ${jugador.oros + jugador.platas + jugador.bronces === 0
+              ? "—"
+              : jugador.posicion}
+          </div>
           </div>
 
           <div
@@ -3907,6 +3951,7 @@ async function cargarMedalleroPorContinente() {
             style="
               min-width:0;
               font-weight:600;
+              font-size:12px;
               white-space:nowrap;
               overflow:hidden;
               text-overflow:ellipsis;
@@ -3917,30 +3962,35 @@ async function cargarMedalleroPorContinente() {
           </div>
 
           <div style="text-align:center;">
-            ${jugador.oros}${jugador.oroProvisional ? "*" : ""}
+            ${mostrarMedallas(jugador.oros, jugador.orosProv)}
           </div>
-
+          
           <div style="text-align:center;">
-            ${jugador.platas}${jugador.plataProvisional ? "*" : ""}
+            ${mostrarMedallas(jugador.platas, jugador.platasProv)}
           </div>
-
+          
           <div style="text-align:center;">
-            ${jugador.bronces}${jugador.bronceProvisional ? "*" : ""}
+            ${mostrarMedallas(jugador.bronces, jugador.broncesProv)}
           </div>
-
+          
           <div style="text-align:center;font-weight:600;">
-            ${jugador.oros + jugador.platas + jugador.bronces}
+            ${mostrarMedallas(
+              jugador.oros + jugador.platas + jugador.bronces,
+              jugador.orosProv + jugador.platasProv + jugador.broncesProv
+            )}
           </div>
         </div>
       `;
     });
   });
 
-  html += `
-    <div style="margin-top:10px;font-size:11px;color:#777;">
-      * Incluye medallas provisionales del mes actual
-    </div>
-  `;
+    html += `
+      <div style="margin-top:10px;font-size:11px;color:#777;">
+        Número principal: medallas consolidadas.
+        +n: medallas provisionales del mes actual.
+        Las provisionales no cuentan para la clasificación.
+      </div>
+    `;
 
   contenedor.innerHTML = html;
 }
