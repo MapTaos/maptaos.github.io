@@ -5193,6 +5193,52 @@ async function cargarTop50Historico() {
     errorTop50
   );
 }
+
+
+
+async function cargarMedallasGeneralesPerfil(jugadorId) {
+
+  const contenedor = document.getElementById("profileMedallasGenerales");
+  if (!contenedor) return;
+
+  const { data, error } = await supabaseClient
+    .from("ranking_mensual")
+    .select("inicio_mes, jugador_id, posicion")
+    .eq("jugador_id", jugadorId)
+    .gte("inicio_mes", "2026-10-01")
+    .in("posicion", [1, 2, 3]);
+
+  if (error) {
+    console.error("Error medallas del perfil:", error);
+    contenedor.textContent = "No disponible";
+    return;
+  }
+
+  const inicioMesActual = fechaMadridISO().slice(0, 7) + "-01";
+
+  const medallas = [0, 0, 0];
+  const provisionales = [0, 0, 0];
+
+  (data || []).forEach(fila => {
+    const indice = Number(fila.posicion) - 1;
+    const destino = fila.inicio_mes === inicioMesActual
+      ? provisionales
+      : medallas;
+
+    destino[indice]++;
+  });
+
+  const iconos = ["🥇", "🥈", "🥉"];
+
+  contenedor.innerHTML = iconos.map((icono, i) => {
+    const extra = provisionales[i] > 0
+      ? `<sup style="font-size:9px;color:#777;">+${provisionales[i]}</sup>`
+      : "";
+
+    return `<span>${icono}${medallas[i]}${extra}</span>`;
+  }).join(" ");
+}
+
   
   
 async function abrirPerfilJugador(jugadorId, nombre) {
@@ -5492,8 +5538,9 @@ profileContent.innerHTML = `
   
   appView.classList.add("hidden");
   profileView.classList.remove("hidden");
+  cargarMedallasGeneralesPerfil(jugadorId);
   mostrarEvolucion(resultados, "30d");
-mostrarTop10(top10, rondasPorFecha);
+  mostrarTop10(top10, rondasPorFecha);
  }
 
 function mostrarTop10(top10, rondasPorFecha) {
