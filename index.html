@@ -5313,15 +5313,14 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
       ${celda("🥈")}
       ${celda("🥉")}
       ${celda("Total", true)}
-
       <div style="
         grid-column:1 / -1;
-        border-top:1px solid #ccc;
-        height:0;
-        margin:2px 0;
+        width:100%;
+        height:1px;
+        background:#b8bec5;
+        margin:3px 0;
       "></div>
   `;
-
   continentes.forEach(continente => {
 
     const medallas = [0, 0, 0];
