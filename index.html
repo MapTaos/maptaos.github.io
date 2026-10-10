@@ -254,6 +254,21 @@
         padding-top: 14px;
         padding-bottom: 10px;
       }
+
+    #profileView #chartPeriodSelector {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+    }
+
+    #profileView #chartPeriodSelector button {
+      flex: 1;
+      min-width: 0;
+      width: auto;
+      padding: 8px 2px;
+      font-size: 12px;
+    }
+    
   </style>
 </head>
 
@@ -6039,6 +6054,21 @@ plugins: {
 },
       
       scales: {
+        x: {
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 6,
+            maxRotation: 0,
+            minRotation: 0,
+            font: {
+              size: 10
+            }
+          },
+          grid: {
+            display: false
+          }
+        },
+      
         y: {
           beginAtZero: false
         }
