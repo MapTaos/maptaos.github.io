@@ -5603,12 +5603,6 @@ profileContent.innerHTML = `
       </div>
 
       <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
-        <div style="font-size:12px; color:#666;">🏆 Mejor resultado</div>
-        <div style="font-size:21px; font-weight:700;">${mejor}</div>
-        <div style="font-size:11px; color:#777;">${fechaMejor}</div>
-      </div>
-
-      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
         <div style="font-size:12px; color:#666;">📊 Media histórica</div>
         <div style="font-size:21px; font-weight:700;">
           ${mediaHistoricaJugador?.media ?? media}
@@ -5622,6 +5616,12 @@ profileContent.innerHTML = `
             ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
             : "—"}
         </div>
+      </div>
+
+      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
+        <div style="font-size:12px; color:#666;">🏆 Mejor resultado</div>
+        <div style="font-size:21px; font-weight:700;">${mejor}</div>
+        <div style="font-size:11px; color:#777;">${fechaMejor}</div>
       </div>
 
       <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
