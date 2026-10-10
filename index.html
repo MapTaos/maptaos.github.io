@@ -5555,24 +5555,24 @@ profileContent.innerHTML = `
           📍 Resultado de hoy
         </div>
 
+        
         <div style="
-          font-size:26px;
-          font-weight:700;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          gap:28px;
           margin:4px 0;
         ">
-          ${resultadoHoy.final_score}
-        </div>
+          <div style="font-size:26px;font-weight:700;">
+            ${resultadoHoy.final_score}
+          </div>
 
-        ${rankingHoyJugador ? `
-        <div style="
-          font-size:21px;
-          font-weight:700;
-          color:#222;
-          margin-top:4px;
-        ">
-          ${rankingHoyJugador.posicion}º / ${jugadoresHoy}
+          ${rankingHoyJugador ? `
+            <div style="font-size:21px;font-weight:700;color:#222;">
+              ${rankingHoyJugador.posicion}º / ${jugadoresHoy}
+            </div>
+          ` : ""}
         </div>
-        ` : ""}
 
         <div style="font-size:13px; margin-top:8px;">
           ${rondasHoyTexto}
