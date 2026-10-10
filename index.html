@@ -26,7 +26,7 @@
     
 #profileView {
   min-height: auto;
-  padding: 20px 12px 16px;
+  padding: 20px 24px 16px;
   position: absolute;
   top: 0;
   left: 0;
@@ -5369,9 +5369,14 @@ profileContent.innerHTML = `
         </div>
 
         ${rankingHoyJugador ? `
-          <div style="font-size:12px; color:#777;">
-            Puesto ${rankingHoyJugador.posicion}º de ${jugadoresHoy}
-          </div>
+        <div style="
+          font-size:21px;
+          font-weight:700;
+          color:#222;
+          margin-top:4px;
+        ">
+          ${rankingHoyJugador.posicion}º / ${jugadoresHoy}
+        </div>
         ` : ""}
 
         <div style="font-size:13px; margin-top:8px;">
