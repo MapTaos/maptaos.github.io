@@ -3172,8 +3172,12 @@ async function cargarMedalleroMensual() {
       meses[fila.inicio_mes] = {};
     }
 
-    meses[fila.inicio_mes][fila.posicion] = fila;
-  });
+    if (!meses[fila.inicio_mes][fila.posicion]) {
+      meses[fila.inicio_mes][fila.posicion] = [];
+    }
+    
+      meses[fila.inicio_mes][fila.posicion].push(fila);
+      });
 
   const nombresMeses = [
     "ENERO", "FEBRERO", "MARZO", "ABRIL",
@@ -3232,69 +3236,74 @@ async function cargarMedalleroMensual() {
             text-align:center;
           ">
 
-           ${medallas.map(medalla => {
+        ${medallas.map(medalla => {
 
-        const jugador =
-          podio[medalla.posicion];
-      
-        if (!jugador) {
-          return `
-            <div>
-              <div style="font-size:22px;">
-                ${medalla.simbolo}
-              </div>
-      
-              <div style="
-                margin-top:5px;
-                color:#999;
-              ">
-                —
-              </div>
-            </div>
-          `;
-        }
-      
-        const nombre =
-          jugador.alias || jugador.nombre;
-      
-        return `
-        <div style="
-          min-width:0;
-          text-align:center;
-          background:#f3f4f5;
-          border-radius:10px;
-          padding:6px 3px 5px;
-        ">
-            <div style="font-size:22px;">
-              ${medalla.simbolo}
-            </div>
-      
-            <div
-              onclick="abrirPerfilJugador(${jugador.jugador_id}, '${nombre.replace(/'/g, "\\'")}')"
-              style="
-                margin-top:5px;
-                font-weight:600;
-                font-size:13px;
-                line-height:1.15;
-                white-space:nowrap;
-                letter-spacing:-0.2px;
-                cursor:pointer;
-              "
-            >
-              ${nombre}
-            </div>
-                  
-            <div style="
-              margin-top:4px;
-              font-size:12px;
-              color:#777;
-            ">
-              ${Number(jugador.puntos).toLocaleString("es-ES")}
-            </div>
+  const jugadores = podio[medalla.posicion] || [];
+
+  return `
+    <div style="
+      min-width:0;
+      text-align:center;
+      background:#f3f4f5;
+      border-radius:10px;
+      padding:6px 3px 5px;
+    ">
+      <div style="font-size:22px;">
+        ${medalla.simbolo}
+      </div>
+
+      ${jugadores.length === 0
+        ? `
+          <div style="
+            margin-top:5px;
+            color:#999;
+          ">
+            —
           </div>
-        `;
-      
-      }).join("")}
+        `
+        : jugadores.map(jugador => {
+
+            const nombre = jugador.alias || jugador.nombre;
+
+            const nombreParaClick = nombre
+              .replace(/\\/g, "\\\\")
+              .replace(/'/g, "\\'");
+
+            return `
+              <div style="
+                margin-top:7px;
+                ${jugadores.length > 1
+                  ? "border-top:1px solid #d5d8da; padding-top:5px;"
+                  : ""}
+              ">
+                <div
+                  onclick="abrirPerfilJugador(${jugador.jugador_id}, '${nombreParaClick}')"
+                  style="
+                    font-weight:600;
+                    font-size:12px;
+                    line-height:1.15;
+                    overflow-wrap:anywhere;
+                    cursor:pointer;
+                  "
+                >
+                  ${nombre}
+                </div>
+
+                <div style="
+                  margin-top:4px;
+                  font-size:12px;
+                  color:#777;
+                ">
+                  ${Number(jugador.puntos).toLocaleString("es-ES")}
+                </div>
+              </div>
+            `;
+          }).join("")
+      }
+    </div>
+  `;
+
+}).join("")} 
 
           </div>
 
