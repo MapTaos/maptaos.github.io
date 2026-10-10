@@ -3399,27 +3399,30 @@ async function cargarMedalleroGlobal() {
     jugadorAnterior = jugador;
   });
 
-const mostrarMedallas = (definitivas, provisionales) => `
-  <span style="
-    display:inline-grid;
-    grid-template-columns:18px 25px;
-    align-items:center;
-    justify-content:center;
-    white-space:nowrap;
-  ">
-    <span style="text-align:center;">
-      ${definitivas}
-    </span>
-    <span style="
-      text-align:left;
-      color:#777;
-      font-size:10px;
-    ">
-      ${provisionales > 0 ? `(+${provisionales})` : ""}
-    </span>
-  </span>
-`;
-
+    const mostrarMedallas = (definitivas, provisionales) => `
+      <span style="
+        display:grid;
+        grid-template-columns:minmax(0,1fr) 15px;
+        align-items:center;
+        width:100%;
+        white-space:nowrap;
+      ">
+        <span style="
+          text-align:center;
+          font-size:12px;
+          font-variant-numeric:tabular-nums;
+        ">
+          ${definitivas}
+        </span>
+        <span style="
+          text-align:left;
+          font-size:8px;
+          color:#777;
+        ">
+          ${provisionales > 0 ? `(+${provisionales})` : ""}
+        </span>
+      </span>
+    `;
   let html = `
     <div style="
       display:grid;
@@ -3433,10 +3436,18 @@ const mostrarMedallas = (definitivas, provisionales) => `
     ">
       <div></div>
       <div></div>
-      <strong>🥇</strong>
-      <strong>🥈</strong>
-      <strong>🥉</strong>
-      <strong>Total</strong>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 15px;">
+        <strong style="text-align:center;">🥇</strong><span></span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 15px;">
+        <strong style="text-align:center;">🥈</strong><span></span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 15px;">
+        <strong style="text-align:center;">🥉</strong><span></span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 15px;">
+        <strong style="text-align:center;">Total</strong><span></span>
+      </div>
     </div>
   `;
 
