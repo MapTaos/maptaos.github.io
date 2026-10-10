@@ -5232,7 +5232,7 @@ async function cargarMedallasGeneralesPerfil(jugadorId) {
 
   contenedor.innerHTML = iconos.map((icono, i) => {
     const extra = provisionales[i] > 0
-      ? `<sup style="font-size:9px;color:#777;">+${provisionales[i]}</sup>`
+      ? `<sub style="font-size:9px;color:#777;">+${provisionales[i]}</sub>`
       : "";
 
     return `<span>${icono}${medallas[i]}${extra}</span>`;
@@ -5267,7 +5267,7 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
 
   const mostrar = (n, prov) =>
     `${n}${prov > 0
-      ? `<sup style="font-size:9px;color:#777;">+${prov}</sup>`
+      ? `<sub style="font-size:9px;color:#777;">+${prov}</sub>`
       : ""}`;
 
   const celda = (contenido, negrita = false) => `
