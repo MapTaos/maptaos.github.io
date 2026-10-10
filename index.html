@@ -3399,30 +3399,35 @@ async function cargarMedalleroGlobal() {
     jugadorAnterior = jugador;
   });
 
-    const mostrarMedallas = (definitivas, provisionales) => `
+   const mostrarMedallas = (definitivas, provisionales) => `
+  <span style="
+    display:block;
+    position:relative;
+    width:100%;
+    text-align:center;
+    white-space:nowrap;
+  ">
+    <span style="
+      font-size:12px;
+      font-variant-numeric:tabular-nums;
+    ">
+      ${definitivas}
+    </span>
+    ${provisionales > 0 ? `
       <span style="
-        display:grid;
-        grid-template-columns:minmax(0,1fr) 15px;
-        align-items:center;
-        width:100%;
-        white-space:nowrap;
+        position:absolute;
+        right:0;
+        top:50%;
+        transform:translateY(-50%);
+        font-size:8px;
+        color:#777;
       ">
-        <span style="
-          text-align:center;
-          font-size:12px;
-          font-variant-numeric:tabular-nums;
-        ">
-          ${definitivas}
-        </span>
-        <span style="
-          text-align:left;
-          font-size:8px;
-          color:#777;
-        ">
-          ${provisionales > 0 ? `(+${provisionales})` : ""}
-        </span>
+        (+${provisionales})
       </span>
-    `;
+    ` : ""}
+  </span>
+`;
+  
   let html = `
     <div style="
       display:grid;
@@ -3436,18 +3441,10 @@ async function cargarMedalleroGlobal() {
     ">
       <div></div>
       <div></div>
-      <div style="display:grid;grid-template-columns:minmax(0,1fr) 15px;">
-        <strong style="text-align:center;">🥇</strong><span></span>
-      </div>
-      <div style="display:grid;grid-template-columns:minmax(0,1fr) 15px;">
-        <strong style="text-align:center;">🥈</strong><span></span>
-      </div>
-      <div style="display:grid;grid-template-columns:minmax(0,1fr) 15px;">
-        <strong style="text-align:center;">🥉</strong><span></span>
-      </div>
-      <div style="display:grid;grid-template-columns:minmax(0,1fr) 15px;">
-        <strong style="text-align:center;">Total</strong><span></span>
-      </div>
+        <strong>🥇</strong>
+        <strong>🥈</strong>
+        <strong>🥉</strong>
+        <strong>Total</strong>
     </div>
   `;
 
