@@ -1508,15 +1508,28 @@
 
 <div class="card">
   <h2 class="home-section-title">📈 Evolución</h2>
-<div id="chartPeriodSelector">
-<button type="button" data-periodo="30d" class="active">30 días</button>
-  <button type="button" data-periodo="3m">3 meses</button>
-  <button type="button" data-periodo="1a">1 año</button>
-  <button type="button" data-periodo="todo">Todo</button>
-</div>
-  <div id="profileChart">
-    Cargando evolución...
+
+  <!-- FONDO GRIS DE EVOLUCIÓN -->
+  <div style="
+    background:#e5e7eb;
+    border-radius:12px;
+    padding:10px;
+  ">
+
+    <div id="chartPeriodSelector">
+      <button type="button" data-periodo="30d" class="active">30 días</button>
+      <button type="button" data-periodo="3m">3 meses</button>
+      <button type="button" data-periodo="1a">1 año</button>
+      <button type="button" data-periodo="todo">Todo</button>
+    </div>
+
+    <div id="profileChart">
+      Cargando evolución...
+    </div>
+
   </div>
+  <!-- FIN FONDO GRIS DE EVOLUCIÓN -->
+
 </div>
 
 <div class="card">
