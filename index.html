@@ -5313,6 +5313,13 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
       ${celda("🥈")}
       ${celda("🥉")}
       ${celda("Total", true)}
+
+      <div style="
+        grid-column:1 / -1;
+        border-top:1px solid #ccc;
+        height:0;
+        margin:2px 0;
+      "></div>
   `;
 
   continentes.forEach(continente => {
@@ -5593,7 +5600,7 @@ profileContent.innerHTML = `
           gap:28px;
           margin:4px 0;
         ">
-          <div style="font-size:26px;font-weight:700;">
+          <div style="font-size:21px;font-weight:700;">
             ${resultadoHoy.final_score}
           </div>
 
@@ -5652,13 +5659,13 @@ profileContent.innerHTML = `
           margin:4px 0;
         ">
           <div>
-            <div style="font-size:26px;font-weight:700;">
+            <div style="font-size:21px;font-weight:700;">
               ${mediaHistoricaJugador?.media ?? media}
             </div>
           </div>
 
           <div>
-            <div style="font-size:26px;font-weight:700;">
+            <div style="font-size:21px;font-weight:700;">
               ${mediaHistoricaJugador
                 ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
                 : "—"}
