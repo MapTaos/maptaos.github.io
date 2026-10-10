@@ -3399,34 +3399,37 @@ async function cargarMedalleroGlobal() {
     jugadorAnterior = jugador;
   });
 
-   const mostrarMedallas = (definitivas, provisionales) => `
-  <span style="
-    display:block;
-    position:relative;
-    width:100%;
-    text-align:center;
-    white-space:nowrap;
-  ">
+     const mostrarMedallas = (definitivas, provisionales) => `
     <span style="
-      font-size:12px;
-      font-variant-numeric:tabular-nums;
+      display:grid;
+      grid-template-columns:1fr;
+      align-items:center;
+      justify-items:center;
+      position:relative;
+      width:100%;
+      white-space:nowrap;
     ">
-      ${definitivas}
-    </span>
-    ${provisionales > 0 ? `
       <span style="
-        position:absolute;
-        right:0;
-        top:50%;
-        transform:translateY(-50%);
-        font-size:8px;
-        color:#777;
+        font-size:12px;
+        font-variant-numeric:tabular-nums;
+        text-align:center;
       ">
-        (+${provisionales})
+        ${definitivas}
       </span>
-    ` : ""}
-  </span>
-`;
+      ${provisionales > 0 ? `
+        <span style="
+          position:absolute;
+          left:calc(50% + 6px);
+          top:50%;
+          transform:translateY(-50%);
+          font-size:8px;
+          color:#777;
+        ">
+          (+${provisionales})
+        </span>
+      ` : ""}
+    </span>
+  `;
   
   let html = `
     <div style="
@@ -3479,6 +3482,7 @@ async function cargarMedalleroGlobal() {
           style="
             min-width:0;
             font-weight:600;
+            font-size:13px;
             white-space:nowrap;
             overflow:hidden;
             text-overflow:ellipsis;
