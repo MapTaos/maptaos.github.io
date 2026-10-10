@@ -5424,6 +5424,7 @@ profileContent.innerHTML = `
       `}
     </div>
 
+ 
     <!-- ESTADÍSTICAS GENERALES -->
     <div style="
       display:grid;
@@ -5448,11 +5449,6 @@ profileContent.innerHTML = `
       </div>
 
       <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
-        <div style="font-size:12px; color:#666;">🕐 Último resultado</div>
-        <div style="font-size:21px; font-weight:700;">${ultimo}</div>
-      </div>
-
-      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
         <div style="font-size:12px; color:#666;">📊 Media histórica</div>
         <div style="font-size:21px; font-weight:700;">
           ${mediaHistoricaJugador?.media ?? media}
@@ -5465,6 +5461,28 @@ profileContent.innerHTML = `
           ${mediaHistoricaJugador
             ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
             : "—"}
+        </div>
+      </div>
+
+      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
+        <div style="font-size:12px; color:#666;">🏅 Medallas generales</div>
+        <div id="profileMedallasGenerales" style="font-size:14px; margin-top:8px; white-space:nowrap;">
+          🥇0 🥈0 🥉0
+        </div>
+      </div>
+
+      <!-- MEDALLAS CONTINENTALES -->
+      <div style="
+        grid-column:1 / -1;
+        background:#f3f4f5;
+        border-radius:10px;
+        padding:8px;
+      ">
+        <div style="font-size:12px; color:#666; margin-bottom:4px;">
+          🌍 Medallas por continentes
+        </div>
+        <div id="profileMedallasContinentes" style="font-size:12px;">
+          Pendiente de cargar
         </div>
       </div>
 
