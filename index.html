@@ -3624,29 +3624,39 @@ async function cargarMedalleroContinentesGlobal() {
     const mostrarMedallas = (definitivas, provisionales) => `
       <span style="
         display:grid;
-        grid-template-columns:12px 22px;
+        grid-template-columns:1fr;
         align-items:center;
-        justify-content:center;
-        white-space:nowrap;
+        justify-items:center;
+        position:relative;
         width:100%;
+        white-space:nowrap;
       ">
-        <span style="text-align:center;">
+        <span style="
+          font-size:12px;
+          font-variant-numeric:tabular-nums;
+          text-align:center;
+        ">
           ${definitivas}
         </span>
-        <span style="
-          text-align:left;
-          color:#777;
-          font-size:9px;
-        ">
-          ${provisionales > 0 ? `(+${provisionales})` : ""}
-        </span>
+        ${provisionales > 0 ? `
+          <span style="
+            position:absolute;
+            left:calc(50% + 6px);
+            top:50%;
+            transform:translateY(-50%);
+            font-size:8px;
+            color:#777;
+          ">
+            +${provisionales}
+          </span>
+        ` : ""}
       </span>
     `;
 
   let html = `
     <div style="
       display:grid;
-      grid-template-columns:18px minmax(0,1fr) 38px 38px 38px 43px;
+      grid-template-columns:20px minmax(0,1fr) 42px 42px 42px 47px;
       gap:2px;
       align-items:center;
       padding:0 4px 7px;
@@ -3676,7 +3686,7 @@ async function cargarMedalleroContinentesGlobal() {
     html += `
       <div style="
         display:grid;
-        grid-template-columns:18px minmax(0,1fr) 38px 38px 38px 43px;
+        grid-template-columns:20px minmax(0,1fr) 42px 42px 42px 47px;
         gap:2px;
         align-items:center;
         padding:9px 4px;
@@ -3692,6 +3702,7 @@ async function cargarMedalleroContinentesGlobal() {
           style="
             min-width:0;
             font-weight:600;
+            font-size:13px;
             white-space:nowrap;
             overflow:hidden;
             text-overflow:ellipsis;
@@ -3727,7 +3738,7 @@ async function cargarMedalleroContinentesGlobal() {
       color:#777;
     ">
       Número principal: medallas consolidadas.
-      (+n): medallas provisionales del mes actual.
+      +n: medallas provisionales del mes actual.
       Las provisionales no cuentan para la clasificación.
     </div>
   `;
