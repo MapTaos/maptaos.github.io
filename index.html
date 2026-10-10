@@ -5632,21 +5632,39 @@ profileContent.innerHTML = `
         <div style="font-size:21px; font-weight:700;">${racha} días</div>
       </div>
 
-      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
-        <div style="font-size:12px; color:#666;">📊 Media histórica</div>
-        <div style="font-size:21px; font-weight:700;">
-          ${mediaHistoricaJugador?.media ?? media}
+      
+      <div style="
+        grid-column:1 / -1;
+        background:#f3f4f5;
+        border-radius:10px;
+        padding:10px;
+        text-align:center;
+      ">
+        <div style="font-size:12px;color:#666;margin-bottom:4px;">
+          📊 Media histórica
+        </div>
+
+        <div style="
+          display:flex;
+          justify-content:space-evenly;
+          align-items:center;
+        ">
+          <div>
+            <div style="font-size:21px;font-weight:700;">
+              ${mediaHistoricaJugador?.media ?? media}
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:21px;font-weight:700;">
+              ${mediaHistoricaJugador
+                ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
+                : "—"}
+            </div>
+          </div>
         </div>
       </div>
 
-      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
-        <div style="font-size:12px; color:#666;">🏅 Puesto</div>
-        <div style="font-size:21px; font-weight:700;">
-          ${mediaHistoricaJugador
-            ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
-            : "—"}
-        </div>
-      </div>
 
       <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
         <div style="font-size:12px; color:#666;">🏆 Mejor resultado</div>
