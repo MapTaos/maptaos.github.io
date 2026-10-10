@@ -5646,17 +5646,19 @@ profileContent.innerHTML = `
 
         <div style="
           display:flex;
-          justify-content:space-evenly;
+          justify-content:center;
           align-items:center;
+          gap:28px;
+          margin:4px 0;
         ">
           <div>
-            <div style="font-size:21px;font-weight:700;">
+            <div style="font-size:26px;font-weight:700;">
               ${mediaHistoricaJugador?.media ?? media}
             </div>
           </div>
 
           <div>
-            <div style="font-size:21px;font-weight:700;">
+            <div style="font-size:26px;font-weight:700;">
               ${mediaHistoricaJugador
                 ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
                 : "—"}
