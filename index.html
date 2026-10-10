@@ -5239,6 +5239,120 @@ async function cargarMedallasGeneralesPerfil(jugadorId) {
   }).join(" ");
 }
 
+
+
+async function cargarMedallasContinentesPerfil(jugadorId) {
+
+  const contenedor = document.getElementById("profileMedallasContinentes");
+  if (!contenedor) return;
+
+  const { data, error } = await supabaseClient
+    .from("ranking_continentes")
+    .select("inicio_mes, continente, posicion")
+    .eq("jugador_id", jugadorId)
+    .gte("inicio_mes", "2026-10-01")
+    .in("posicion", [1, 2, 3]);
+
+  if (error) {
+    console.error("Error medallas continentales del perfil:", error);
+    contenedor.textContent = "No disponible";
+    return;
+  }
+
+  const continentes = ["África", "América", "Asia", "Europa", "Oceanía"];
+  const inicioMesActual = fechaMadridISO().slice(0, 7) + "-01";
+
+  const totales = [0, 0, 0];
+  const totalesProv = [0, 0, 0];
+
+  const mostrar = (n, prov) =>
+    `${n}${prov > 0
+      ? `<sup style="font-size:9px;color:#777;">+${prov}</sup>`
+      : ""}`;
+
+  const celda = (contenido, negrita = false) => `
+    <div style="
+      text-align:center;
+      font-weight:${negrita ? "700" : "400"};
+      white-space:nowrap;
+    ">${contenido}</div>
+  `;
+
+  let html = `
+    <div style="
+      display:grid;
+      grid-template-columns:minmax(0,1fr) repeat(4, 43px);
+      gap:3px 2px;
+      align-items:center;
+      font-size:12px;
+      line-height:1.3;
+    ">
+      <div></div>
+      ${celda("🥇")}
+      ${celda("🥈")}
+      ${celda("🥉")}
+      ${celda("Total", true)}
+  `;
+
+  continentes.forEach(continente => {
+
+    const medallas = [0, 0, 0];
+    const provisionales = [0, 0, 0];
+
+    (data || [])
+      .filter(fila => fila.continente === continente)
+      .forEach(fila => {
+        const indice = Number(fila.posicion) - 1;
+        const provisional = fila.inicio_mes === inicioMesActual;
+
+        if (provisional) {
+          provisionales[indice]++;
+          totalesProv[indice]++;
+        } else {
+          medallas[indice]++;
+          totales[indice]++;
+        }
+      });
+
+    html += `<div>${continente}</div>`;
+
+    for (let i = 0; i < 3; i++) {
+      html += celda(mostrar(medallas[i], provisionales[i]));
+    }
+
+    html += celda(
+      mostrar(
+        medallas.reduce((a, b) => a + b, 0),
+        provisionales.reduce((a, b) => a + b, 0)
+      ),
+      true
+    );
+  });
+
+  html += `
+    <div style="font-weight:700;border-top:1px solid #ccc;padding-top:4px;">
+      Total
+    </div>
+  `;
+
+  for (let i = 0; i < 3; i++) {
+    html += celda(mostrar(totales[i], totalesProv[i]), true);
+  }
+
+  html += celda(
+    mostrar(
+      totales.reduce((a, b) => a + b, 0),
+      totalesProv.reduce((a, b) => a + b, 0)
+    ),
+    true
+  );
+
+  html += `</div>`;
+
+  contenedor.innerHTML = html;
+}
+
+
   
   
 async function abrirPerfilJugador(jugadorId, nombre) {
@@ -5539,6 +5653,7 @@ profileContent.innerHTML = `
   appView.classList.add("hidden");
   profileView.classList.remove("hidden");
   cargarMedallasGeneralesPerfil(jugadorId);
+  cargarMedallasContinentesPerfil(jugadorId);
   mostrarEvolucion(resultados, "30d");
   mostrarTop10(top10, rondasPorFecha);
  }
