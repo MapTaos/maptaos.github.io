@@ -5337,69 +5337,91 @@ if (resultadoHoy) {
 }
   
 profileContent.innerHTML = `
-    <div style="font-size:18px; line-height:2;">
-            ${resultadoHoy ? `
-              <div style="margin-bottom:12px;">
-              <strong>📍 Hoy: ${resultadoHoy.final_score}${rankingHoyJugador ? ` — ${rankingHoyJugador.posicion}º / ${jugadoresHoy}` : ""}</strong>
-              <div style="font-size:14px;">
-                ${rondasHoyTexto}
-            </div>
+  <div style="font-size:14px; line-height:1.4;">
+
+    <!-- RESULTADO DE HOY -->
+    <div style="
+      background:#f3f4f5;
+      border-radius:10px;
+      padding:10px 12px;
+      margin-bottom:12px;
+      text-align:center;
+    ">
+      ${resultadoHoy ? `
+        <div style="font-size:13px; color:#555;">
+          📍 Resultado de hoy
+        </div>
+
+        <div style="
+          font-size:26px;
+          font-weight:700;
+          margin:4px 0;
+        ">
+          ${resultadoHoy.final_score}
+        </div>
+
+        ${rankingHoyJugador ? `
+          <div style="font-size:12px; color:#777;">
+            Puesto ${rankingHoyJugador.posicion}º de ${jugadoresHoy}
           </div>
-        ` : `
-          <div style="margin-bottom:12px;">
-            📍 Todavía no ha jugado hoy
-          </div>
-        `}
-<div style="
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px 20px;
-  margin-top:12px;
-  line-height:1.4;
-">
+        ` : ""}
 
-  <div>
-    <div style="font-size:13px;">🎮 Partidas</div>
-    <strong>${partidas}</strong>
+        <div style="font-size:13px; margin-top:8px;">
+          ${rondasHoyTexto}
+        </div>
+      ` : `
+        <div style="font-size:13px; color:#777;">
+          📍 Todavía no ha jugado hoy
+        </div>
+      `}
+    </div>
+
+    <!-- ESTADÍSTICAS GENERALES -->
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:8px;
+    ">
+
+      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
+        <div style="font-size:12px; color:#666;">🎮 Partidas</div>
+        <div style="font-size:21px; font-weight:700;">${partidas}</div>
+      </div>
+
+      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
+        <div style="font-size:12px; color:#666;">🔥 Racha actual</div>
+        <div style="font-size:21px; font-weight:700;">${racha} días</div>
+      </div>
+
+      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
+        <div style="font-size:12px; color:#666;">🏆 Mejor resultado</div>
+        <div style="font-size:21px; font-weight:700;">${mejor}</div>
+        <div style="font-size:11px; color:#777;">${fechaMejor}</div>
+      </div>
+
+      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
+        <div style="font-size:12px; color:#666;">🕐 Último resultado</div>
+        <div style="font-size:21px; font-weight:700;">${ultimo}</div>
+      </div>
+
+      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
+        <div style="font-size:12px; color:#666;">📊 Media histórica</div>
+        <div style="font-size:21px; font-weight:700;">
+          ${mediaHistoricaJugador?.media ?? media}
+        </div>
+      </div>
+
+      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
+        <div style="font-size:12px; color:#666;">🏅 Puesto</div>
+        <div style="font-size:21px; font-weight:700;">
+          ${mediaHistoricaJugador
+            ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
+            : "—"}
+        </div>
+      </div>
+
+    </div>
   </div>
-
-<div>
-  <div style="font-size:13px;">🔥 Racha actual</div>
-  <strong>${racha} días</strong>
-</div>
-
-  <div>
-    <div style="font-size:13px;">🏆 Mejor resultado</div>
-    <strong>${mejor}</strong>
-    <span style="font-size:12px; color:#777;">
-      — ${fechaMejor}
-    </span>
-  </div>
-
-  <div>
-    <div style="font-size:13px;">🕐 Último resultado</div>
-    <strong>${ultimo}</strong>
-  </div>
-
-<div>
-  <div style="font-size:13px;">📊 Media histórica</div>
-  <strong>
-    ${mediaHistoricaJugador?.media ?? media}
-  </strong>
-</div>
-
-<div>
-  <div style="font-size:13px;">🏅 Puesto</div>
-  <strong>
-    ${
-      mediaHistoricaJugador
-        ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
-        : "—"
-    }
-  </strong>
-</div>
-</div>
-</div>
 `;
   
   appView.classList.add("hidden");
