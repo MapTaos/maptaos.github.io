@@ -4284,8 +4284,11 @@ contenedor.innerHTML =
       meses[fila.inicio_mes][fila.continente] = {};
     }
 
-    meses[fila.inicio_mes][fila.continente][fila.posicion] =
-      fila;
+    if (!meses[fila.inicio_mes][fila.continente][fila.posicion]) {
+      meses[fila.inicio_mes][fila.continente][fila.posicion] = [];
+    }
+    
+    meses[fila.inicio_mes][fila.continente][fila.posicion].push(fila);
   });
 
 
@@ -4396,51 +4399,63 @@ html += `
 `;
 
 
-  medallas.forEach((medalla, indiceMedalla) => {
+medallas.forEach((medalla, indiceMedalla) => {
 
-    const jugador =
-      podio[medalla.posicion];
+  const jugadores = podio[medalla.posicion] || [];
 
-    if (!jugador) {
-
-      html += `
-        <div style="
-          text-align:center;
-          color:#999;
-          font-size:12px;
-        ">
-          —
-        </div>
-      `;
-
-      return;
-    }
-
-    const nombre =
-      jugador.alias || jugador.nombre;
-
+  if (jugadores.length === 0) {
     html += `
+      <div style="
+        text-align:center;
+        color:#999;
+        font-size:12px;
+        padding:4px 2px 5px;
+        ${indiceMedalla > 0 ? "border-left:2px solid #fff;" : ""}
+      ">
+        —
+      </div>
+    `;
+    return;
+  }
+
+  const nombresJugadores = jugadores.map(jugador => {
+
+    const nombre = jugador.alias || jugador.nombre;
+
+    const nombreParaClick = nombre
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'");
+
+    return `
       <div
-        onclick="abrirPerfilJugador(${jugador.jugador_id}, '${nombre.replace(/'/g, "\\'")}')"
+        onclick="abrirPerfilJugador(${jugador.jugador_id}, '${nombreParaClick}')"
         style="
-          min-width:0;
-          text-align:center;
           font-weight:600;
           font-size:12px;
-          ${indiceMedalla > 0 ? "border-left:2px solid #fff;" : ""}
-          padding:4px 2px 5px;
-          line-height:1.15;
-          white-space:nowrap;
-          overflow:hidden;
-          text-overflow:ellipsis;
+          padding:3px 1px;
+          white-space:normal;
+          overflow-wrap:anywhere;
           cursor:pointer;
         "
       >
         ${nombre}
       </div>
     `;
+  }).join("");
 
-  });
+  html += `
+    <div style="
+      min-width:0;
+      text-align:center;
+      padding:2px 2px 4px;
+      line-height:1.15;
+      ${indiceMedalla > 0 ? "border-left:2px solid #fff;" : ""}
+    ">
+      ${nombresJugadores}
+    </div>
+  `;
+
+});
 
 
   html += `
