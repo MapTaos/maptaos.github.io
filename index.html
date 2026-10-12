@@ -5357,12 +5357,28 @@ async function cargarMedallasGeneralesPerfil(jugadorId) {
   const iconos = ["🥇", "🥈", "🥉"];
 
   contenedor.innerHTML = iconos.map((icono, i) => {
+
     const extra = provisionales[i] > 0
-      ? `<sub style="font-size:9px;color:#777;">+${provisionales[i]}</sub>`
+      ? `<span style="
+          font-size:9px;
+          font-weight:400;
+          color:#777;
+          margin-left:1px;
+        ">+${provisionales[i]}</span>`
       : "";
 
-    return `<span>${icono}${medallas[i]}${extra}</span>`;
-  }).join(" ");
+    return `
+      <span style="
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        white-space:nowrap;
+        font-size:16px;
+      ">
+        ${icono}${medallas[i]}${extra}
+      </span>
+    `;
+  }).join("");
 }
 
 
@@ -5829,8 +5845,24 @@ profileContent.innerHTML = `
         <div style="font-size:12px; color:#666; white-space:nowrap;">
           🏅 Medallas generales
         </div>
-        <div id="profileMedallasGenerales" style="font-size:21px; font-weight:700; margin-top:4px; white-space:nowrap;">
-          🥇0 🥈0 🥉0
+        <div
+            id="profileMedallasGenerales"
+            style="
+              display:grid;
+              grid-template-columns:repeat(3,minmax(0,1fr));
+              align-items:center;
+              text-align:center;
+              gap:2px;
+              font-size:16px;
+              font-weight:700;
+              margin-top:4px;
+              white-space:nowrap;
+            "
+          >
+            <span>🥇0</span>
+            <span>🥈0</span>
+            <span>🥉0</span>
+          </div>
         </div>
       </div>
 
