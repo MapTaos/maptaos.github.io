@@ -1654,19 +1654,9 @@
     </button>
   </h2>
 
-  <!-- FONDO GRIS DEL TOP-10 -->
-  <div style="
-    background:#e5e7eb;
-    border-radius:12px;
-    padding:10px;
-  ">
-
-    <div id="profileTop10">
-      Cargando mejores resultados...
-    </div>
-
+  <div id="profileTop10" class="placeholder">
+    Cargando mejores resultados...
   </div>
-  <!-- FIN FONDO GRIS DEL TOP-10 -->
 </div>
    
   </section>
@@ -6007,7 +5997,8 @@ function mostrarTop10(top10, rondasPorFecha) {
 
               <span style="
                 display:inline-block;
-                width:16px;
+                width:24px;
+                flex-shrink:0;
               ">
                 ${i + 1}
               </span>
@@ -6033,9 +6024,9 @@ function mostrarTop10(top10, rondasPorFecha) {
 
           <div style="
             margin-top:4px;
-            margin-left:58px;
+            margin-left:66px;
             font-size:13px;
-            width:calc(100% - 58px);
+            width:calc(100% - 66px);
           ">
             ${textoRondas}
           </div>
