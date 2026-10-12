@@ -5801,12 +5801,30 @@ profileContent.innerHTML = `
       </div>
 
 
-      <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
-        <div style="font-size:12px; color:#666;">🏆 Mejor resultado</div>
-        <div style="font-size:21px; font-weight:700;">${mejor}</div>
-        <div style="font-size:11px; color:#777;">${fechaMejor}</div>
+      <div style="
+        background:#f3f4f5;
+        border-radius:10px;
+        padding:10px;
+      ">
+        <div style="font-size:12px; color:#666;">
+          🏆 Mejor resultado
+        </div>
+      
+        <div style="
+          display:flex;
+          align-items:baseline;
+          gap:8px;
+          white-space:nowrap;
+        ">
+          <span style="font-size:21px; font-weight:700;">
+            ${mejor}
+          </span>
+      
+          <span style="font-size:11px; color:#777;">
+            ${fechaMejor}
+          </span>
+        </div>
       </div>
-
       <div style="background:#f3f4f5; border-radius:10px; padding:10px;">
         <div style="font-size:12px; color:#666; white-space:nowrap;">
           🏅 Medallas generales
