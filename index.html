@@ -917,7 +917,7 @@
     >
 
     <button type="button" id="btnTop20">
-      Top-20 · 3M
+      🏆 Top-20 · 3M
     </button>
 
     <button type="button" id="btnMejoresMarcas">
@@ -6131,8 +6131,12 @@ function mostrarTop50(top50, rondasPorFecha, errorTop50) {
     return;
   }
 
-  contenedor.innerHTML = top50
-    .map((fila, i) => {
+  const apariciones = {};
+
+    top50.forEach(fila => {
+      apariciones[fila.jugador_id] =
+        (apariciones[fila.jugador_id] || 0) + 1;
+  });
 
       const fecha =
         new Date(fila.fecha + "T00:00:00")
