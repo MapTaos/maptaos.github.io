@@ -6084,6 +6084,13 @@ function mostrarTop20(top20, rondasPorFecha, errorTop20) {
     return;
   }
 
+const apariciones = {};
+
+  top20.forEach(fila => {
+    apariciones[fila.jugador_id] =
+      (apariciones[fila.jugador_id] || 0) + 1;
+  });
+  
   contenedor.innerHTML = top20
     .map((fila, i) => {
 
@@ -6183,7 +6190,7 @@ const textoRondas = puntos
     ${fila.final_score}
   </strong>
 
- <strong
+<strong
   onclick="abrirPerfilJugador(${fila.jugador_id}, '${nombre}')"
   style="
     cursor:pointer;
@@ -6192,6 +6199,17 @@ const textoRondas = puntos
 >
   ${nombre}
 </strong>
+
+<span style="
+  margin-left:5px;
+  font-size:11px;
+  font-weight:400;
+  color:#777;
+  white-space:nowrap;
+">
+  ×${apariciones[fila.jugador_id]}
+</span>
+
 </div>
   
     <span style="
