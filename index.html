@@ -1455,68 +1455,82 @@
 <div style="
   background:#ffffff;
   border-radius:12px;
-  padding:10px 12px;
-  margin-bottom:0px;
+  padding:10px;
+  margin-bottom:0;
 ">
 
+  <!-- FONDO GRIS INTERIOR -->
   <div style="
+    background:#e5e7eb;
+    border-radius:12px;
+    padding:12px;
     display:flex;
     align-items:center;
+    justify-content:space-between;
     gap:10px;
   ">
 
     <button
       id="backFromProfile"
+      type="button"
       class="btn-secondary"
       style="
         width:auto;
         flex-shrink:0;
         padding:6px 9px;
-        font-size:14px;
+        font-size:12px;
+        border-radius:8px;
       "
     >
       ← Volver
     </button>
 
-    <h1
-      id="profileName"
-      style="
-        flex:1;
-        min-width:0;
-        text-align:center;
-        font-size:17px;
-        line-height:1.2;
-        margin:0;
-      "
-    >
-      Perfil
-    </h1>
+    <div style="
+      flex:1;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:8px;
+    ">
+
+      <h1
+        id="profileName"
+        style="
+          font-size:17px;
+          line-height:1.2;
+          text-align:right;
+          margin:0;
+          overflow-wrap:anywhere;
+        "
+      >
+        Perfil
+      </h1>
+
+      <div
+        id="editarAliasContainer"
+        class="hidden"
+      >
+        <button
+          id="btnEditarAlias"
+          type="button"
+          class="btn-secondary"
+          style="
+            width:auto;
+            padding:5px 9px;
+            font-size:12px;
+            border-radius:8px;
+            border:1px solid #b8bec5;
+          "
+        >
+          ✏️ Cambiar alias
+        </button>
+      </div>
+
+    </div>
 
   </div>
-
-  <div
-    id="editarAliasContainer"
-    class="hidden"
-    style="
-      text-align:center;
-      margin-top:7px;
-    "
-  >
-    <button
-      id="btnEditarAlias"
-      type="button"
-      class="btn-secondary"
-      style="
-        width:auto;
-        padding:5px 12px;
-        font-size:14px;
-        border-radius:8px;
-        border:1px solid #b8bec5;
-      "
-    >
-      ✏️ Cambiar alias
-    </button>
-  </div>
+  <!-- FIN FONDO GRIS INTERIOR -->
 
 </div>
 <!-- FIN CABECERA DEL PERFIL -->
