@@ -1522,7 +1522,30 @@
 <!-- FIN CABECERA DEL PERFIL -->
     
 <div class="card">
-  <h2 class="home-section-title">📊 Estadísticas</h2>
+  <h2 class="home-section-title"
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:8px;
+      ">
+    <span>📊 Estadísticas</span>
+
+    <button
+      type="button"
+      class="btn-secondary"
+      onclick="volverDesdePerfil()"
+      style="
+        width:auto;
+        flex-shrink:0;
+        padding:5px 9px;
+        font-size:12px;
+        border-radius:8px;
+      "
+    >
+      ← Volver
+    </button>
+  </h2>
 
     <div style="
       background:#e5e7eb;
@@ -6373,21 +6396,22 @@ plugins: {
     }
   });
   
- document
-  .getElementById("backFromProfile")
-  .addEventListener("click", () => {
-
+function volverDesdePerfil() {
     document
       .getElementById("profileView")
       .classList
       .add("hidden");
-
+  
     document
       .getElementById("appView")
       .classList
       .remove("hidden");
-
-    });
+  }
+  
+  document
+    .getElementById("backFromProfile")
+    .addEventListener("click", volverDesdePerfil);
+  
 
 async function editarAlias() {
 
