@@ -5895,6 +5895,8 @@ profileContent.innerHTML = `
   mostrarTop10(top10, rondasPorFecha);
  }
 
+  
+
 function mostrarTop10(top10, rondasPorFecha) {
 
   const contenedor =
@@ -5908,114 +5910,135 @@ function mostrarTop10(top10, rondasPorFecha) {
     return;
   }
 
-const totalTop10 = top10.reduce(
-  (suma, fila) => suma + Number(fila.final_score),
-  0
-);
-  
-contenedor.innerHTML = `
-  <div style="
-    text-align:center;
-    margin-bottom:12px;
-    font-size:20px;
-    font-weight:bold;
-  ">
-    ${totalTop10.toLocaleString("es-ES")}
-    <span style="
-      font-size:13px;
-      font-weight:normal;
-      color:#777;
-    ">
-      / 10.000
-    </span>
-  </div>
-` + top10
-  .map((fila, i) => {
+  contenedor.innerHTML = top10
+    .map((fila, i) => {
 
       const fecha =
         new Date(fila.fecha + "T00:00:00")
           .toLocaleDateString("es-ES");
 
       const rondasDia =
-  rondasPorFecha?.find(ronda => ronda.fecha === fila.fecha);
+        rondasPorFecha?.find(
+          ronda => ronda.fecha === fila.fecha
+        );
 
-const puntos = [
-  fila.ronda_1,
-  fila.ronda_2,
-  fila.ronda_3,
-  fila.ronda_4,
-  fila.ronda_5
-];
+      const puntos = [
+        fila.ronda_1,
+        fila.ronda_2,
+        fila.ronda_3,
+        fila.ronda_4,
+        fila.ronda_5
+      ];
 
-const banderas = rondasDia
-  ? [
-      rondasDia.pais_1,
-      rondasDia.pais_2,
-      rondasDia.pais_3,
-      rondasDia.pais_4,
-      rondasDia.pais_5
-    ]
-  : [];
+      const banderas = rondasDia
+        ? [
+            rondasDia.pais_1,
+            rondasDia.pais_2,
+            rondasDia.pais_3,
+            rondasDia.pais_4,
+            rondasDia.pais_5
+          ]
+        : [];
+
       const textoRondas = puntos
-  .map((puntosRonda, j) => {
-    if (puntosRonda === null) return "";
+        .map((puntosRonda, j) => {
 
-    const codigoPais =
-      banderaACodigo(banderas[j] || "");
+          if (puntosRonda === null) return "";
 
-return codigoPais
-  ? `<span style="white-space:nowrap;"><img
-       src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
-       alt="${codigoPais}"
-       style="width:20px;height:15px;vertical-align:middle;margin-right:1px;">${puntosRonda}</span>`
-  : `<span style="white-space:nowrap;">${puntosRonda}</span>`;
-  })
-        
-  .filter(Boolean)
-  .join("·");
-return `
-  <div style="padding:8px 0; border-bottom:1px solid #ddd;">
+          const codigoPais =
+            banderaACodigo(banderas[j] || "");
 
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:8px;
-    ">
-    <div>
-      <span style="
-        display:inline-block;
-        width:24px;
-        font-weight:normal;
-      ">
-        ${i + 1}
-      </span>
-    
-      <strong>${fila.final_score}</strong>
-    </div>
-      <span style="
-        font-size:12px;
-        color:#777;
-        white-space:nowrap;
-      ">
-        ${fecha}
-      </span>
-    </div>
+          return codigoPais
+            ? `<span style="
+                 display:inline-flex;
+                 align-items:center;
+                 width:20%;
+                 white-space:nowrap;
+                 box-sizing:border-box;
+               "><img
+                 src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
+                 alt="${codigoPais}"
+                 style="
+                   width:20px;
+                   height:15px;
+                   vertical-align:middle;
+                   margin-right:1px;
+                 ">${puntosRonda}</span>`
+            : `<span style="
+                 display:inline-flex;
+                 align-items:center;
+                 width:20%;
+                 white-space:nowrap;
+                 box-sizing:border-box;
+               ">${puntosRonda}</span>`;
+        })
+        .filter(Boolean)
+        .join("");
 
-    <div style="
-      margin-top:4px;
-      font-size:13px;
-      text-align:right;
-      white-space:nowrap;
-    ">
-      ${textoRondas}
-    </div>
+      return `
+        <div style="
+          padding:8px 0;
+          border-bottom:1px solid #ddd;
+        ">
 
-  </div>
-`;
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:8px;
+          ">
+
+            <div style="
+              display:flex;
+              align-items:center;
+              min-width:0;
+              white-space:nowrap;
+            ">
+
+              <span style="
+                display:inline-block;
+                width:16px;
+              ">
+                ${i + 1}
+              </span>
+
+              <strong style="
+                display:inline-block;
+                width:42px;
+              ">
+                ${fila.final_score}
+              </strong>
+
+            </div>
+
+            <span style="
+              font-size:12px;
+              color:#777;
+              white-space:nowrap;
+            ">
+              ${fecha}
+            </span>
+
+          </div>
+
+          <div style="
+            margin-top:4px;
+            margin-left:58px;
+            font-size:13px;
+            width:calc(100% - 58px);
+          ">
+            ${textoRondas}
+          </div>
+
+        </div>
+      `;
     })
     .join("");
 }
+
+
+
+  
 function mostrarTop20(top20, rondasPorFecha, errorTop20) {
 
   const contenedor =
