@@ -5491,7 +5491,7 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
         }
       });
 
-    html += `<div>${continente}"text-align:left";</div>`;
+    html += `<div>${continente};</div>`;
 
     for (let i = 0; i < 3; i++) {
       html += celda(mostrar(medallas[i], provisionales[i]));
@@ -5710,19 +5710,31 @@ if (resultadoHoy) {
 
   rondasHoyTexto = puntosHoy
     .map((puntos, i) => {
-      if (puntos === null) return "";
-
       const codigoPais =
         banderaACodigo(banderasHoy[i] || "");
 
-      return codigoPais
-        ? `<img src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
-             alt="${codigoPais}"
-             style="width:20px;height:15px;vertical-align:middle;margin-right:3px;"> ${puntos}`
-        : `${puntos}`;
+      return `
+        <span style="
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          gap:2px;
+          min-width:0;
+          white-space:nowrap;
+          font-size:12px;
+        ">
+          ${codigoPais ? `
+            <img
+              src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
+              alt="${codigoPais}"
+              style="width:20px;height:15px;flex-shrink:0;"
+            >
+          ` : ""}
+          ${puntos ?? ""}
+        </span>
+      `;
     })
-    .filter(Boolean)
-    .join(" · ");
+    .join("");
 }
   
 profileContent.innerHTML = `
@@ -5760,7 +5772,13 @@ profileContent.innerHTML = `
           ` : ""}
         </div>
 
-        <div style="font-size:13px; margin-top:8px;">
+        <div style="
+          display:grid;
+          grid-template-columns:repeat(5,minmax(0,1fr));
+          gap:2px;
+          margin-top:8px;
+          width:100%;
+        ">
           ${rondasHoyTexto}
         </div>
       ` : `
