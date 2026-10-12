@@ -5766,8 +5766,9 @@ profileContent.innerHTML = `
           </div>
 
           ${rankingHoyJugador ? `
-            <div style="font-size:21px;font-weight:700;color:#222;">
-              ${rankingHoyJugador.posicion}º / ${jugadoresHoy}
+              <div style="font-size:21px;font-weight:700;">
+                ${rankingHoyJugador.posicion}º / ${jugadoresHoy}
+              </div>
             </div>
           ` : ""}
         </div>
@@ -5899,7 +5900,7 @@ profileContent.innerHTML = `
         border-radius:10px;
         padding:8px;
       ">
-        <div style="font-size:12px; color:#666; margin-bottom:4px;">
+        <div style="font-size:12px; color:#666; margin-bottom:4px;text-align:left;">
           🌍 Medallas por continentes
         </div>
         <div id="profileMedallasContinentes" style="font-size:12px;">
