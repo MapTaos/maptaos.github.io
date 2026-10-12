@@ -6133,10 +6133,13 @@ function mostrarTop50(top50, rondasPorFecha, errorTop50) {
 
   const apariciones = {};
 
-    top50.forEach(fila => {
-      apariciones[fila.jugador_id] =
-        (apariciones[fila.jugador_id] || 0) + 1;
+  top50.forEach(fila => {
+    apariciones[fila.jugador_id] =
+      (apariciones[fila.jugador_id] || 0) + 1;
   });
+
+  contenedor.innerHTML = top50
+    .map((fila, i) => {
 
       const fecha =
         new Date(fila.fecha + "T00:00:00")
