@@ -5491,7 +5491,7 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
         }
       });
 
-    html += `<div>${continente}text-align:left;</div>`;
+    html += `<div>${continente}"text-align:left";</div>`;
 
     for (let i = 0; i < 3; i++) {
       html += celda(mostrar(medallas[i], provisionales[i]));
