@@ -949,12 +949,27 @@
   ">
     <span id="tituloRankingHoy">Clasificación de hoy</span>
 
-    <span id="contadorJugadoresHoy" style="
-      font-size:13px;
-      font-weight:500;
-      color:#777;
+
+    <div style="
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:3px;
       white-space:nowrap;
-    "></span>
+    ">
+      <span id="contadorJugadoresHoy" style="
+        font-size:13px;
+        font-weight:500;
+        color:#777;
+      "></span>
+
+      <span id="mediaJugadoresHoy" style="
+        font-size:12px;
+        font-weight:500;
+        color:#777;
+      "></span>
+    </div>
+
   </h2>
 
   <!-- NAVEGACIÓN POR DÍAS -->
@@ -2532,6 +2547,28 @@ const totalJugadores =
     contadorJugadoresHoy.textContent =
       `👥 ${data?.length || 0}/${totalJugadores || 0}`;
   }
+
+
+  const mediaJugadoresHoy =
+    document.getElementById("mediaJugadoresHoy");
+
+  if (mediaJugadoresHoy) {
+
+    const puntuaciones = (data || [])
+      .map(fila => Number(fila.final_score))
+      .filter(puntos => Number.isFinite(puntos));
+
+    const media = puntuaciones.length
+      ? Math.round(
+          puntuaciones.reduce((suma, puntos) => suma + puntos, 0)
+          / puntuaciones.length
+        )
+      : null;
+
+    mediaJugadoresHoy.textContent =
+      media !== null ? `📊 Media: ${media}` : "";
+  }
+
   
   if (error) {
 
