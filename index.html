@@ -1937,10 +1937,11 @@ if (
   );
 }
   const banderas =
-  [...lineaRondas.matchAll(/([\p{Regional_Indicator}]{2})\s*\d{1,3}/gu)]
+  [...lineaRondas.matchAll(/([\p{Regional_Indicator}]{2}|🌐)\s*\d{1,3}/gu)]
     .map(resultado => resultado[1]);
 
 const tieneBanderas = banderas.length === 5;
+  
 const fechaMatch =
   texto.match(
     /(?:www\.maptap\.gg|MapTap)\s+([\p{L}]+)\s+(\d{1,2})/iu
