@@ -6896,6 +6896,26 @@ btnAdminPaisesCatalogo.addEventListener("click", async () => {
   });
 });
 
+const buscarPaisAdmin =
+  document.getElementById("buscarPaisAdmin");
+
+buscarPaisAdmin.addEventListener("input", () => {
+  const texto = buscarPaisAdmin.value
+    .trim()
+    .toLocaleLowerCase("es");
+
+  const filas = document.querySelectorAll(
+    "#listaPaisesAdmin > div"
+  );
+
+  filas.forEach(fila => {
+    const contenido = fila.textContent.toLocaleLowerCase("es");
+
+    fila.style.display =
+      contenido.includes(texto) ? "" : "none";
+  });
+});
+  
 btnAdminPaisesRondas.addEventListener("click", () => {
   panelCatalogoPaises.classList.add("hidden");
   panelRondasAdmin.classList.remove("hidden");
