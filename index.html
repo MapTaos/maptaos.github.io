@@ -7126,10 +7126,36 @@ btnConsultarRondasAdmin.addEventListener("click", async () => {
       const continente =
         data[`continente_${i}`] || "No reconocido";
 
-      fila.textContent =
-        `Ronda ${i}: ${bandera} — ${continente}`;
+const etiqueta = document.createElement("div");
+etiqueta.textContent = `Ronda ${i}: ${bandera}`;
+etiqueta.style.marginBottom = "6px";
 
-      resultado.appendChild(fila);
+const selector = document.createElement("select");
+selector.style.cssText =
+  "padding:6px;width:100%;max-width:220px;";
+
+const continentes = [
+  "No reconocido",
+  "África",
+  "América",
+  "Asia",
+  "Europa",
+  "Oceanía"
+];
+
+continentes.forEach(nombre => {
+  const opcion = document.createElement("option");
+  opcion.value = nombre;
+  opcion.textContent = nombre;
+  selector.appendChild(opcion);
+});
+
+selector.value = continente;
+
+fila.appendChild(etiqueta);
+fila.appendChild(selector);
+
+resultado.appendChild(fila);
     }
 
   } finally {
