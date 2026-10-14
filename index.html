@@ -6857,9 +6857,43 @@ const panelCatalogoPaises =
 const panelRondasAdmin =
   document.getElementById("panelRondasAdmin");
 
-btnAdminPaisesCatalogo.addEventListener("click", () => {
+btnAdminPaisesCatalogo.addEventListener("click", async () => {
   panelCatalogoPaises.classList.remove("hidden");
   panelRondasAdmin.classList.add("hidden");
+
+  const lista = document.getElementById("listaPaisesAdmin");
+
+  lista.textContent = "Cargando países...";
+
+  const { data, error } = await supabaseClient
+    .from("paises_continentes")
+    .select("codigo, pais, continente")
+    .order("pais", { ascending: true })
+    .limit(500);
+
+  if (error) {
+    console.error("Error cargando países:", error);
+    lista.textContent = "No se pudieron cargar los países.";
+    return;
+  }
+
+  lista.replaceChildren();
+
+  const contador = document.createElement("p");
+  contador.textContent = `${data.length} países registrados`;
+  lista.appendChild(contador);
+
+  data.forEach(item => {
+    const fila = document.createElement("div");
+
+    fila.style.cssText =
+      "padding:7px 0;border-bottom:1px solid #ddd;font-size:14px;";
+
+    fila.textContent =
+      `${item.pais} (${item.codigo}) — ${item.continente}`;
+
+    lista.appendChild(fila);
+  });
 });
 
 btnAdminPaisesRondas.addEventListener("click", () => {
