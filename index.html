@@ -472,6 +472,46 @@
     </button>
   </div>
 </div>
+
+
+<!-- ADMINISTRACIÓN DE PAÍSES Y CONTINENTES -->
+<div
+  id="adminPaises"
+  class="card hidden"
+  style="
+    max-width:520px;
+    margin:8px auto 12px;
+    padding:12px;
+  "
+>
+  <h3>🌍 Gestionar países y continentes</h3>
+
+  <p style="font-size:13px;">
+    Desde aquí podrás consultar y corregir
+    la asignación de países a continentes.
+  </p>
+
+  <div style="margin-top:12px;">
+    <button type="button" id="btnAdminPaisesCatalogo">
+      🌐 Catálogo de países
+    </button>
+
+    <button type="button" id="btnAdminPaisesRondas">
+      ✏️ Corregir una ronda
+    </button>
+  </div>
+
+  <div id="contenidoAdminPaises"
+       style="margin-top:14px;">
+  </div>
+
+  <div style="text-align:right;margin-top:12px;">
+    <button type="button" id="btnCerrarAdminPaises">
+      Cerrar
+    </button>
+  </div>
+</div>
+    
     
 <!-- ADMINISTRACIÓN DE AVISOS -->
 <div
@@ -6760,6 +6800,25 @@ btnAdminAvisos.addEventListener("click", () => {
 btnMenuAdminAvisos.addEventListener("click", () => {
   menuAdministracion.style.display = "none";
   adminAvisos.classList.remove("hidden");
+});
+
+const btnMenuAdminPaises =
+  document.getElementById("btnMenuAdminPaises");
+
+const adminPaises =
+  document.getElementById("adminPaises");
+
+const btnCerrarAdminPaises =
+  document.getElementById("btnCerrarAdminPaises");
+
+btnMenuAdminPaises.addEventListener("click", () => {
+  menuAdministracion.style.display = "none";
+  adminAvisos.classList.add("hidden");
+  adminPaises.classList.remove("hidden");
+});
+
+btnCerrarAdminPaises.addEventListener("click", () => {
+  adminPaises.classList.add("hidden");
 });
   
   btnCancelarAdminAviso.addEventListener("click", () => {
