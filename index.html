@@ -6889,10 +6889,35 @@ btnAdminPaisesCatalogo.addEventListener("click", async () => {
     fila.style.cssText =
       "padding:7px 0;border-bottom:1px solid #ddd;font-size:14px;";
 
-    fila.textContent =
-      `${item.pais} (${item.codigo}) — ${item.continente}`;
+const nombrePais = document.createElement("span");
+nombrePais.textContent = `${item.pais} (${item.codigo})`;
 
-    lista.appendChild(fila);
+const selector = document.createElement("select");
+
+selector.style.cssText =
+  "margin-left:8px;padding:5px;max-width:140px;";
+
+const continentes = [
+  "África",
+  "América",
+  "Asia",
+  "Europa",
+  "Oceanía"
+];
+
+continentes.forEach(continente => {
+  const opcion = document.createElement("option");
+  opcion.value = continente;
+  opcion.textContent = continente;
+  selector.appendChild(opcion);
+});
+
+selector.value = item.continente;
+
+fila.appendChild(nombrePais);
+fila.appendChild(selector);
+
+lista.appendChild(fila);
   });
 });
 
