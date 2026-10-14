@@ -6913,7 +6913,42 @@ continentes.forEach(continente => {
 });
 
 selector.value = item.continente;
+selector.addEventListener("change", async () => {
+  const continenteAnterior = item.continente;
+  const continenteNuevo = selector.value;
 
+  const confirmar = confirm(
+    `¿Cambiar ${item.pais} de ${continenteAnterior} a ${continenteNuevo}?`
+  );
+
+  if (!confirmar) {
+    selector.value = continenteAnterior;
+    return;
+  }
+
+  selector.disabled = true;
+
+  const { data, error } = await supabaseClient
+    .from("paises_continentes")
+    .update({ continente: continenteNuevo })
+    .eq("codigo", item.codigo)
+    .select("codigo, continente")
+    .single();
+
+  selector.disabled = false;
+
+  if (error || !data) {
+    console.error("Error actualizando continente:", error);
+    selector.value = continenteAnterior;
+    alert("No se pudo guardar el cambio.");
+    return;
+  }
+
+  item.continente = data.continente;
+  selector.value = data.continente;
+
+  alert("Continente actualizado correctamente.");
+});
 fila.appendChild(nombrePais);
 fila.appendChild(selector);
 
