@@ -501,9 +501,33 @@
     </button>
   </div>
 
-  <div id="contenidoAdminPaises"
-       style="margin-top:14px;">
+<div
+  id="contenidoAdminPaises"
+  style="margin-top:14px;"
+>
+  <div id="panelCatalogoPaises" class="hidden">
+    <h4>🌐 Catálogo de países</h4>
+
+    <input
+      type="text"
+      id="buscarPaisAdmin"
+      placeholder="Buscar país..."
+      style="
+        width:100%;
+        box-sizing:border-box;
+        padding:8px;
+        margin-bottom:10px;
+      "
+    >
+
+    <div id="listaPaisesAdmin"></div>
   </div>
+
+  <div id="panelRondasAdmin" class="hidden">
+    <h4>✏️ Corregir una ronda</h4>
+    <p>Próximamente podrás corregir las banderas y los continentes de un día concreto.</p>
+  </div>
+</div>
 
   <div style="text-align:right;margin-top:12px;">
     <button type="button" id="btnCerrarAdminPaises">
@@ -6819,6 +6843,28 @@ btnMenuAdminPaises.addEventListener("click", () => {
 
 btnCerrarAdminPaises.addEventListener("click", () => {
   adminPaises.classList.add("hidden");
+});
+
+const btnAdminPaisesCatalogo =
+  document.getElementById("btnAdminPaisesCatalogo");
+
+const btnAdminPaisesRondas =
+  document.getElementById("btnAdminPaisesRondas");
+
+const panelCatalogoPaises =
+  document.getElementById("panelCatalogoPaises");
+
+const panelRondasAdmin =
+  document.getElementById("panelRondasAdmin");
+
+btnAdminPaisesCatalogo.addEventListener("click", () => {
+  panelCatalogoPaises.classList.remove("hidden");
+  panelRondasAdmin.classList.add("hidden");
+});
+
+btnAdminPaisesRondas.addEventListener("click", () => {
+  panelCatalogoPaises.classList.add("hidden");
+  panelRondasAdmin.classList.remove("hidden");
 });
   
   btnCancelarAdminAviso.addEventListener("click", () => {
