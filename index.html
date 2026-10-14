@@ -7151,7 +7151,42 @@ continentes.forEach(nombre => {
 });
 
 selector.value = continente;
+selector.addEventListener("change", async () => {
 
+  const continenteAnterior = data[`continente_${i}`] || "No reconocido";
+  const continenteNuevo = selector.value;
+
+  if (!confirm(
+    `¿Cambiar la ronda ${i} del ${fecha} de ${continenteAnterior} a ${continenteNuevo}?`
+  )) {
+    selector.value = continenteAnterior;
+    return;
+  }
+
+  selector.disabled = true;
+
+  const { data: actualizado, error } = await supabaseClient
+    .from("rondas_dia")
+    .update({
+      [`continente_${i}`]: continenteNuevo
+    })
+    .eq("fecha", fecha)
+    .select(`continente_${i}`)
+    .single();
+
+  selector.disabled = false;
+
+  if (error || !actualizado) {
+    console.error("Error actualizando continente:", error);
+    selector.value = continenteAnterior;
+    alert("No se pudo guardar el cambio.");
+    return;
+  }
+
+  data[`continente_${i}`] = continenteNuevo;
+  alert("Continente actualizado correctamente.");
+
+});
 fila.appendChild(etiqueta);
 fila.appendChild(selector);
 
