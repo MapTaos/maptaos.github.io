@@ -7052,6 +7052,78 @@ btnCancelarNuevoPais.addEventListener("click", () => {
   formNuevoPaisAdmin.classList.add("hidden");
   btnNuevoPaisAdmin.classList.remove("hidden");
 });
+
+const btnGuardarNuevoPais =
+  document.getElementById("btnGuardarNuevoPais");
+
+btnGuardarNuevoPais.addEventListener("click", async () => {
+
+  const nombre = document
+    .getElementById("nuevoPaisNombre")
+    .value.trim();
+
+  const codigo = document
+    .getElementById("nuevoPaisCodigo")
+    .value.trim().toUpperCase();
+
+  const continente = document
+    .getElementById("nuevoPaisContinente")
+    .value;
+
+  if (!nombre) {
+    alert("Introduce el nombre del país.");
+    return;
+  }
+
+  if (!/^[A-Z]{2}$/.test(codigo)) {
+    alert("El código debe contener exactamente dos letras.");
+    return;
+  }
+
+  if (!confirm(
+    `¿Añadir ${nombre} (${codigo}) a ${continente}?`
+  )) {
+    return;
+  }
+
+  btnGuardarNuevoPais.disabled = true;
+
+  try {
+    const { error } = await supabaseClient
+      .from("paises_continentes")
+      .insert({
+        codigo: codigo,
+        pais: nombre,
+        continente: continente
+      });
+
+    if (error) {
+      console.error("Error guardando país:", error);
+
+      if (error.code === "23505") {
+        alert("Ese código ya está registrado.");
+      } else {
+        alert("No se pudo guardar el país.");
+      }
+
+      return;
+    }
+
+    alert("País añadido correctamente.");
+
+    document.getElementById("nuevoPaisNombre").value = "";
+    document.getElementById("nuevoPaisCodigo").value = "";
+
+    formNuevoPaisAdmin.classList.add("hidden");
+    btnNuevoPaisAdmin.classList.remove("hidden");
+
+    btnAdminPaisesCatalogo.click();
+
+  } finally {
+    btnGuardarNuevoPais.disabled = false;
+  }
+
+});
   
   btnCancelarAdminAviso.addEventListener("click", () => {
     adminAvisos.classList.add("hidden");
