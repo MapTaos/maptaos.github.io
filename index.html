@@ -576,10 +576,47 @@
     <div id="listaPaisesAdmin"></div>
   </div>
 
-  <div id="panelRondasAdmin" class="hidden">
-    <h4>✏️ Corregir una ronda</h4>
-    <p>Próximamente podrás corregir las banderas y los continentes de un día concreto.</p>
+<div id="panelRondasAdmin" class="hidden">
+
+  <h4>✏️ Corregir una ronda</h4>
+
+  <p style="font-size:13px;">
+    Selecciona una fecha para consultar las cinco
+    rondas y corregir sus países o continentes.
+  </p>
+
+  <div style="margin-top:12px;">
+    <label for="fechaRondasAdmin">
+      <strong>Fecha de la partida</strong>
+    </label>
+
+    <input
+      type="date"
+      id="fechaRondasAdmin"
+      style="
+        display:block;
+        width:100%;
+        box-sizing:border-box;
+        padding:8px;
+        margin-top:6px;
+      "
+    >
   </div>
+
+  <button
+    type="button"
+    id="btnConsultarRondasAdmin"
+    style="margin-top:12px;"
+  >
+    🔍 Consultar rondas
+  </button>
+
+  <div
+    id="resultadoRondasAdmin"
+    style="margin-top:14px;"
+  ></div>
+
+</div>
 </div>
 
   <div style="text-align:right;margin-top:12px;">
@@ -7034,6 +7071,73 @@ btnAdminPaisesRondas.addEventListener("click", () => {
   panelRondasAdmin.classList.remove("hidden");
 });
 
+const btnConsultarRondasAdmin =
+  document.getElementById("btnConsultarRondasAdmin");
+
+btnConsultarRondasAdmin.addEventListener("click", async () => {
+
+  const fecha =
+    document.getElementById("fechaRondasAdmin").value;
+
+  const resultado =
+    document.getElementById("resultadoRondasAdmin");
+
+  if (!fecha) {
+    alert("Selecciona una fecha.");
+    return;
+  }
+
+  resultado.textContent = "Consultando rondas...";
+  btnConsultarRondasAdmin.disabled = true;
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("rondas_dia")
+      .select(`
+        fecha,
+        pais_1, pais_2, pais_3, pais_4, pais_5,
+        continente_1, continente_2, continente_3,
+        continente_4, continente_5
+      `)
+      .eq("fecha", fecha)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error consultando rondas:", error);
+      resultado.textContent = "No se pudieron consultar las rondas.";
+      return;
+    }
+
+    if (!data) {
+      resultado.textContent =
+        "No hay banderas registradas para esa fecha.";
+      return;
+    }
+
+    resultado.replaceChildren();
+
+    for (let i = 1; i <= 5; i++) {
+      const fila = document.createElement("div");
+
+      fila.style.cssText =
+        "padding:10px 0;border-bottom:1px solid #ddd;";
+
+      const bandera = data[`pais_${i}`] || "Sin bandera";
+      const continente =
+        data[`continente_${i}`] || "No reconocido";
+
+      fila.textContent =
+        `Ronda ${i}: ${bandera} — ${continente}`;
+
+      resultado.appendChild(fila);
+    }
+
+  } finally {
+    btnConsultarRondasAdmin.disabled = false;
+  }
+
+});
+  
 const btnNuevoPaisAdmin =
   document.getElementById("btnNuevoPaisAdmin");
 
