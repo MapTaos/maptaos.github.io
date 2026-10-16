@@ -3937,61 +3937,93 @@ async function cargarMedalleroDiario() {
     "font-size:12px;color:#666;margin-bottom:10px;";
   contenedor.appendChild(aviso);
 
-const tabla = document.createElement("table");
 
-tabla.style.cssText = `
-  width:calc(100% - 8px);
-  margin:0 4px;
-  position:relative;
-  left:-2px;
-  border-collapse:collapse;
-  table-layout:fixed;
+const columnasGrid = "16px minmax(0,1fr) 38px 38px 38px 43px";
+
+// Cabecera: mismo formato que Continentes → Global
+const cabecera = document.createElement("div");
+
+cabecera.style.cssText = `
+  display:grid;
+  grid-template-columns:${columnasGrid};
+  gap:2px;
+  align-items:center;
+  padding:0 4px 7px;
   font-size:12px;
   text-align:center;
+  border-bottom:1px solid #d5d8da;
 `;
-  
-// Anchuras iguales a Continentes → Global
-const columnas = document.createElement("colgroup");
-
-["16px","auto","38px","38px","38px","43px"]
-  .forEach(ancho => {
-    const columna = document.createElement("col");
-    columna.style.width = ancho;
-    columnas.appendChild(columna);
-  });
-
-tabla.appendChild(columnas);
-
-// Cabecera sin # ni Jugador
-const cabecera = document.createElement("thead");
-const filaCabecera = document.createElement("tr");
 
 ["", "", "🥇", "🥈", "🥉", "Total"].forEach(texto => {
-
-  const celda = document.createElement("th");
-
+  const celda = document.createElement("div");
   celda.textContent = texto;
-
-  celda.style.cssText = `
-    padding:7px 0;
-    text-align:center;
-    border-bottom:1px solid #d5d8da;
-    font-size:12px;
-  `;
-
-  filaCabecera.appendChild(celda);
-
+  celda.style.fontWeight = "600";
+  cabecera.appendChild(celda);
 });
 
-cabecera.appendChild(filaCabecera);
-tabla.appendChild(cabecera);
+contenedor.appendChild(cabecera);
 
-const cuerpo = document.createElement("tbody");
+// Mismo formato de medallas que Continentes → Global
+const mostrarMedallasDiarias = (definitivas, provisionales, esTotal = false) => {
+  const contenedorMedallas = document.createElement("span");
+
+  contenedorMedallas.style.cssText = `
+    display:grid;
+    grid-template-columns:1fr;
+    align-items:center;
+    justify-items:center;
+    position:relative;
+    width:100%;
+    white-space:nowrap;
+  `;
+
+  const numero = document.createElement("span");
+  numero.textContent = String(definitivas);
+
+  numero.style.cssText = `
+    font-size:12px;
+    font-variant-numeric:tabular-nums;
+    text-align:center;
+    font-weight:${esTotal ? "600" : "400"};
+  `;
+
+  contenedorMedallas.appendChild(numero);
+
+  if (provisionales > 0) {
+    const extra = document.createElement("span");
+    extra.textContent = "+" + provisionales;
+
+    extra.style.cssText = `
+      position:absolute;
+      left:calc(50% + 6px);
+      top:50%;
+      transform:translateY(-50%);
+      font-size:8px;
+      font-weight:400;
+      color:#777;
+      white-space:nowrap;
+    `;
+
+    contenedorMedallas.appendChild(extra);
+  }
+
+  return contenedorMedallas;
+};
 
 // Filas de jugadores
 clasificacion.forEach((jugador, indice) => {
 
-  const fila = document.createElement("tr");
+  const fila = document.createElement("div");
+
+  fila.style.cssText = `
+    display:grid;
+    grid-template-columns:${columnasGrid};
+    gap:2px;
+    align-items:center;
+    padding:9px 4px;
+    border-bottom:1px solid #eee;
+    font-size:12px;
+  `;
 
   const totalMedallas =
     jugador.oro + jugador.plata + jugador.bronce;
@@ -4001,104 +4033,63 @@ clasificacion.forEach((jugador, indice) => {
       (suma, cantidad) => suma + cantidad, 0
     );
 
-  const valores = [
-    String(indice + 1),
-    nombres.get(jugador.id) || "Jugador " + jugador.id,
-    jugador.oro,
-    jugador.plata,
-    jugador.bronce,
-    totalMedallas
+  // Posición
+  const posicion = document.createElement("div");
+  posicion.textContent = String(indice + 1);
+  posicion.style.cssText = `
+    text-align:center;
+    color:#666;
+  `;
+  fila.appendChild(posicion);
+
+  // Nombre y acceso al perfil
+  const nombre = nombres.get(jugador.id) || "Jugador " + jugador.id;
+
+  const celdaNombre = document.createElement("div");
+  celdaNombre.textContent = nombre;
+
+  celdaNombre.style.cssText = `
+    min-width:0;
+    font-weight:600;
+    font-size:12px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    cursor:pointer;
+  `;
+
+  celdaNombre.addEventListener("click", () => {
+    abrirPerfilJugador(Number(jugador.id), nombre);
+  });
+
+  fila.appendChild(celdaNombre);
+
+  // Oro, plata, bronce y total
+  const medallas = [
+    [jugador.oro, jugador.provisional[0], false],
+    [jugador.plata, jugador.provisional[1], false],
+    [jugador.bronce, jugador.provisional[2], false],
+    [totalMedallas, totalProvisionales, true]
   ];
-  valores.forEach((valor, columna) => {
-    
-    const celda = document.createElement("td");
-  
-    celda.style.padding = "8px 3px";
-    celda.style.borderTop = "1px solid #e1e4e6";
-    celda.style.textAlign = columna === 1 ? "left" : "center";
-    // Destacar nombres y totales
-    if (columna === 1 || columna === 5) {
+
+  medallas.forEach(([definitivas, provisionales, esTotal]) => {
+    const celda = document.createElement("div");
+    celda.style.textAlign = "center";
+
+    if (esTotal) {
       celda.style.fontWeight = "600";
     }
-  
-    if (columna === 1) {
-      celda.style.overflowWrap = "anywhere";
-    } else {
-      celda.style.whiteSpace = "nowrap";
-    }
-  
-    // Número principal
-    const numero = document.createElement("span");
-    numero.textContent = String(valor);
-  
-    // Mantener el número centrado bajo su medalla
-    if (columna >= 2 && columna <= 5) {
-      celda.style.position = "relative";
-  
-      numero.style.display = "inline-block";
-      numero.style.minWidth = "16px";
-      numero.style.textAlign = "center";
-    }
-  
-    celda.appendChild(numero);
-    // Abrir el perfil al pulsar el nombre del jugador
-    if (columna === 1) {
-      celda.style.cursor = "pointer";
-    
-      celda.addEventListener("click", () => {
-        abrirPerfilJugador(
-          Number(jugador.id),
-          nombres.get(jugador.id) || "Jugador " + jugador.id
-        );
-      });
-    }
-    // Medallas provisionales
-    const provisional =
-      columna === 5
-        ? totalProvisionales
-        : columna >= 2 && columna <= 4
-          ? jugador.provisional[columna - 2]
-          : 0;
-  
-    if (provisional > 0) {
-  
-      const extra = document.createElement("span");
-      extra.textContent = " +" + provisional;
-  
-      if (columna >= 2 && columna <= 5) {
-  
-        // El +1 no desplaza el número principal
-        extra.style.cssText = `
-          position:absolute;
-          left:calc(50% + 9px);
-          top:50%;
-          transform:translateY(-50%);
-          font-size:10px;
-          font-weight:400;
-          color:#888;
-          white-space:nowrap;
-        `;
-  
-      } else {
-  
-        extra.style.cssText =
-          "font-size:10px;font-weight:400;color:#888;";
-  
-      }
-  
-      celda.appendChild(extra);
-    }
-  
-     fila.appendChild(celda);
 
-}); // Cierra valores.forEach
+    celda.appendChild(
+      mostrarMedallasDiarias(definitivas, provisionales, esTotal)
+    );
 
-cuerpo.appendChild(fila);
+    fila.appendChild(celda);
+  });
 
-}); // Cierra clasificacion.forEach
+  contenedor.appendChild(fila);
 
-tabla.appendChild(cuerpo);
-contenedor.appendChild(tabla);
+});
 
 } // Cierra cargarMedalleroDiario
 
