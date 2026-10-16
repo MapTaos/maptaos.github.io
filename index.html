@@ -7116,6 +7116,20 @@ btnConsultarRondasAdmin.addEventListener("click", async () => {
 
     resultado.replaceChildren();
 
+const { data: catalogoPaises, error: errorCatalogo } =
+  await supabaseClient
+    .from("paises_continentes")
+    .select("codigo, pais, continente")
+    .order("pais", { ascending: true })
+    .limit(500);
+
+if (errorCatalogo) {
+  console.error("Error cargando catálogo:", errorCatalogo);
+  resultado.textContent =
+    "No se pudo cargar el catálogo de países.";
+  return;
+}
+    
     for (let i = 1; i <= 5; i++) {
       const fila = document.createElement("div");
 
@@ -7130,6 +7144,28 @@ const etiqueta = document.createElement("div");
 etiqueta.textContent = `Ronda ${i}: ${bandera}`;
 etiqueta.style.marginBottom = "6px";
 
+// Selector para corregir el país o la bandera
+const selectorPais = document.createElement("select");
+
+selectorPais.style.cssText =
+  "display:block;width:100%;max-width:300px;" +
+  "padding:6px;margin-bottom:8px;";
+
+const opcionInicial = document.createElement("option");
+opcionInicial.value = "";
+opcionInicial.textContent = "✏️ Corregir país o bandera...";
+
+selectorPais.appendChild(opcionInicial);
+  catalogoPaises.forEach(pais => {
+  const opcion = document.createElement("option");
+
+  opcion.value = pais.codigo;
+  opcion.textContent = `${pais.pais} (${pais.codigo})`;
+
+  selectorPais.appendChild(opcion);
+});
+
+// Selector de continente existente
 const selector = document.createElement("select");
 selector.style.cssText =
   "padding:6px;width:100%;max-width:220px;";
@@ -7188,6 +7224,7 @@ selector.addEventListener("change", async () => {
 
 });
 fila.appendChild(etiqueta);
+fila.appendChild(selectorPais);
 fila.appendChild(selector);
 
 resultado.appendChild(fila);
