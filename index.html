@@ -1289,7 +1289,7 @@
     </button>
 
     <button type="button" id="btnMedallero">
-      🏅 Medallero
+      🏅 Medalleros
     </button>
     
     <button type="button" id="btnTop50">
@@ -1601,12 +1601,30 @@
 <div class="card hidden" id="seccionMedallero">
 
   <!-- SELECTOR GENERAL / CONTINENTES -->
-  <div style="
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:6px;
-    margin-bottom:14px;
-  ">
+<!-- SELECTOR DIARIO / MENSUAL / CONTINENTES -->
+<div style="
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
+  margin-bottom:14px;
+">
+
+  <button
+    type="button"
+    id="btnMedalleroDiario"
+    style="
+      padding:8px 4px;
+      font-size:13px;
+      font-weight:600;
+      border-radius:8px;
+      border:1px solid #c5c9cc;
+      background:#e1e4e6;
+      color:#111;
+      min-width:0;
+    "
+  >
+    Diario
+  </button>
 
     <button
       type="button"
@@ -1621,7 +1639,7 @@
         color:#fff;
       "
     >
-      🏅 General
+      Mensual
     </button>
 
     <button
@@ -1637,7 +1655,7 @@
         color:#111;
       "
     >
-      🏅 Continentes
+      Continentes
     </button>
 
   </div>
