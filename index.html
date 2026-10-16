@@ -8332,8 +8332,14 @@ vistasMedalleros.forEach(vista => {
 
   document
     .getElementById(vista.boton)
-    .addEventListener("click", () => {
+    .addEventListener("click", async () => {
+
       mostrarVistaMedallero(vista.boton);
+
+      if (vista.boton === "btnMedalleroDiario") {
+        await cargarMedalleroDiario();
+      }
+
     });
 
 });
