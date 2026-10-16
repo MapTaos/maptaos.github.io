@@ -1829,11 +1829,10 @@
   <!-- FONDO GRIS INTERIOR -->
 <div class="placeholder" style="
   display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
+  flex-direction:column;
+  align-items:stretch;
+  gap:8px;
 ">
-
     <button
       id="backFromProfile"
       type="button"
@@ -1846,13 +1845,15 @@
         border-radius:8px;
         background:#d1d5db;
         border:1px solid #9ca3af;
+        align-self:flex-end;
+        margin-bottom:2px;
       "
     >
       ← Volver
     </button>
 
       <div style="
-        flex:1;
+        width:100%;
         min-width:0;
         display:flex;
         flex-direction:column;
