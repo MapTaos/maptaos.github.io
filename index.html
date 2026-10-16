@@ -1664,40 +1664,67 @@
   <!-- MEDALLERO GENERAL -->
   <div id="bloqueMedalleroGeneral">
 
-    <div style="
-      display:grid;
-      grid-template-columns:minmax(0,1fr) 90px;
-      align-items:center;
-      gap:10px;
-      margin-bottom:10px;
-    ">
+<!-- Elementos conservados para el JavaScript actual -->
+<h2 id="tituloMedallero" class="hidden">
+  🏅 Medallero mensual
+</h2>
 
-      <h2
-        id="tituloMedallero"
-        class="home-section-title"
-        style="margin:0;"
-      >
-        🏅 Medallero mensual
-      </h2>
+<button
+  type="button"
+  id="btnCambiarMedallero"
+  class="hidden"
+>
+  Global
+</button>
 
-      <button
-        type="button"
-        id="btnCambiarMedallero"
-        style="
-          width:90px;
-          padding:7px 12px;
-          font-size:13px;
-          font-weight:600;
-          border-radius:8px;
-          white-space:nowrap;
-          border:1px solid #c5c9cc;
-        "
-      >
-        Global
-      </button>
+<!-- SELECTOR MENSUAL / GLOBAL -->
+<div
+  id="selectorMedalleroMensual"
+  style="
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+    margin-bottom:10px;
+  "
+>
 
-    </div>
+  <button
+    type="button"
+    data-vista-medallero-general="mensual"
+    style="
+      min-width:0;
+      padding:5px 4px;
+      border:1px solid #111;
+      border-radius:5px;
+      background:#111;
+      color:#fff;
+      font-size:11px;
+      font-weight:600;
+      cursor:pointer;
+    "
+  >
+    Mensual
+  </button>
 
+  <button
+    type="button"
+    data-vista-medallero-general="global"
+    style="
+      min-width:0;
+      padding:5px 4px;
+      border:1px solid #c5c9cc;
+      border-radius:5px;
+      background:#e1e4e6;
+      color:#111;
+      font-size:11px;
+      font-weight:600;
+      cursor:pointer;
+    "
+  >
+    Global
+  </button>
+
+</div>
     <div id="rankingMedallero">
       Cargando medallero...
     </div>
