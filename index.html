@@ -3944,7 +3944,7 @@ async function cargarMedalleroDiario() {
   const cabecera = document.createElement("thead");
   const filaCabecera = document.createElement("tr");
 
-  ["#", "Jugador", "🥇", "🥈", "🥉"].forEach(texto => {
+  [" ", "Jugador", , "🥇", "🥈", "🥉", "Total"].forEach(texto => {
     const celda = document.createElement("th");
     celda.textContent = texto;
     celda.style.padding = "7px 3px";
@@ -3960,9 +3960,13 @@ async function cargarMedalleroDiario() {
 
     const fila = document.createElement("tr");
 
+    const totalMedallas =
+      jugador.oro + jugador.plata + jugador.bronce;
+
     const valores = [
       String(indice + 1),
       nombres.get(jugador.id) || "Jugador " + jugador.id,
+      totalMedallas,
       jugador.oro,
       jugador.plata,
       jugador.bronce
@@ -3974,16 +3978,19 @@ async function cargarMedalleroDiario() {
 
       celda.textContent = String(valor);
 
-      if (columna >= 2 && jugador.provisional[columna - 2]) {
+      if (columna >= 3 && jugador.provisional[columna - 3]) {
         const extra = document.createElement("span");
         extra.textContent = " +1";
         extra.style.cssText =
-          "font-weight:700;color:#b36b00;";
+            "font-size:10px;font-weight:400;color:#888;";
         celda.appendChild(extra);
       }
 
       celda.style.padding = "8px 3px";
       celda.style.borderTop = "1px solid #e1e4e6";
+
+      celda.style.textAlign = columna === 1 ? "left" : "center";
+      celda.style.whiteSpace = columna === 1 ? "normal" : "nowrap";
 
       if (columna === 1) {
         celda.style.textAlign = "left";
