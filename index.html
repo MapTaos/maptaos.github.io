@@ -3956,89 +3956,75 @@ async function cargarMedalleroDiario() {
 
   const cuerpo = document.createElement("tbody");
 
-  clasificacion.forEach((jugador, indice) => {
+ valores.forEach((valor, columna) => {
 
-    const fila = document.createElement("tr");
+  const celda = document.createElement("td");
 
-    const totalMedallas =
-      jugador.oro + jugador.plata + jugador.bronce;
+  celda.style.padding = "8px 3px";
+  celda.style.borderTop = "1px solid #e1e4e6";
+  celda.style.textAlign = columna === 1 ? "left" : "center";
 
-    const totalProvisionales =
-      jugador.provisional.reduce((suma, cantidad) => suma + cantidad, 0);
+  if (columna === 1) {
+    celda.style.overflowWrap = "anywhere";
+  } else {
+    celda.style.whiteSpace = "nowrap";
+  }
 
-    const valores = [
-      String(indice + 1),
-      nombres.get(jugador.id) || "Jugador " + jugador.id,
-      jugador.oro,
-      jugador.plata,
-      jugador.bronce,
-      totalMedallas
-    ];
+  // Número principal
+  const numero = document.createElement("span");
+  numero.textContent = String(valor);
 
-    valores.forEach((valor, columna) => {
+  // Mantener el número centrado bajo su medalla
+  if (columna >= 3 && columna <= 5) {
+    celda.style.position = "relative";
 
-      const celda = document.createElement("td");
+    numero.style.display = "inline-block";
+    numero.style.minWidth = "16px";
+    numero.style.textAlign = "center";
+  }
 
-      celda.textContent = String(valor);
+  celda.appendChild(numero);
 
-      // Centrar el número principal sin que el +1 lo desplace
-      if (columna >= 3 && columna <= 5) {
-        celda.style.position = "relative";
-      
-        const numero = document.createElement("span");
-        numero.textContent = String(valor);
-        numero.style.display = "inline-block";
-        numero.style.minWidth = "16px";
-        numero.style.textAlign = "center";
-      
-        celda.textContent = "";
-        celda.appendChild(numero);
-      }
+  // Medallas provisionales
+  const provisional =
+    columna === 2
+      ? totalProvisionales
+      : columna >= 3 && columna <= 5
+        ? jugador.provisional[columna - 3]
+        : 0;
 
-      if (
-          (columna === 2 && totalProvisionales > 0) ||
-          (columna >= 3 && columna <= 5 &&
-            jugador.provisional[columna - 3] > 0)
-        ) {
-          const extra = document.createElement("span");
-        
-          extra.textContent =
-            " +" + (
-              columna === 2
-                ? totalProvisionales
-                : jugador.provisional[columna - 3]
-            );
-        
-          extra.style.cssText =
-            "font-size:10px;font-weight:400;color:#888;";
-        
-          celda.appendChild(extra);
-        }
-        const extra = document.createElement("span");
-        extra.textContent = " +1";
-        extra.style.cssText =
-          columna >= 3
-            ? "position:absolute;left:calc(50% + 9px);top:50%;transform:translateY(-50%);font-size:10px;font-weight:400;color:#888;white-space:nowrap;"
-            : "font-size:10px;font-weight:400;color:#888;";
-        celda.appendChild(extra);
-      });
+  if (provisional > 0) {
 
-      celda.style.padding = "8px 3px";
-      celda.style.borderTop = "1px solid #e1e4e6";
+    const extra = document.createElement("span");
+    extra.textContent = " +" + provisional;
 
-      celda.style.textAlign = columna === 1 ? "left" : "center";
-      celda.style.whiteSpace = columna === 1 ? "normal" : "nowrap";
+    if (columna >= 3 && columna <= 5) {
 
-      if (columna === 1) {
-        celda.style.textAlign = "left";
-        celda.style.overflowWrap = "anywhere";
-      }
+      // El +1 no desplaza el número principal
+      extra.style.cssText = `
+        position:absolute;
+        left:calc(50% + 9px);
+        top:50%;
+        transform:translateY(-50%);
+        font-size:10px;
+        font-weight:400;
+        color:#888;
+        white-space:nowrap;
+      `;
 
-      fila.appendChild(celda);
-    });
+    } else {
 
-    cuerpo.appendChild(fila);
-  });
+      extra.style.cssText =
+        "font-size:10px;font-weight:400;color:#888;";
+
+    }
+
+    celda.appendChild(extra);
+  }
+
+  fila.appendChild(celda);
+
+});
 
   tabla.appendChild(cuerpo);
   contenedor.appendChild(tabla);
