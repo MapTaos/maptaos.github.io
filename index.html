@@ -3944,19 +3944,44 @@ async function cargarMedalleroDiario() {
   const cabecera = document.createElement("thead");
   const filaCabecera = document.createElement("tr");
 
-  [" ", "Jugador", , "🥇", "🥈", "🥉", "Total"].forEach(texto => {
-    const celda = document.createElement("th");
-    celda.textContent = texto;
-    celda.style.padding = "7px 3px";
-    filaCabecera.appendChild(celda);
-  ;
+// Cabecera de la tabla
+["#", "Jugador", "🥇", "🥈", "🥉", "Total"].forEach(texto => {
 
-  cabecera.appendChild(filaCabecera);
-  tabla.appendChild(cabecera);
+  const celda = document.createElement("th");
+  celda.textContent = texto;
+  celda.style.padding = "7px 3px";
+  celda.style.textAlign = texto === "Jugador" ? "left" : "center";
 
-  const cuerpo = document.createElement("tbody");
+  filaCabecera.appendChild(celda);
 
- valores.forEach((valor, columna) => {
+});
+
+cabecera.appendChild(filaCabecera);
+tabla.appendChild(cabecera);
+
+const cuerpo = document.createElement("tbody");
+
+// Filas de jugadores
+clasificacion.forEach((jugador, indice) => {
+
+  const fila = document.createElement("tr");
+
+  const totalMedallas =
+    jugador.oro + jugador.plata + jugador.bronce;
+
+  const totalProvisionales =
+    jugador.provisional.reduce(
+      (suma, cantidad) => suma + cantidad, 0
+    );
+
+  const valores = [
+    String(indice + 1),
+    nombres.get(jugador.id) || "Jugador " + jugador.id,
+    jugador.oro,
+    jugador.plata,
+    jugador.bronce,
+    totalMedallas
+  ];
 
   const celda = document.createElement("td");
 
@@ -3987,10 +4012,10 @@ async function cargarMedalleroDiario() {
 
   // Medallas provisionales
   const provisional =
-    columna === 2
+    columna === 5
       ? totalProvisionales
-      : columna >= 3 && columna <= 5
-        ? jugador.provisional[columna - 3]
+      : columna >= 2 && columna <= 4
+        ? jugador.provisional[columna - 2]
         : 0;
 
   if (provisional > 0) {
@@ -3998,7 +4023,7 @@ async function cargarMedalleroDiario() {
     const extra = document.createElement("span");
     extra.textContent = " +" + provisional;
 
-    if (columna >= 3 && columna <= 5) {
+    if (columna >= 2 && columna <= 4) {
 
       // El +1 no desplaza el número principal
       extra.style.cssText = `
