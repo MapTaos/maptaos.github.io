@@ -4038,7 +4038,17 @@ clasificacion.forEach((jugador, indice) => {
     }
   
     celda.appendChild(numero);
-  
+    // Abrir el perfil al pulsar el nombre del jugador
+    if (columna === 1) {
+      celda.style.cursor = "pointer";
+    
+      celda.addEventListener("click", () => {
+        abrirPerfilJugador(
+          Number(jugador.id),
+          nombres.get(jugador.id) || "Jugador " + jugador.id
+        );
+      });
+    }
     // Medallas provisionales
     const provisional =
       columna === 5
