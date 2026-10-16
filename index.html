@@ -7959,9 +7959,18 @@ document
   .getElementById("btnMedallero")
   .addEventListener("click", () => mostrarSeccionInicio("medallero"));
 
-document
-  .getElementById("btnCambiarMedallero")
-  .addEventListener("click", () => {
+// SELECTOR MENSUAL / GLOBAL DEL MEDALLERO GENERAL
+
+const botonesMedalleroMensual =
+  document.querySelectorAll(
+    "#selectorMedalleroMensual [data-vista-medallero-general]"
+  );
+
+botonesMedalleroMensual.forEach(opcion => {
+
+  opcion.addEventListener("click", () => {
+
+    const vista = opcion.dataset.vistaMedalleroGeneral;
 
     const mensual =
       document.getElementById("rankingMedallero");
@@ -7969,38 +7978,31 @@ document
     const global =
       document.getElementById("rankingMedalleroGlobal");
 
-    const titulo =
-      document.getElementById("tituloMedallero");
+    // Mostrar únicamente la vista seleccionada
+    mensual.classList.toggle("hidden", vista !== "mensual");
+    global.classList.toggle("hidden", vista !== "global");
 
-    const boton =
-      document.getElementById("btnCambiarMedallero");
+    // Resaltar el botón seleccionado
+    botonesMedalleroMensual.forEach(boton => {
 
-    const mostrandoMensual =
-      !mensual.classList.contains("hidden");
+      const seleccionado = boton === opcion;
 
-    if (mostrandoMensual) {
+      boton.style.background =
+        seleccionado ? "#111" : "#e1e4e6";
 
-      mensual.classList.add("hidden");
-      global.classList.remove("hidden");
+      boton.style.color =
+        seleccionado ? "#fff" : "#111";
 
-      titulo.textContent =
-        "🏅 Medallero global";
+      boton.style.border =
+        seleccionado
+          ? "1px solid #111"
+          : "1px solid #c5c9cc";
 
-      boton.textContent =
-        "Mensual";
+    });
 
-    } else {
-
-      global.classList.add("hidden");
-      mensual.classList.remove("hidden");
-
-      titulo.textContent =
-        "🏅 Medallero mensual";
-
-      boton.textContent =
-        "Global";
-    }
   });
+
+});
 
 // SELECTOR DE VISTAS DEL MEDALLERO DE CONTINENTES
 
