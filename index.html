@@ -3982,72 +3982,73 @@ clasificacion.forEach((jugador, indice) => {
     jugador.bronce,
     totalMedallas
   ];
-
-  const celda = document.createElement("td");
-
-  celda.style.padding = "8px 3px";
-  celda.style.borderTop = "1px solid #e1e4e6";
-  celda.style.textAlign = columna === 1 ? "left" : "center";
-
-  if (columna === 1) {
-    celda.style.overflowWrap = "anywhere";
-  } else {
-    celda.style.whiteSpace = "nowrap";
-  }
-
-  // Número principal
-  const numero = document.createElement("span");
-  numero.textContent = String(valor);
-
-  // Mantener el número centrado bajo su medalla
-  if (columna >= 3 && columna <= 5) {
-    celda.style.position = "relative";
-
-    numero.style.display = "inline-block";
-    numero.style.minWidth = "16px";
-    numero.style.textAlign = "center";
-  }
-
-  celda.appendChild(numero);
-
-  // Medallas provisionales
-  const provisional =
-    columna === 5
-      ? totalProvisionales
-      : columna >= 2 && columna <= 4
-        ? jugador.provisional[columna - 2]
-        : 0;
-
-  if (provisional > 0) {
-
-    const extra = document.createElement("span");
-    extra.textContent = " +" + provisional;
-
-    if (columna >= 2 && columna <= 4) {
-
-      // El +1 no desplaza el número principal
-      extra.style.cssText = `
-        position:absolute;
-        left:calc(50% + 9px);
-        top:50%;
-        transform:translateY(-50%);
-        font-size:10px;
-        font-weight:400;
-        color:#888;
-        white-space:nowrap;
-      `;
-
+  valores.forEach((valor, columna) => {
+    
+    const celda = document.createElement("td");
+  
+    celda.style.padding = "8px 3px";
+    celda.style.borderTop = "1px solid #e1e4e6";
+    celda.style.textAlign = columna === 1 ? "left" : "center";
+  
+    if (columna === 1) {
+      celda.style.overflowWrap = "anywhere";
     } else {
-
-      extra.style.cssText =
-        "font-size:10px;font-weight:400;color:#888;";
-
+      celda.style.whiteSpace = "nowrap";
     }
-
-    celda.appendChild(extra);
-  }
-
-   fila.appendChild(celda);
+  
+    // Número principal
+    const numero = document.createElement("span");
+    numero.textContent = String(valor);
+  
+    // Mantener el número centrado bajo su medalla
+    if (columna >= 2 && columna <= 4) {
+      celda.style.position = "relative";
+  
+      numero.style.display = "inline-block";
+      numero.style.minWidth = "16px";
+      numero.style.textAlign = "center";
+    }
+  
+    celda.appendChild(numero);
+  
+    // Medallas provisionales
+    const provisional =
+      columna === 5
+        ? totalProvisionales
+        : columna >= 2 && columna <= 4
+          ? jugador.provisional[columna - 2]
+          : 0;
+  
+    if (provisional > 0) {
+  
+      const extra = document.createElement("span");
+      extra.textContent = " +" + provisional;
+  
+      if (columna >= 2 && columna <= 4) {
+  
+        // El +1 no desplaza el número principal
+        extra.style.cssText = `
+          position:absolute;
+          left:calc(50% + 9px);
+          top:50%;
+          transform:translateY(-50%);
+          font-size:10px;
+          font-weight:400;
+          color:#888;
+          white-space:nowrap;
+        `;
+  
+      } else {
+  
+        extra.style.cssText =
+          "font-size:10px;font-weight:400;color:#888;";
+  
+      }
+  
+      celda.appendChild(extra);
+    }
+  
+     fila.appendChild(celda);
 
 }); // Cierra valores.forEach
 
