@@ -276,7 +276,7 @@
       border-radius: 9px;
     }
     
-  </style>
+  
 </head>
 
 <body>
@@ -538,7 +538,7 @@
     cursor: pointer;
     box-sizing: border-box;
   }
-</style>
+
 
 <!-- ADMINISTRACIÓN DE PAÍSES Y CONTINENTES -->
 <div
@@ -787,6 +787,14 @@
     flex: 1;
     min-width: 0;
   }
+
+  /* Títulos de las tarjetas de Estadísticas */
+.titulo-estadistica {
+  font-size:13px;
+  font-weight:400;
+  color:#666;
+  text-align:left;
+}
 </style>
 
     
@@ -6616,7 +6624,7 @@ profileContent.innerHTML = `
       text-align:center;
     ">
       ${resultadoHoy ? `
-        <div style="font-size:13px; color:#555;">
+        <div class="titulo-estadistica">
           📍 Resultado de hoy
         </div>
 
@@ -6674,7 +6682,7 @@ profileContent.innerHTML = `
         padding:10px;
         text-align:center;
       ">
-        <div style="font-size:12px;color:#666;margin-bottom:0;">
+        <div class="titulo-estadistica" style="margin-bottom:0;">
           📊 Media histórica
         </div>
 
@@ -6702,12 +6710,12 @@ profileContent.innerHTML = `
       </div>
 
       <div style="border-radius:10px; padding:10px; background:#f8f9fa; border:1px solid #d1d5db;">
-        <div style="font-size:12px; color:#666; text-align:left;">🎮 Partidas</div>
+        <div class="titulo-estadistica">🎮 Partidas</div>
         <div style="font-size:21px; font-weight:700; text-align:left;">${partidas}</div>
       </div>
       
       <div style="border-radius:10px; padding:10px; background:#f8f9fa; border:1px solid #d1d5db;">
-        <div style="font-size:12px; color:#666; text-align:left;">🔥 Racha actual</div>
+        <div class="titulo-estadistica">🔥 Racha actual</div>
         <div style="font-size:21px; font-weight:700; text-align:left;">${racha} días</div>
       </div>
 
@@ -6718,7 +6726,7 @@ profileContent.innerHTML = `
         border-radius:10px;
         padding:10px;
       ">
-        <div style="font-size:12px; color:#666; text-align:left;">
+        <div class="titulo-estadistica">
           🏆 Mejor resultado
         </div>
       
@@ -6747,13 +6755,7 @@ profileContent.innerHTML = `
   padding:10px;
 ">
 
-  <div style="
-    font-size:12px;
-    font-weight:400;
-    color:#666;
-    text-align:left;
-    margin-bottom:10px;
-  ">
+  <div class="titulo-estadistica" style="margin-bottom:10px;">
     🏅 Medallas
   </div>
 
