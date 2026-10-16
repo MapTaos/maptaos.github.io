@@ -4022,13 +4022,18 @@ async function cargarMedalleroDiario() {
     celda.appendChild(extra);
   }
 
-  fila.appendChild(celda);
+   fila.appendChild(celda);
 
-});
+}); // Cierra valores.forEach
 
-  tabla.appendChild(cuerpo);
-  contenedor.appendChild(tabla);
-}
+cuerpo.appendChild(fila);
+
+}); // Cierra clasificacion.forEach
+
+tabla.appendChild(cuerpo);
+contenedor.appendChild(tabla);
+
+} // Cierra cargarMedalleroDiario
 
 
   
