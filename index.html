@@ -7141,7 +7141,20 @@ if (errorCatalogo) {
         data[`continente_${i}`] || "No reconocido";
 
 const etiqueta = document.createElement("div");
-etiqueta.textContent = `Ronda ${i}: ${bandera}`;
+
+// Obtener el código del país
+const codigoPais = banderaACodigo(bandera);
+
+// Buscar su nombre en el catálogo
+const paisEncontrado = catalogoPaises.find(
+  pais => pais.codigo === codigoPais
+);
+
+// Mostrar bandera y nombre
+etiqueta.textContent = paisEncontrado
+  ? `Ronda ${i}: ${bandera} — ${paisEncontrado.pais}`
+  : `Ronda ${i}: ${bandera} — No reconocido`;
+
 etiqueta.style.marginBottom = "6px";
 
 // Selector para corregir el país o la bandera
