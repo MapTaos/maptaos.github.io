@@ -7178,6 +7178,64 @@ selectorPais.appendChild(opcionInicial);
   selectorPais.appendChild(opcion);
 });
 
+selectorPais.addEventListener("change", async () => {
+
+  const codigoNuevo = selectorPais.value;
+
+  if (!codigoNuevo) return;
+
+  const paisElegido = catalogoPaises.find(
+    pais => pais.codigo === codigoNuevo
+  );
+
+  if (!paisElegido) {
+    alert("No se encontró el país seleccionado.");
+    selectorPais.value = "";
+    return;
+  }
+
+  const banderaNueva = String.fromCodePoint(
+    ...[...codigoNuevo].map(
+      letra => letra.charCodeAt(0) + 127397
+    )
+  );
+
+  const confirmar = confirm(
+    `¿Corregir la ronda ${i} del ${fecha}?\n\n` +
+    `País: ${paisElegido.pais}\n` +
+    `Continente: ${paisElegido.continente}`
+  );
+
+  if (!confirmar) {
+    selectorPais.value = "";
+    return;
+  }
+
+  selectorPais.disabled = true;
+
+  const { error } = await supabaseClient
+    .from("rondas_dia")
+    .update({
+      [`pais_${i}`]: banderaNueva
+    })
+    .eq("fecha", fecha);
+
+  selectorPais.disabled = false;
+
+  if (error) {
+    console.error("Error corrigiendo bandera:", error);
+    alert("No se pudo guardar la corrección.");
+    selectorPais.value = "";
+    return;
+  }
+
+  alert("Bandera corregida correctamente.");
+
+  // Volver a consultar para mostrar los datos actualizados
+  btnConsultarRondasAdmin.click();
+
+});
+      
 // Selector de continente existente
 const selector = document.createElement("select");
 selector.style.cssText =
