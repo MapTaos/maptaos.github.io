@@ -3963,6 +3963,9 @@ async function cargarMedalleroDiario() {
     const totalMedallas =
       jugador.oro + jugador.plata + jugador.bronce;
 
+    const totalProvisionales =
+      jugador.provisional.reduce((suma, cantidad) => suma + cantidad, 0);
+
     const valores = [
       String(indice + 1),
       nombres.get(jugador.id) || "Jugador " + jugador.id,
@@ -3978,7 +3981,25 @@ async function cargarMedalleroDiario() {
 
       celda.textContent = String(valor);
 
-      if (columna >= 3 && jugador.provisional[columna - 3]) {
+      if (
+          (columna === 2 && totalProvisionales > 0) ||
+          (columna >= 3 && columna <= 5 &&
+            jugador.provisional[columna - 3] > 0)
+        ) {
+          const extra = document.createElement("span");
+        
+          extra.textContent =
+            " +" + (
+              columna === 2
+                ? totalProvisionales
+                : jugador.provisional[columna - 3]
+            );
+        
+          extra.style.cssText =
+            "font-size:10px;font-weight:400;color:#888;";
+        
+          celda.appendChild(extra);
+        }
         const extra = document.createElement("span");
         extra.textContent = " +1";
         extra.style.cssText =
