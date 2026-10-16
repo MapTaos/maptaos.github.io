@@ -8090,62 +8090,61 @@ botonesMedalleroContinentes.forEach(opcion => {
 
 });
   
-document
-  .getElementById("btnMedalleroGeneral")
-  .addEventListener("click", () => {
+// NAVEGACIÓN PRINCIPAL DE MEDALLEROS
 
-    const general =
-      document.getElementById("bloqueMedalleroGeneral");
+const vistasMedalleros = [
+  {
+    boton: "btnMedalleroDiario",
+    bloque: "bloqueMedalleroDiario"
+  },
+  {
+    boton: "btnMedalleroGeneral",
+    bloque: "bloqueMedalleroGeneral"
+  },
+  {
+    boton: "btnMedalleroContinentes",
+    bloque: "bloqueMedalleroContinentes"
+  }
+];
 
-    const continentes =
-      document.getElementById("bloqueMedalleroContinentes");
+function mostrarVistaMedallero(botonSeleccionado) {
 
-    const btnGeneral =
-      document.getElementById("btnMedalleroGeneral");
+  vistasMedalleros.forEach(vista => {
 
-    const btnContinentes =
-      document.getElementById("btnMedalleroContinentes");
+    const boton = document.getElementById(vista.boton);
+    const bloque = document.getElementById(vista.bloque);
 
-    general.classList.remove("hidden");
-    continentes.classList.add("hidden");
+    const seleccionado =
+      vista.boton === botonSeleccionado;
 
-    btnGeneral.style.background = "#111";
-    btnGeneral.style.color = "#fff";
-    btnGeneral.style.border = "1px solid #111";
+    // Mostrar solamente la sección seleccionada
+    bloque.classList.toggle("hidden", !seleccionado);
 
-    btnContinentes.style.background = "#e1e4e6";
-    btnContinentes.style.color = "#111";
-    btnContinentes.style.border = "1px solid #c5c9cc";
+    // Resaltar el botón seleccionado
+    boton.style.background =
+      seleccionado ? "#111" : "#e1e4e6";
+
+    boton.style.color =
+      seleccionado ? "#fff" : "#111";
+
+    boton.style.border =
+      seleccionado
+        ? "1px solid #111"
+        : "1px solid #c5c9cc";
+
   });
 
+}
 
-document
-  .getElementById("btnMedalleroContinentes")
-  .addEventListener("click", () => {
+vistasMedalleros.forEach(vista => {
 
-    const general =
-      document.getElementById("bloqueMedalleroGeneral");
+  document
+    .getElementById(vista.boton)
+    .addEventListener("click", () => {
+      mostrarVistaMedallero(vista.boton);
+    });
 
-    const continentes =
-      document.getElementById("bloqueMedalleroContinentes");
-
-    const btnGeneral =
-      document.getElementById("btnMedalleroGeneral");
-
-    const btnContinentes =
-      document.getElementById("btnMedalleroContinentes");
-
-    general.classList.add("hidden");
-    continentes.classList.remove("hidden");
-
-    btnGeneral.style.background = "#e1e4e6";
-    btnGeneral.style.color = "#111";
-    btnGeneral.style.border = "1px solid #c5c9cc";
-
-    btnContinentes.style.background = "#111";
-    btnContinentes.style.color = "#fff";
-    btnContinentes.style.border = "1px solid #111";
-  });
+});
   
 document
   .getElementById("btnTrimestreAnterior")
