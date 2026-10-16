@@ -3966,10 +3966,10 @@ async function cargarMedalleroDiario() {
     const valores = [
       String(indice + 1),
       nombres.get(jugador.id) || "Jugador " + jugador.id,
-      totalMedallas,
       jugador.oro,
       jugador.plata,
-      jugador.bronce
+      jugador.bronce,
+      totalMedallas
     ];
 
     valores.forEach((valor, columna) => {
