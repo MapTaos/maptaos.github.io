@@ -4013,6 +4013,10 @@ clasificacion.forEach((jugador, indice) => {
     celda.style.padding = "8px 3px";
     celda.style.borderTop = "1px solid #e1e4e6";
     celda.style.textAlign = columna === 1 ? "left" : "center";
+    // Destacar nombres y totales
+    if (columna === 1 || columna === 5) {
+      celda.style.fontWeight = "600";
+    }
   
     if (columna === 1) {
       celda.style.overflowWrap = "anywhere";
@@ -4025,7 +4029,7 @@ clasificacion.forEach((jugador, indice) => {
     numero.textContent = String(valor);
   
     // Mantener el número centrado bajo su medalla
-    if (columna >= 2 && columna <= 4) {
+    if (columna >= 2 && columna <= 5) {
       celda.style.position = "relative";
   
       numero.style.display = "inline-block";
@@ -4048,7 +4052,7 @@ clasificacion.forEach((jugador, indice) => {
       const extra = document.createElement("span");
       extra.textContent = " +" + provisional;
   
-      if (columna >= 2 && columna <= 4) {
+      if (columna >= 2 && columna <= 5) {
   
         // El +1 no desplaza el número principal
         extra.style.cssText = `
