@@ -1819,7 +1819,7 @@
 <section id="profileView" class="hidden">
 
 <!-- CABECERA DEL PERFIL -->
-<div class="card" style="margin-bottom:0;">
+<div class="card" style="margin-top:0;padding-top:6px;margin-bottom:0;">
 
   <!-- TÍTULO Y BOTÓN VOLVER -->
   <h2
@@ -5917,8 +5917,7 @@ async function abrirPerfilJugador(jugadorId, nombre) {
     editarAliasContainer.classList.add("hidden");
   }
 
-  profileName.textContent =
-    `Perfil de ${nombre}`;
+  profileName.textContent = nombre;
 
   profileContent.innerHTML =
     "Cargando estadísticas...";
