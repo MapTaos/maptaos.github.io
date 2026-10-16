@@ -3940,13 +3940,14 @@ async function cargarMedalleroDiario() {
 const tabla = document.createElement("table");
 
 tabla.style.cssText = `
-  width:100%;
+  width:calc(100% - 8px);
+  margin:0 4px;
   border-collapse:collapse;
   table-layout:fixed;
   font-size:12px;
   text-align:center;
 `;
-
+  
 // Anchuras iguales a Continentes → Global
 const columnas = document.createElement("colgroup");
 
