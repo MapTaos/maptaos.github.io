@@ -6161,13 +6161,7 @@ async function cargarMedallasDiariasPerfil(jugadorId) {
       font-size:12px;
       line-height:1.3;
     ">
-      <div></div>
-      <div style="text-align:center;">🥇</div>
-      <div style="text-align:center;">🥈</div>
-      <div style="text-align:center;">🥉</div>
-      <div style="text-align:center;font-weight:700;">Total</div>
-
-      <div style="font-weight:600;">Diarias</div>
+    <div style="font-weight:600;">Diarias</div>
 
       ${medallas.map((numero, i) => `
         <div style="text-align:center;">
@@ -6746,9 +6740,6 @@ profileContent.innerHTML = `
   </div>
 
   <!-- MEDALLAS DIARIAS -->
-  <div style="font-size:12px;font-weight:700;margin-bottom:5px;">
-    Diarias
-  </div>
 
   <div id="profileMedallasDiarias" style="font-size:12px;">
     Pendiente de cargar
