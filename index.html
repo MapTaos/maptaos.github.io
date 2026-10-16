@@ -3819,6 +3819,7 @@ async function cargarMedalleroDiario() {
   contenedor.textContent = "Cargando medallero diario...";
 
   const hoy = fechaMapTapISO();
+  const fechaInicioMedalleroDiario = "2026-10-01";
 
   const { data: jugadores, error: errorJugadores } =
     await supabaseClient
@@ -3842,6 +3843,7 @@ async function cargarMedalleroDiario() {
       await supabaseClient
         .from("resultados")
         .select("jugador_id, fecha, final_score, created_at")
+        .gte("fecha", fechaInicioMedalleroDiario)
         .order("fecha", { ascending: true })
         .order("created_at", { ascending: true })
         .range(desde, desde + tamanoPagina - 1);
