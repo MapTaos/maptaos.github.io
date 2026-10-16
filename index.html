@@ -7975,20 +7975,17 @@ document
     }
   });
 
-const btnMenuMedalleroContinentes =
-  document.getElementById("btnMenuMedalleroContinentes");
+// SELECTOR DE VISTAS DEL MEDALLERO DE CONTINENTES
 
 const menuMedalleroContinentes =
   document.getElementById("menuMedalleroContinentes");
 
-btnMenuMedalleroContinentes.addEventListener("click", () => {
-  menuMasRankings.classList.add("hidden");
-  menuMedalleroContinentes.classList.toggle("hidden");
-});
+const botonesMedalleroContinentes =
+  menuMedalleroContinentes.querySelectorAll(
+    "[data-vista-medallero]"
+  );
 
-document.querySelectorAll(
-  "#menuMedalleroContinentes [data-vista-medallero]"
-).forEach(opcion => {
+botonesMedalleroContinentes.forEach(opcion => {
 
   opcion.addEventListener("click", () => {
 
@@ -8003,9 +8000,6 @@ document.querySelectorAll(
     const porContinente =
       document.getElementById("rankingMedalleroPorContinente");
 
-    const titulo =
-      document.getElementById("tituloMedalleroContinentes");
-
     // Ocultar las tres vistas
     mensual.classList.add("hidden");
     global.classList.add("hidden");
@@ -8017,31 +8011,37 @@ document.querySelectorAll(
     // Mostrar la vista seleccionada
     if (vista === "mensual") {
       mensual.classList.remove("hidden");
-      titulo.textContent = "🌍 Medallero mensual";
-      btnMenuMedalleroContinentes.textContent = "Mensual ▾";
     }
 
     if (vista === "global") {
       global.classList.remove("hidden");
-      titulo.textContent = "🌍 Medallero global";
-      btnMenuMedalleroContinentes.textContent = "Global ▾";
     }
 
     if (vista === "porContinente") {
       if (porContinente) {
         porContinente.classList.remove("hidden");
-        titulo.textContent = "🌍 Medallero por continente";
-        btnMenuMedalleroContinentes.textContent = "Continente ▾";
         cargarMedalleroPorContinente();
       } else {
         mensual.classList.remove("hidden");
-        titulo.textContent = "🌍 Medallero mensual";
-        btnMenuMedalleroContinentes.textContent = "Mensual ▾";
       }
     }
 
-    // Cerrar el menú después de seleccionar
-    menuMedalleroContinentes.classList.add("hidden");
+    // Actualizar el aspecto de los botones
+    botonesMedalleroContinentes.forEach(boton => {
+
+      const seleccionado = boton === opcion;
+
+      boton.style.background =
+        seleccionado ? "#111" : "#e1e4e6";
+
+      boton.style.color =
+        seleccionado ? "#fff" : "#111";
+
+      boton.style.border =
+        seleccionado
+          ? "1px solid #111"
+          : "1px solid #c5c9cc";
+    });
 
   });
 
