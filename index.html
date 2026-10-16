@@ -3808,6 +3808,198 @@ const fechaAnterior =
 }
 
 
+  // MEDALLERO DIARIO HISTÓRICO
+async function cargarMedalleroDiario() {
+
+  const contenedor =
+    document.getElementById("rankingMedalleroDiario");
+
+  if (!contenedor) return;
+
+  contenedor.textContent = "Cargando medallero diario...";
+
+  const hoy = fechaMapTapISO();
+
+  const { data: jugadores, error: errorJugadores } =
+    await supabaseClient
+      .from("jugadores")
+      .select("id, nombre, alias");
+
+  if (errorJugadores) {
+    console.error(errorJugadores);
+    contenedor.textContent = "Error al cargar jugadores.";
+    return;
+  }
+
+  // Recuperar todos los resultados, incluidos los históricos.
+  // Se utilizan páginas para evitar el límite de filas de Supabase.
+  const resultados = [];
+  const tamanoPagina = 1000;
+
+  for (let desde = 0; ; desde += tamanoPagina) {
+
+    const { data, error } =
+      await supabaseClient
+        .from("resultados")
+        .select("jugador_id, fecha, final_score, created_at")
+        .order("fecha", { ascending: true })
+        .order("created_at", { ascending: true })
+        .range(desde, desde + tamanoPagina - 1);
+
+    if (error) {
+      console.error(error);
+      contenedor.textContent = "Error al cargar resultados.";
+      return;
+    }
+
+    resultados.push(...(data || []));
+
+    if (!data || data.length < tamanoPagina) break;
+  }
+
+  const nombres = new Map(
+    (jugadores || []).map(j => [
+      String(j.id),
+      j.alias || j.nombre
+    ])
+  );
+
+  const porFecha = new Map();
+
+  resultados.forEach(r => {
+    if (!porFecha.has(r.fecha)) {
+      porFecha.set(r.fecha, []);
+    }
+    porFecha.get(r.fecha).push(r);
+  });
+
+  const medallas = new Map();
+
+  for (const [fecha, partidas] of porFecha) {
+
+    partidas.sort((a, b) =>
+      b.final_score - a.final_score ||
+      new Date(a.created_at) - new Date(b.created_at) ||
+      Number(a.jugador_id) - Number(b.jugador_id)
+    );
+
+    partidas.slice(0, 3).forEach((r, posicion) => {
+
+      const id = String(r.jugador_id);
+
+      if (!medallas.has(id)) {
+        medallas.set(id, {
+          id,
+          oro: 0,
+          plata: 0,
+          bronce: 0,
+          provisional: [0, 0, 0]
+        });
+      }
+
+      const jugador = medallas.get(id);
+
+      if (fecha === hoy) {
+        jugador.provisional[posicion]++;
+      } else if (fecha < hoy) {
+        if (posicion === 0) jugador.oro++;
+        if (posicion === 1) jugador.plata++;
+        if (posicion === 2) jugador.bronce++;
+      }
+    });
+  }
+
+  const clasificacion = [...medallas.values()]
+    .sort((a, b) =>
+      (b.oro + b.provisional[0]) -
+      (a.oro + a.provisional[0]) ||
+      (b.plata + b.provisional[1]) -
+      (a.plata + a.provisional[1]) ||
+      (b.bronce + b.provisional[2]) -
+      (a.bronce + a.provisional[2]) ||
+      (nombres.get(a.id) || "").localeCompare(
+        nombres.get(b.id) || "", "es"
+      )
+    );
+
+  contenedor.replaceChildren();
+
+  if (!clasificacion.length) {
+    contenedor.textContent = "Todavía no hay medallas diarias.";
+    return;
+  }
+
+  const aviso = document.createElement("div");
+  aviso.textContent = "Las medallas de hoy (+1) son provisionales.";
+  aviso.style.cssText =
+    "font-size:12px;color:#666;margin-bottom:10px;";
+  contenedor.appendChild(aviso);
+
+  const tabla = document.createElement("table");
+  tabla.style.cssText =
+    "width:100%;border-collapse:collapse;font-size:12px;text-align:center;";
+
+  const cabecera = document.createElement("thead");
+  const filaCabecera = document.createElement("tr");
+
+  ["#", "Jugador", "🥇", "🥈", "🥉"].forEach(texto => {
+    const celda = document.createElement("th");
+    celda.textContent = texto;
+    celda.style.padding = "7px 3px";
+    filaCabecera.appendChild(celda);
+  });
+
+  cabecera.appendChild(filaCabecera);
+  tabla.appendChild(cabecera);
+
+  const cuerpo = document.createElement("tbody");
+
+  clasificacion.forEach((jugador, indice) => {
+
+    const fila = document.createElement("tr");
+
+    const valores = [
+      String(indice + 1),
+      nombres.get(jugador.id) || "Jugador " + jugador.id,
+      jugador.oro,
+      jugador.plata,
+      jugador.bronce
+    ];
+
+    valores.forEach((valor, columna) => {
+
+      const celda = document.createElement("td");
+
+      celda.textContent = String(valor);
+
+      if (columna >= 2 && jugador.provisional[columna - 2]) {
+        const extra = document.createElement("span");
+        extra.textContent = " +1";
+        extra.style.cssText =
+          "font-weight:700;color:#b36b00;";
+        celda.appendChild(extra);
+      }
+
+      celda.style.padding = "8px 3px";
+      celda.style.borderTop = "1px solid #e1e4e6";
+
+      if (columna === 1) {
+        celda.style.textAlign = "left";
+        celda.style.overflowWrap = "anywhere";
+      }
+
+      fila.appendChild(celda);
+    });
+
+    cuerpo.appendChild(fila);
+  });
+
+  tabla.appendChild(cuerpo);
+  contenedor.appendChild(tabla);
+}
+
+
+  
 async function cargarMedalleroMensual() {
 
   const contenedor =
