@@ -2913,7 +2913,7 @@ function mostrarMensaje(
 function limpiarMensaje() {
   messageBox.innerHTML = "";
 }
-
+// Data do calendario de España, non a UTC
 function fechaMadridISO(fecha = new Date()) {
   return new Intl.DateTimeFormat(
     "en-CA",
@@ -2926,6 +2926,11 @@ function fechaMadridISO(fecha = new Date()) {
   ).format(fecha);
 }
 
+// Fecha actual del juego MapTap (UTC). Fecha UTC, que utilizaremos para identificar las medallas provisionales del Medallero diario. 
+function fechaMapTapISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+  
 function fechasValidasHoy(fecha = new Date()) {
   return [fechaMadridISO(fecha)];
 }
