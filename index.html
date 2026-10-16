@@ -3981,6 +3981,20 @@ async function cargarMedalleroDiario() {
 
       celda.textContent = String(valor);
 
+      // Centrar el número principal sin que el +1 lo desplace
+      if (columna >= 3 && columna <= 5) {
+        celda.style.position = "relative";
+      
+        const numero = document.createElement("span");
+        numero.textContent = String(valor);
+        numero.style.display = "inline-block";
+        numero.style.minWidth = "16px";
+        numero.style.textAlign = "center";
+      
+        celda.textContent = "";
+        celda.appendChild(numero);
+      }
+
       if (
           (columna === 2 && totalProvisionales > 0) ||
           (columna >= 3 && columna <= 5 &&
@@ -4003,7 +4017,9 @@ async function cargarMedalleroDiario() {
         const extra = document.createElement("span");
         extra.textContent = " +1";
         extra.style.cssText =
-            "font-size:10px;font-weight:400;color:#888;";
+          columna >= 3
+            ? "position:absolute;left:calc(50% + 9px);top:50%;transform:translateY(-50%);font-size:10px;font-weight:400;color:#888;white-space:nowrap;"
+            : "font-size:10px;font-weight:400;color:#888;";
         celda.appendChild(extra);
       });
 
