@@ -3937,20 +3937,44 @@ async function cargarMedalleroDiario() {
     "font-size:12px;color:#666;margin-bottom:10px;";
   contenedor.appendChild(aviso);
 
-  const tabla = document.createElement("table");
-  tabla.style.cssText =
-    "width:100%;border-collapse:collapse;font-size:12px;text-align:center;";
+const tabla = document.createElement("table");
 
-  const cabecera = document.createElement("thead");
-  const filaCabecera = document.createElement("tr");
+tabla.style.cssText = `
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  font-size:12px;
+  text-align:center;
+`;
 
-// Cabecera de la tabla
-["#", "Jugador", "🥇", "🥈", "🥉", "Total"].forEach(texto => {
+// Anchuras iguales a Continentes → Global
+const columnas = document.createElement("colgroup");
+
+["20px", "auto", "42px", "42px", "42px", "47px"]
+  .forEach(ancho => {
+    const columna = document.createElement("col");
+    columna.style.width = ancho;
+    columnas.appendChild(columna);
+  });
+
+tabla.appendChild(columnas);
+
+// Cabecera sin # ni Jugador
+const cabecera = document.createElement("thead");
+const filaCabecera = document.createElement("tr");
+
+["", "", "🥇", "🥈", "🥉", "Total"].forEach(texto => {
 
   const celda = document.createElement("th");
+
   celda.textContent = texto;
-  celda.style.padding = "7px 3px";
-  celda.style.textAlign = texto === "Jugador" ? "left" : "center";
+
+  celda.style.cssText = `
+    padding:7px 0;
+    text-align:center;
+    border-bottom:1px solid #d5d8da;
+    font-size:12px;
+  `;
 
   filaCabecera.appendChild(celda);
 
