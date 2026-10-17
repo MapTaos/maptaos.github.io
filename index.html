@@ -6754,7 +6754,7 @@ profileContent.innerHTML = `
 
       <!-- TARJETA ESTE MES -->
       <div style="
-        grid-column:1 / -1;
+        grid-column:auto;
         background:#f8f9fa;
         border:1px solid #d1d5db;
         border-radius:10px;
@@ -6767,19 +6767,19 @@ profileContent.innerHTML = `
         <div style="
           display:grid;
           grid-template-columns:repeat(3,minmax(0,1fr));
-          gap:6px;
+          gap:2px;
           text-align:center;
         ">
           <div>
             <div style="font-size:11px;color:#777;">Media</div>
-            <div style="font-size:21px;font-weight:700;">
+            <div style="font-size:16px;font-weight:700;">
               ${mediaMesPerfil ?? "—"}
             </div>
           </div>
       
           <div>
             <div style="font-size:11px;color:#777;">Puesto</div>
-            <div style="font-size:21px;font-weight:700;">
+            <div style="font-size:12px;font-weight:700;">
               ${puestoMesPerfil != null
                 ? `${puestoMesPerfil}º / ${totalJugadoresMes}`
                 : "—"}
@@ -6788,7 +6788,7 @@ profileContent.innerHTML = `
       
           <div>
             <div style="font-size:11px;color:#777;">Mejor resultado</div>
-            <div style="font-size:21px;font-weight:700;">
+            <div style="font-size:16px;font-weight:700;">
               ${mejorMes ?? "—"}
             </div>
           </div>
