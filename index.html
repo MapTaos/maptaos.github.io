@@ -6725,7 +6725,7 @@ profileContent.innerHTML = `
   border-radius:10px;
   padding:10px;
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:48% 52%;
   gap:0;
   align-items:start;
 ">
@@ -6733,7 +6733,7 @@ profileContent.innerHTML = `
   <!-- MEDIA HISTÓRICA -->
   <div style="
     min-width:0;
-    padding-right:10px;
+    padding-right:6px;
   ">
     <div class="titulo-estadistica" style="margin-bottom:6px;">
       📊 Media histórica
@@ -6749,7 +6749,7 @@ profileContent.innerHTML = `
         ${mediaHistoricaJugador?.media ?? media}
       </div>
 
-      <div style="font-size:16px;font-weight:700;white-space:nowrap;">
+      <div style="font-size:21px;font-weight:700;white-space:nowrap;">
         ${mediaHistoricaJugador
           ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
           : "—"}
@@ -6761,7 +6761,7 @@ profileContent.innerHTML = `
   <div style="
     min-width:0;
     border-left:1px solid #d1d5db;
-    padding-left:10px;
+    padding-left:6px;
   ">
     <div class="titulo-estadistica" style="margin-bottom:6px;">
       📅 Este mes
@@ -6770,7 +6770,7 @@ profileContent.innerHTML = `
     <div style="
       display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:2px;
+      gap:0;
       text-align:center;
     ">
       <div style="min-width:0;">
