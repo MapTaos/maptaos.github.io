@@ -6513,6 +6513,48 @@ const top10 = [...resultados]
     Number(b.final_score) - Number(a.final_score)
   )
   .slice(0, 10);
+
+// Mejor resultado del mes actual
+const mesActualPerfil = hoy.slice(0, 7);
+
+const resultadosMes = resultados.filter(
+  fila => fila.fecha.startsWith(mesActualPerfil)
+);
+
+const mejorMes = resultadosMes.length > 0
+  ? Math.max(
+      ...resultadosMes.map(fila => Number(fila.final_score))
+    )
+  : null;
+
+// Estadísticas del jugador en el mes actual
+const inicioMesPerfil = mesActualPerfil + "-01";
+
+const { data: rankingMesPerfil, error: errorRankingMesPerfil } =
+  await supabaseClient
+    .from("ranking_mensual")
+    .select("jugador_id, puntos, dias_jugados, posicion")
+    .eq("inicio_mes", inicioMesPerfil)
+    .order("posicion", { ascending: true });
+
+if (errorRankingMesPerfil) {
+  console.error("Error al cargar el ranking mensual del perfil:", errorRankingMesPerfil);
+}
+
+const filaMesJugador = rankingMesPerfil?.find(
+  fila => Number(fila.jugador_id) === Number(jugadorId)
+);
+
+const mediaMesPerfil = filaMesJugador && Number(filaMesJugador.dias_jugados) > 0
+  ? Math.round(
+      Number(filaMesJugador.puntos) /
+      Number(filaMesJugador.dias_jugados)
+    )
+  : null;
+
+const puestoMesPerfil = filaMesJugador?.posicion ?? null;
+
+const totalJugadoresMes = rankingMesPerfil?.length ?? 0;
   
 const partidas = resultados.length;
 
