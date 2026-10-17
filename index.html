@@ -6752,6 +6752,50 @@ profileContent.innerHTML = `
         </div>
       </div>
 
+      <!-- TARJETA ESTE MES -->
+      <div style="
+        grid-column:1 / -1;
+        background:#f8f9fa;
+        border:1px solid #d1d5db;
+        border-radius:10px;
+        padding:10px;
+      ">
+        <div class="titulo-estadistica" style="margin-bottom:6px;">
+          📅 Este mes
+        </div>
+      
+        <div style="
+          display:grid;
+          grid-template-columns:repeat(3,minmax(0,1fr));
+          gap:6px;
+          text-align:center;
+        ">
+          <div>
+            <div style="font-size:11px;color:#777;">Media</div>
+            <div style="font-size:21px;font-weight:700;">
+              ${mediaMesPerfil ?? "—"}
+            </div>
+          </div>
+      
+          <div>
+            <div style="font-size:11px;color:#777;">Puesto</div>
+            <div style="font-size:21px;font-weight:700;">
+              ${puestoMesPerfil != null
+                ? `${puestoMesPerfil}º / ${totalJugadoresMes}`
+                : "—"}
+            </div>
+          </div>
+      
+          <div>
+            <div style="font-size:11px;color:#777;">Mejor</div>
+            <div style="font-size:21px;font-weight:700;">
+              ${mejorMes ?? "—"}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- FIN TARJETA ESTE MES -->
+
       <div style="border-radius:10px; padding:10px; background:#f8f9fa; border:1px solid #d1d5db;">
         <div class="titulo-estadistica">🎮 Partidas</div>
         <div style="font-size:21px; font-weight:700; text-align:left;">${partidas}</div>
