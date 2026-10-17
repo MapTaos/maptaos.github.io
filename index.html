@@ -3203,6 +3203,11 @@ textoRondas =
       const codigoPais =
         banderaACodigo(bandera);
 
+      const puntuacionColoreada =
+        Number(puntosRonda) === 100
+          ? `<span style="color:#dc2626;">${puntosRonda}</span>`
+          : puntosRonda;
+
       return codigoPais
         ? `<span style="
              display:inline-flex;
@@ -3218,14 +3223,14 @@ textoRondas =
                height:15px;
                vertical-align:middle;
                margin-right:1px;
-             ">${puntosRonda}</span>`
+             ">${puntuacionColoreada}</span>`
         : `<span style="
              display:inline-flex;
              align-items:center;
              width:20%;
              white-space:nowrap;
              box-sizing:border-box;
-           ">${puntosRonda}</span>`;
+           ">${puntuacionColoreada}</span>`;
     })
     .filter(Boolean)
     .join("");
