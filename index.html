@@ -6717,85 +6717,89 @@ profileContent.innerHTML = `
 
       
       
-      <div style="
-        grid-column:auto;
-        background:#f8f9fa;
-        border:1px solid #d1d5db;
-        border-radius:10px;
-        padding:10px;
-        text-align:center;
-      ">
-        <div class="titulo-estadistica" style="margin-bottom:0;">
-          📊 Media histórica
-        </div>
+     <!-- TARJETA COMBINADA: MEDIA HISTÓRICA Y ESTE MES -->
+<div style="
+  grid-column:1 / -1;
+  background:#f8f9fa;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  padding:10px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  align-items:start;
+">
 
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          gap:6px;
-          margin:0;
-        ">
-          <div>
-            <div style="font-size:21px;font-weight:700;">
-              ${mediaHistoricaJugador?.media ?? media}
-            </div>
-          </div>
+  <!-- MEDIA HISTÓRICA -->
+  <div style="
+    min-width:0;
+    padding-right:10px;
+  ">
+    <div class="titulo-estadistica" style="margin-bottom:6px;">
+      📊 Media histórica
+    </div>
 
-          <div>
-            <div style="font-size:21px;font-weight:700;">
-              ${mediaHistoricaJugador
-                ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
-                : "—"}
-            </div>
-          </div>
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:4px;
+    ">
+      <div style="font-size:21px;font-weight:700;">
+        ${mediaHistoricaJugador?.media ?? media}
+      </div>
+
+      <div style="font-size:16px;font-weight:700;white-space:nowrap;">
+        ${mediaHistoricaJugador
+          ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
+          : "—"}
+      </div>
+    </div>
+  </div>
+
+  <!-- SEPARACIÓN VERTICAL + ESTE MES -->
+  <div style="
+    min-width:0;
+    border-left:1px solid #d1d5db;
+    padding-left:10px;
+  ">
+    <div class="titulo-estadistica" style="margin-bottom:6px;">
+      📅 Este mes
+    </div>
+
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:2px;
+      text-align:center;
+    ">
+      <div style="min-width:0;">
+        <div style="font-size:10px;color:#777;">Media</div>
+        <div style="font-size:16px;font-weight:700;">
+          ${mediaMesPerfil ?? "—"}
         </div>
       </div>
 
-      <!-- TARJETA ESTE MES -->
-      <div style="
-        grid-column:auto;
-        background:#f8f9fa;
-        border:1px solid #d1d5db;
-        border-left:3px solid #b8bec5;
-        border-radius:10px;
-        padding:10px;
-      ">
-        <div class="titulo-estadistica" style="margin-bottom:6px;">
-          📅 Este mes
-        </div>
-      
-        <div style="
-          display:grid;
-          grid-template-columns:repeat(3,minmax(0,1fr));
-          gap:2px;
-          text-align:center;
-        ">
-          <div>
-            <div style="font-size:11px;color:#777;">Media</div>
-            <div style="font-size:16px;font-weight:700;">
-              ${mediaMesPerfil ?? "—"}
-            </div>
-          </div>
-      
-          <div>
-            <div style="font-size:11px;color:#777;">Puesto</div>
-            <div style="font-size:12px;font-weight:700;">
-              ${puestoMesPerfil != null
-                ? `${puestoMesPerfil}º / ${totalJugadoresMes}`
-                : "—"}
-            </div>
-          </div>
-      
-          <div>
-            <div style="font-size:11px;color:#777;">Mejor resultado</div>
-            <div style="font-size:16px;font-weight:700;">
-              ${mejorMes ?? "—"}
-            </div>
-          </div>
+      <div style="min-width:0;">
+        <div style="font-size:10px;color:#777;">Puesto</div>
+        <div style="font-size:12px;font-weight:700;white-space:nowrap;">
+          ${puestoMesPerfil != null
+            ? `${puestoMesPerfil}º / ${totalJugadoresMes}`
+            : "—"}
         </div>
       </div>
-      <!-- FIN TARJETA ESTE MES -->
+
+      <div style="min-width:0;">
+        <div style="font-size:10px;color:#777;">Mejor</div>
+        <div style="font-size:16px;font-weight:700;">
+          ${mejorMes ?? "—"}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- FIN TARJETA COMBINADA -->
 
       <div style="border-radius:10px; padding:10px; background:#f8f9fa; border:1px solid #d1d5db;">
         <div class="titulo-estadistica">🎮 Partidas</div>
