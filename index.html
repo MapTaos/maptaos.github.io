@@ -6749,9 +6749,9 @@ profileContent.innerHTML = `
         ${mediaHistoricaJugador?.media ?? media}
       </div>
 
-      <div style="font-size:12px;font-weight:700;white-space:nowrap;">
+      <div style="font-size:14px;font-weight:700;white-space:nowrap;">
         ${mediaHistoricaJugador
-          ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
+          ? `${mediaHistoricaJugador.posicion}º/${totalMediaHistorica}`
           : "—"}
       </div>
     </div>
@@ -6782,9 +6782,9 @@ profileContent.innerHTML = `
 
       <div style="min-width:0;">
         <div style="font-size:10px;color:#777;">Puesto</div>
-        <div style="font-size:12px;font-weight:700;white-space:nowrap;">
+        <div style="font-size:14px;font-weight:700;white-space:nowrap;">
           ${puestoMesPerfil != null
-            ? `${puestoMesPerfil}º / ${totalJugadoresMes}`
+            ? `${puestoMesPerfil}º/${totalJugadoresMes}`
             : "—"}
         </div>
       </div>
