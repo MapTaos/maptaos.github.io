@@ -3827,7 +3827,7 @@ async function cargarMedalleroDiario() {
 
   contenedor.textContent = "Cargando medallero diario...";
 
-  const hoy = fechaMapTapISO();
+  const hoy = fechaMadridISO();
   const fechaInicioMedalleroDiario = "2026-10-01";
 
   const { data: jugadores, error: errorJugadores } =
@@ -6068,7 +6068,7 @@ async function cargarMedallasDiariasPerfil(jugadorId) {
 
   contenedor.textContent = "Cargando...";
 
-  const hoy = fechaMapTapISO();
+  const hoy = fechaMadridISO();
   const fechaInicio = "2026-10-01";
   const resultados = [];
   const tamanoPagina = 1000;
