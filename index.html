@@ -1077,12 +1077,12 @@
       puntos obtenidos por cada jugador. El mes en curso aparece como
       PROVISIONAL hasta que finaliza.
       <br>
-      <strong>Global:</strong> suma las medallas mensuales conseguidas por cada
+      <strong>Total:</strong> suma las medallas mensuales conseguidas por cada
       jugador. La clasificación se ordena por número de 🥇, 🥈 y 🥉.
       Si coinciden las cantidades, los jugadores comparten posición.
       <br>
       <strong>Continentes:</strong> permite consultar los medalleros mensuales,
-      el medallero global de los cinco continentes y los medalleros s
+      el medallero total de los cinco continentes y los medalleros s
       independientes de África, América, Asia, Europa y Oceanía.
       <br>
       <strong>Empates:</strong> cuando varios jugadores empatan en una posición,
@@ -1692,10 +1692,10 @@
   id="btnCambiarMedallero"
   class="hidden"
 >
-  Global
+  Total
 </button>
 
-<!-- SELECTOR MENSUAL / GLOBAL -->
+<!-- SELECTOR MENSUAL / TOTAL -->
 <div
   id="selectorMedalleroMensual"
   style="
@@ -1739,7 +1739,7 @@
       cursor:pointer;
     "
   >
-    Global
+    Total
   </button>
 
 </div>
@@ -1823,7 +1823,7 @@
         cursor:pointer;
       "
     >
-      Global
+      Total
     </button>
 
     <button
@@ -1854,7 +1854,7 @@
     id="rankingMedalleroContinentesGlobal"
     class="hidden"
   >
-    Cargando medallero global...
+    Cargando medallero total...
   </div>
 
   <div
@@ -3949,7 +3949,7 @@ async function cargarMedalleroDiario() {
 
 const columnasGrid = "16px minmax(0,1fr) 38px 38px 38px 43px";
 
-// Cabecera: mismo formato que Continentes → Global
+// Cabecera: mismo formato que Continentes → Total
 const cabecera = document.createElement("div");
 
 cabecera.style.cssText = `
@@ -3972,7 +3972,7 @@ cabecera.style.cssText = `
 
 contenedor.appendChild(cabecera);
 
-// Mismo formato de medallas que Continentes → Global
+// Mismo formato de medallas que Continentes → Total
 const mostrarMedallasDiarias = (definitivas, provisionales, esTotal = false) => {
   const contenedorMedallas = document.createElement("span");
 
@@ -4315,7 +4315,7 @@ async function cargarMedalleroGlobal() {
     .order("inicio_mes", { ascending: true });
 
   if (error) {
-    console.error("Error cargando medallero global:", error);
+    console.error("Error cargando medallero total:", error);
     contenedor.textContent = "No se pudo cargar el medallero.";
     return;
   }
@@ -4527,7 +4527,7 @@ async function cargarMedalleroContinentesGlobal() {
 
   if (!contenedor) return;
 
-  contenedor.innerHTML = "Cargando medallero global...";
+  contenedor.innerHTML = "Cargando medallero total...";
 
   const { data, error } = await supabaseClient
     .from("ranking_continentes")
@@ -4537,7 +4537,7 @@ async function cargarMedalleroContinentesGlobal() {
     .order("inicio_mes", { ascending: true });
 
   if (error) {
-    console.error("Error cargando medallero global de continentes:", error);
+    console.error("Error cargando medallero total de continentes:", error);
     contenedor.textContent = "No se pudo cargar el medallero.";
     return;
   }
@@ -8446,7 +8446,7 @@ document
   .getElementById("btnMedallero")
   .addEventListener("click", () => mostrarSeccionInicio("medallero"));
 
-// SELECTOR MENSUAL / GLOBAL DEL MEDALLERO GENERAL
+// SELECTOR MENSUAL / TOTAL DEL MEDALLERO GENERAL
 
 const botonesMedalleroMensual =
   document.querySelectorAll(
