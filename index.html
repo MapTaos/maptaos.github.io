@@ -5627,7 +5627,15 @@ async function cargarDificultadPaises() {
           )
         : "🌍";
 
-      const codigoPais = String(dato.pais).trim().toUpperCase();
+      const codigoPais = [...String(dato.pais).trim()]
+        .map(caracter => {
+          const codigo = caracter.codePointAt(0);
+          return codigo >= 127462 && codigo <= 127487
+            ? String.fromCharCode(codigo - 127397)
+            : caracter;
+        })
+        .join("")
+        .toUpperCase();
 
       const nombresPaises = {
         FR: "Francia",
@@ -5650,7 +5658,7 @@ async function cargarDificultadPaises() {
           border-bottom:1px solid #e1e4e6;
         ">
           <span>
-            ${indice + 1}. ${bandera} PRUEBA-${JSON.stringify(dato.pais)}-${nombrePais}
+            ${indice + 1}. ${dato.pais} ${nombresPaises[codigoPais] || codigoPais}
           </span>
           <span style="white-space:nowrap;">
             <strong>${dato.media.toFixed(2)}</strong>
