@@ -6745,21 +6745,26 @@ profileContent.innerHTML = `
     </div>
 
     <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:4px;
-    ">
-      <div style="font-size:21px;font-weight:700;">
-        ${mediaHistoricaJugador?.media ?? media}
-      </div>
-
-      <div style="font-size:16px;font-weight:700;white-space:nowrap;">
-        ${mediaHistoricaJugador
-          ? `${mediaHistoricaJugador.posicion}º/${totalMediaHistorica}`
-          : "—"}
-      </div>
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4px;
+">
+  <div style="min-width:0;">
+    <div style="font-size:10px;color:#777;">Media</div>
+    <div style="font-size:21px;font-weight:700;">
+      ${mediaHistoricaJugador?.media ?? media}
     </div>
+  </div>
+
+  <div style="min-width:0;text-align:center;">
+    <div style="font-size:10px;color:#777;">Puesto</div>
+    <div style="font-size:12px;font-weight:700;white-space:nowrap;">
+      ${mediaHistoricaJugador
+        ? `${mediaHistoricaJugador.posicion}º / ${totalMediaHistorica}`
+        : "—"}
+    </div>
+  </div>
+</div>
   </div>
 
   <!-- SEPARACIÓN VERTICAL + ESTE MES -->
