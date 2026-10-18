@@ -3758,15 +3758,9 @@ const fechaAnterior =
           <span>
             <span style="
               display:inline-block;
-              width:28px;
+              width:48px;
               text-align:center;
-            ">${medalla}</span>
-          <span style="
-            display:inline-block;
-            width:20px;
-          ">
-          ${fila.posicion}
-        </span>
+            ">${medalla || fila.posicion}</span>
         
         <strong
           onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.alias || fila.nombre}')"
