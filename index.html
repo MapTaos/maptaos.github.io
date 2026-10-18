@@ -5648,7 +5648,7 @@ const nombrePais = nombresPaises[dato.pais] || dato.pais.toLowerCase();
           border-bottom:1px solid #e1e4e6;
         ">
           <span>
-            ${indice + 1}. ${bandera} ${nombrePais}
+            ${indice + 1}. ${bandera} ${nombresPaises[dato.pais] || dato.pais}
           </span>
           <span style="white-space:nowrap;">
             <strong>${dato.media.toFixed(2)}</strong>
