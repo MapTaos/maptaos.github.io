@@ -6635,6 +6635,11 @@ if (resultadoHoy) {
       const codigoPais =
         banderaACodigo(banderasHoy[i] || "");
 
+      const puntuacionColoreada =
+        Number(puntos) === 100
+          ? `<span style="color:#dc2626;">${puntos}</span>`
+          : (puntos ?? "");
+
       return `
         <span style="
           display:flex;
@@ -6652,7 +6657,7 @@ if (resultadoHoy) {
               style="width:20px;height:15px;flex-shrink:0;"
             >
           ` : ""}
-          ${puntos ?? ""}
+          ${puntuacionColoreada}
         </span>
       `;
     })
