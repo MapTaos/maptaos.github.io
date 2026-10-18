@@ -7166,6 +7166,11 @@ const textoRondas = puntos
     const codigoPais =
       banderaACodigo(banderas[j] || "");
 
+    const puntuacionColoreada =
+      Number(puntosRonda) === 100
+        ? `<span style="color:#dc2626;">${puntosRonda}</span>`
+        : puntosRonda;
+
     return codigoPais
       ? `<span style="
            display:inline-flex;
@@ -7181,7 +7186,7 @@ const textoRondas = puntos
              height:15px;
              vertical-align:middle;
              margin-right:1px;
-           ">${puntosRonda}</span>`
+           ">${puntuacionColoreada}</span>`
       : `<span style="
            display:inline-flex;
            align-items:center;
