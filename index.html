@@ -5627,6 +5627,11 @@ async function cargarDificultadPaises() {
           )
         : "🌍";
 
+      const nombrePais = new Intl.DisplayNames(
+        ["es"],
+        { type: "region" }
+      ).of(dato.pais);
+      
       return `
         <div style="
           display:flex;
@@ -5637,7 +5642,7 @@ async function cargarDificultadPaises() {
           border-bottom:1px solid #e1e4e6;
         ">
           <span>
-            ${indice + 1}. ${bandera} ${dato.pais}
+            ${indice + 1}. ${bandera} ${nombrePais}
           </span>
           <span style="white-space:nowrap;">
             <strong>${dato.media.toFixed(2)}</strong>
