@@ -8965,7 +8965,10 @@ document
 
 document
   .getElementById("btnDificultadPaises")
-  .addEventListener("click", () => mostrarSeccionInicio("dificultadPaises"));
+  .addEventListener("click", async () => {
+    mostrarSeccionInicio("dificultadPaises");
+    await cargarDificultadPaises();
+  });
 
 document
   .getElementById("btnDiaAnterior")
