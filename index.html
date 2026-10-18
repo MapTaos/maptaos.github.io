@@ -1541,6 +1541,31 @@
   </div>
 
 </div>
+
+<!-- DIFICULTAD HISTÓRICA DE PAÍSES -->
+<div class="card hidden" id="seccionDificultadPaises">
+
+  <h2 class="home-section-title">
+    🌍 Dificultad de países
+  </h2>
+
+  <div class="small">
+    Histórico desde el 1-10-2026
+  </div>
+
+  <h3>🟢 Países con mejor puntuación</h3>
+
+  <div id="paisesMejores" class="placeholder">
+    Cargando países...
+  </div>
+
+  <h3>🔴 Países con peor puntuación</h3>
+
+  <div id="paisesPeores" class="placeholder">
+    Cargando países...
+  </div>
+
+</div>
     
 <div class="card hidden" id="seccionContinentes">
 
@@ -8449,7 +8474,8 @@ function mostrarSeccionInicio(seccion) {
     mejoresMarcas: "seccionMejoresMarcas",
     mediaHistorica: "seccionMediaHistorica",
     medallero: "seccionMedallero",
-    top50: "seccionTop50"
+    top50: "seccionTop50",
+    dificultadPaises: "seccionDificultadPaises"
   };
 
 const botones = {
@@ -8459,9 +8485,10 @@ const botones = {
   top20: "btnTop20",
   continentes: "btnContinentes",
   mejoresMarcas: "btnMejoresMarcas",
-  ediaHistorica: "btnMediaHistorica",
+  mediaHistorica: "btnMediaHistorica",
   medallero: "btnMedallero",
-  top50: "btnTop50"
+  top50: "btnTop50",
+  dificultadPaises: "btnDificultadPaises"
 };
 
  
@@ -8491,7 +8518,8 @@ if (
   seccion === "mejoresMarcas" ||
   seccion === "mediaHistorica" ||
   seccion === "medallero" ||
-  seccion === "top50"
+  seccion === "top50" ||
+  seccion === "dificultadPaises"
 ) {
   btnMasRankings.style.background = "#111";
   btnMasRankings.style.color = "#fff";
@@ -8792,6 +8820,10 @@ document
 document
   .getElementById("btnTop50")
   .addEventListener("click", () => mostrarSeccionInicio("top50"));
+
+document
+  .getElementById("btnDificultadPaises")
+  .addEventListener("click", () => mostrarSeccionInicio("dificultadPaises"));
 
 document
   .getElementById("btnDiaAnterior")
