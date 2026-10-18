@@ -5860,19 +5860,11 @@ async function cargarMediaHistorica() {
 
               <span style="
                 display:inline-block;
-                width:24px;
+                width:46px;
                 text-align:center;
                 flex-shrink:0;
               ">
-                ${medalla}
-              </span>
-
-              <span style="
-                display:inline-block;
-                width:22px;
-                flex-shrink:0;
-              ">
-                ${fila.posicion}
+                ${medalla || fila.posicion}
               </span>
 
               <strong
