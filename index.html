@@ -6602,6 +6602,140 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
 }
 
 
+  function cargarPaisesPerfil(resultados, rondasPorFecha) {
+
+  const mejores = document.getElementById("profilePaisesMejores");
+  const peores = document.getElementById("profilePaisesPeores");
+
+  if (!mejores || !peores) return;
+
+  const paisesPorFecha = new Map(
+    (rondasPorFecha || []).map(fila => [fila.fecha, fila])
+  );
+
+  const estadisticas = new Map();
+
+  (resultados || []).forEach(resultado => {
+
+    if (resultado.fecha < "2026-10-01") return;
+
+    const paises = paisesPorFecha.get(resultado.fecha);
+    if (!paises) return;
+
+    for (let i = 1; i <= 5; i++) {
+
+      const pais = paises[`pais_${i}`];
+      const puntos = resultado[`ronda_${i}`];
+
+      if (!pais || puntos === null || puntos === undefined || puntos === "") {
+        continue;
+      }
+
+      const puntuacion = Number(puntos);
+      if (!Number.isFinite(puntuacion)) continue;
+
+      if (!estadisticas.has(pais)) {
+        estadisticas.set(pais, {
+          pais,
+          total: 0,
+          cantidad: 0
+        });
+      }
+
+      const dato = estadisticas.get(pais);
+      dato.total += puntuacion;
+      dato.cantidad++;
+    }
+  });
+
+  const clasificacion = [...estadisticas.values()]
+    .filter(dato => dato.cantidad >= 3)
+    .map(dato => ({
+      pais: dato.pais,
+      media: dato.total / dato.cantidad,
+      cantidad: dato.cantidad
+    }));
+
+  const mejoresTres = [...clasificacion]
+    .sort((a, b) => b.media - a.media || a.pais.localeCompare(b.pais))
+    .slice(0, 3);
+
+  const peoresTres = [...clasificacion]
+    .sort((a, b) => a.media - b.media || a.pais.localeCompare(b.pais))
+    .slice(0, 3);
+
+  const nombresPaises = {
+    FR: "Francia",
+    PL: "Polonia",
+    US: "Estados Unidos",
+    JP: "Japón",
+    BO: "Bolivia",
+    IN: "India"
+  };
+
+  function dibujar(lista, contenedor) {
+
+    if (!lista.length) {
+      contenedor.textContent =
+        "Todavía no hay países con suficientes resultados.";
+      return;
+    }
+
+    contenedor.innerHTML = lista.map((dato, indice) => {
+
+      // Los países pueden estar guardados como códigos o banderas.
+      const valor = String(dato.pais).trim();
+
+      const codigoPais = [...valor]
+        .map(caracter => {
+          const codigo = caracter.codePointAt(0);
+          return codigo >= 127462 && codigo <= 127487
+            ? String.fromCharCode(codigo - 127397)
+            : caracter;
+        })
+        .join("")
+        .toUpperCase();
+
+      const bandera = /^[A-Z]{2}$/.test(codigoPais)
+        ? String.fromCodePoint(
+            ...[...codigoPais].map(
+              letra => 127397 + letra.charCodeAt(0)
+            )
+          )
+        : "🌍";
+
+      const nombrePais =
+        nombresPaises[codigoPais] ||
+        codigoPais;
+
+      return `
+        <div style="
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:8px;
+          padding:7px 0;
+          border-bottom:1px solid #e1e4e6;
+          font-size:13px;
+        ">
+          <span>
+            ${indice + 1}. ${bandera} ${nombrePais}
+          </span>
+
+          <span style="white-space:nowrap;">
+            <strong>${dato.media.toFixed(2)}</strong>
+            <span style="font-size:11px;color:#666;">
+              · ${dato.cantidad}
+            </span>
+          </span>
+        </div>
+      `;
+    }).join("");
+  }
+
+  dibujar(mejoresTres, mejores);
+  dibujar(peoresTres, peores);
+}
   
   
 async function abrirPerfilJugador(jugadorId, nombre) {
@@ -7178,7 +7312,8 @@ profileContent.innerHTML = `
   cargarMedallasContinentesPerfil(jugadorId);
   mostrarEvolucion(resultados, "30d");
   mostrarTop10(top10, rondasPorFecha);
- }
+  cargarPaisesPerfil(resultados, rondasPorFecha);
+}
 
   
 
