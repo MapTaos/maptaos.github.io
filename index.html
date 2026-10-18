@@ -5627,7 +5627,16 @@ async function cargarDificultadPaises() {
           )
         : "🌍";
 
-      const nombrePais = dato.pais;
+      const nombresPaises = {
+        FR: "Francia",
+        PL: "Polonia",
+        US: "Estados Unidos",
+        JP: "Japón",
+        BO: "Bolivia",
+        IN: "India"
+      };
+
+const nombrePais = nombresPaises[dato.pais] || dato.pais;
       
       return `
         <div style="
@@ -5639,7 +5648,7 @@ async function cargarDificultadPaises() {
           border-bottom:1px solid #e1e4e6;
         ">
           <span>
-            ${indice + 1}. ${bandera} ${nombrePais}
+            ${indice + 1}. ${nombrePais}
           </span>
           <span style="white-space:nowrap;">
             <strong>${dato.media.toFixed(2)}</strong>
