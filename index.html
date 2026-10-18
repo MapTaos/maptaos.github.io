@@ -5627,6 +5627,8 @@ async function cargarDificultadPaises() {
           )
         : "🌍";
 
+      const codigoPais = String(dato.pais).trim().toUpperCase();
+
       const nombresPaises = {
         FR: "Francia",
         PL: "Polonia",
@@ -5635,8 +5637,8 @@ async function cargarDificultadPaises() {
         BO: "Bolivia",
         IN: "India"
       };
-
-const nombrePais = nombresPaises[dato.pais] || dato.pais.toLowerCase();
+      
+      const nombrePais = nombresPaises[codigoPais] || codigoPais;
       
       return `
         <div style="
@@ -5648,7 +5650,7 @@ const nombrePais = nombresPaises[dato.pais] || dato.pais.toLowerCase();
           border-bottom:1px solid #e1e4e6;
         ">
           <span>
-            ${indice + 1}. ${bandera} ${nombresPaises[dato.pais] || dato.pais}
+            ${indice + 1}. ${bandera} ${nombrePais}
           </span>
           <span style="white-space:nowrap;">
             <strong>${dato.media.toFixed(2)}</strong>
