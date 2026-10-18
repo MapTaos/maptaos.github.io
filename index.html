@@ -5512,6 +5512,148 @@ function toggleContinente(continente, boton) {
     mostrar ? "Menos" : "Más";
 }
 
+
+async function cargarDificultadPaises() {
+
+  const mejores = document.getElementById("paisesMejores");
+  const peores = document.getElementById("paisesPeores");
+
+  const { data: resultados, error: errorResultados } =
+    await supabaseClient
+      .from("resultados")
+      .select(`
+        fecha,
+        ronda_1,
+        ronda_2,
+        ronda_3,
+        ronda_4,
+        ronda_5,
+        jugadores(activo)
+      `)
+      .gte("fecha", "2026-10-01")
+      .order("fecha", { ascending: true })
+      .limit(10000);
+
+  const { data: rondas, error: errorRondas } =
+    await supabaseClient
+      .from("rondas_dia")
+      .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5")
+      .gte("fecha", "2026-10-01")
+      .limit(10000);
+
+  if (errorResultados || errorRondas) {
+    console.error(errorResultados || errorRondas);
+    mejores.textContent = "Error al cargar los países.";
+    peores.textContent = "Error al cargar los países.";
+    return;
+  }
+
+  const paisesPorFecha = new Map(
+    (rondas || []).map(fila => [fila.fecha, fila])
+  );
+
+  const estadisticas = new Map();
+
+  (resultados || []).forEach(resultado => {
+
+    if (!resultado.jugadores?.activo) return;
+
+    const paises = paisesPorFecha.get(resultado.fecha);
+    if (!paises) return;
+
+    for (let i = 1; i <= 5; i++) {
+
+      const pais = paises[`pais_${i}`];
+      const puntos = resultado[`ronda_${i}`];
+
+      if (!pais || puntos === null || puntos === undefined || puntos === "") {
+        continue;
+      }
+
+      const puntuacion = Number(puntos);
+      if (!Number.isFinite(puntuacion)) continue;
+
+      if (!estadisticas.has(pais)) {
+        estadisticas.set(pais, {
+          pais,
+          total: 0,
+          cantidad: 0,
+          fechas: new Set()
+        });
+      }
+
+      const dato = estadisticas.get(pais);
+
+      dato.total += puntuacion;
+      dato.cantidad++;
+      dato.fechas.add(resultado.fecha);
+    }
+  });
+
+  const clasificacion = [...estadisticas.values()]
+    .filter(dato =>
+      dato.cantidad >= 10 &&
+      dato.fechas.size >= 3
+    )
+    .map(dato => ({
+      pais: dato.pais,
+      media: dato.total / dato.cantidad,
+      cantidad: dato.cantidad
+    }));
+
+  const mejoresTres = [...clasificacion]
+    .sort((a, b) => b.media - a.media || a.pais.localeCompare(b.pais))
+    .slice(0, 3);
+
+  const peoresTres = [...clasificacion]
+    .sort((a, b) => a.media - b.media || a.pais.localeCompare(b.pais))
+    .slice(0, 3);
+
+  function dibujar(lista, contenedor) {
+
+    if (!lista.length) {
+      contenedor.textContent =
+        "Todavía no hay países con suficientes resultados.";
+      return;
+    }
+
+    contenedor.innerHTML = lista.map((dato, indice) => {
+
+      const bandera = /^[A-Z]{2}$/.test(dato.pais)
+        ? String.fromCodePoint(
+            ...[...dato.pais].map(
+              letra => 127397 + letra.charCodeAt(0)
+            )
+          )
+        : "🌍";
+
+      return `
+        <div style="
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:8px;
+          padding:8px 0;
+          border-bottom:1px solid #e1e4e6;
+        ">
+          <span>
+            ${indice + 1}. ${bandera} ${dato.pais}
+          </span>
+          <span style="white-space:nowrap;">
+            <strong>${dato.media.toFixed(2)}</strong>
+            <span style="font-size:12px;color:#666;">
+              · ${dato.cantidad}
+            </span>
+          </span>
+        </div>
+      `;
+    }).join("");
+  }
+
+  dibujar(mejoresTres, mejores);
+  dibujar(peoresTres, peores);
+}
+  
   
 async function cargarMejoresMarcas() {
 
