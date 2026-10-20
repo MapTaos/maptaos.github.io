@@ -6656,6 +6656,20 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
 
   const estadisticas = new Map();
 
+const aparicionesPorPais = new Map();
+
+  (rondasPorFecha || []).forEach(fila => {
+    for (let i = 1; i <= 5; i++) {
+      const pais = fila[`pais_${i}`];
+      if (!pais || fila.fecha < "2026-10-01") continue;
+  
+      aparicionesPorPais.set(
+        pais,
+        (aparicionesPorPais.get(pais) || 0) + 1
+      );
+    }
+  });
+    
   (resultados || []).forEach(resultado => {
 
     if (resultado.fecha < "2026-10-01") return;
