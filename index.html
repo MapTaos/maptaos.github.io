@@ -5646,6 +5646,12 @@ async function cargarDificultadPaises() {
         IN: "India",
         AU: "Australia"
       };
+
+console.log(
+  "PAÍS ORIGINAL:", JSON.stringify(dato.pais),
+  "CÓDIGO:", JSON.stringify(codigoPais),
+  "NOMBRE:", JSON.stringify(nombrePais)
+);
       
       const nombrePais = new Intl.DisplayNames(
           ["es"],
