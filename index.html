@@ -6658,15 +6658,7 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
     .sort((a, b) => a.media - b.media || a.pais.localeCompare(b.pais))
     .slice(0, 3);
 
-  const nombresPaises = {
-    FR: "Francia",
-    PL: "Polonia",
-    US: "Estados Unidos",
-    JP: "Japón",
-    BO: "Bolivia",
-    IN: "India",
-    AU: "Australia"
-  };
+ 
 
   function dibujar(lista, contenedor) {
 
