@@ -5562,6 +5562,20 @@ async function cargarDificultadPaises() {
 
   const estadisticas = new Map();
 
+const aparicionesPorPais = new Map();
+
+  (rondas || []).forEach(fila => {
+    for (let i = 1; i <= 5; i++) {
+      const pais = fila[`pais_${i}`];
+      if (!pais) continue;
+  
+      aparicionesPorPais.set(
+        pais,
+        (aparicionesPorPais.get(pais) || 0) + 1
+      );
+    }
+  });
+  
   (resultados || []).forEach(resultado => {
 
     if (!resultado.jugadores?.activo) return;
