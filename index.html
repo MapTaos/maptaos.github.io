@@ -6699,9 +6699,10 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
           )
         : "🌍";
 
-      const nombrePais =
-        nombresPaises[codigoPais] ||
-        codigoPais;
+      const nombrePais = new Intl.DisplayNames(
+          ["es"],
+          { type: "region" }
+        ).of(codigoPais);
 
       return `
         <div style="
