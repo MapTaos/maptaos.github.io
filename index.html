@@ -6701,7 +6701,22 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
       return;
     }
 
-    contenedor.innerHTML = lista.map((dato, indice) => {
+    contenedor.innerHTML = `
+      <div style="
+        display:grid;
+        grid-template-columns:55px 65px;
+        gap:8px;
+        justify-content:end;
+        padding:4px 0 8px;
+        font-size:11px;
+        font-weight:600;
+        color:#666;
+        text-align:right;
+      ">
+        <span>Media</span>
+        <span>Apar.</span>
+      </div>
+` + lista.map((dato, indice) => {
 
       // Los países pueden estar guardados como códigos o banderas.
       const valor = String(dato.pais).trim();
@@ -6743,10 +6758,18 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
             ${indice + 1}. ${bandera} ${nombrePais}
           </span>
 
-          <span style="white-space:nowrap;">
+          <span style="
+            display:grid;
+            grid-template-columns:55px 65px;
+            gap:8px;
+            align-items:center;
+            flex-shrink:0;
+            text-align:right;
+            white-space:nowrap;
+          ">
             <strong>${dato.media.toFixed(2)}</strong>
             <span style="font-size:11px;color:#666;">
-              · ${dato.cantidad}
+              ${dato.cantidad}
             </span>
           </span>
         </div>
