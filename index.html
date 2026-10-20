@@ -5651,6 +5651,15 @@ async function cargarDificultadPaises() {
           ["es"],
           { type: "region" }
         ).of(codigoPais);
+
+console.log(
+  "PAÍS:",
+  JSON.stringify(dato.pais),
+  "CÓDIGO:",
+  JSON.stringify(codigoPais),
+  "NOMBRE:",
+  nombrePais
+);
       
       return `
         <div style="
