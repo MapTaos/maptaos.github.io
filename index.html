@@ -5642,15 +5642,7 @@ async function cargarDificultadPaises() {
         { type: "region" }
       ).of(codigoPais);
 
-      const bandera = /^[A-Z]{2}$/.test(codigoPais)
-        ? String.fromCodePoint(
-            ...[...codigoPais].map(
-              letra => 127397 + letra.charCodeAt(0)
-            )
-          )
-        : "🌍";
-
-      
+            
       return `
         <div style="
           display:flex;
