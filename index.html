@@ -5652,13 +5652,22 @@ async function cargarDificultadPaises() {
           padding:8px 0;
           border-bottom:1px solid #e1e4e6;
         ">
-          <span>
+          <span style="flex:1;min-width:0;">
             ${indice + 1}. ${dato.pais} ${nombrePais}
           </span>
-          <span style="white-space:nowrap;">
+      
+          <span style="
+            display:grid;
+            grid-template-columns:55px 65px;
+            gap:8px;
+            align-items:center;
+            flex-shrink:0;
+            text-align:right;
+            white-space:nowrap;
+          ">
             <strong>${dato.media.toFixed(2)}</strong>
             <span style="font-size:12px;color:#666;">
-              · ${dato.cantidad}
+              ${dato.cantidad}
             </span>
           </span>
         </div>
