@@ -5637,35 +5637,10 @@ async function cargarDificultadPaises() {
         .join("")
         .toUpperCase();
 
-      const nombresPaises = {
-        FR: "Francia",
-        PL: "Polonia",
-        US: "Estados Unidos",
-        JP: "Japón",
-        BO: "Bolivia",
-        IN: "India",
-        AU: "Australia"
-      };
-
-console.log(
-  "PAÍS ORIGINAL:", JSON.stringify(dato.pais),
-  "CÓDIGO:", JSON.stringify(codigoPais),
-  "NOMBRE:", JSON.stringify(nombrePais)
-);
-      
-      const nombrePais = new Intl.DisplayNames(
-          ["es"],
-          { type: "region" }
-        ).of(codigoPais);
-
-console.log(
-  "PAÍS:",
-  JSON.stringify(dato.pais),
-  "CÓDIGO:",
-  JSON.stringify(codigoPais),
-  "NOMBRE:",
-  nombrePais
-);
+     const nombrePais = new Intl.DisplayNames(
+  ["es"],
+  { type: "region" }
+).of(codigoPais);
       
       return `
         <div style="
