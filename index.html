@@ -6797,7 +6797,7 @@ const aparicionesPorPais = new Map();
           ">
             <strong>${dato.media.toFixed(2)}</strong>
             <span style="font-size:11px;color:#666;">
-              ${dato.cantidad}
+              ${aparicionesPorPais.get(codigoPais) || 0}
             </span>
           </span>
         </div>
