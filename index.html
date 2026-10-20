@@ -5638,9 +5638,18 @@ async function cargarDificultadPaises() {
         .toUpperCase();
 
      const nombrePais = new Intl.DisplayNames(
-  ["es"],
-  { type: "region" }
-).of(codigoPais);
+        ["es"],
+        { type: "region" }
+      ).of(codigoPais);
+
+      const bandera = /^[A-Z]{2}$/.test(codigoPais)
+        ? String.fromCodePoint(
+            ...[...codigoPais].map(
+              letra => 127397 + letra.charCodeAt(0)
+            )
+          )
+        : "🌍";
+
       
       return `
         <div style="
@@ -5652,7 +5661,7 @@ async function cargarDificultadPaises() {
           border-bottom:1px solid #e1e4e6;
         ">
           <span>
-            ${indice + 1}. ${dato.pais} ${nombrePais}
+            ${indice + 1}. ${bandera} ${nombrePais}
           </span>
           <span style="white-space:nowrap;">
             <strong>${dato.media.toFixed(2)}</strong>
