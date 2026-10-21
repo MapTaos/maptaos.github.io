@@ -236,7 +236,8 @@
     }
 
       #paisesMejores,
-      #paisesPeores {
+      #paisesPeores,
+      #paisesApariciones {
         padding: 8px;
         text-align: left;
         margin-left: -14px;
@@ -1606,6 +1607,12 @@
     Cargando países...
   </div>
 
+  <h3>🌍 Países que han salido</h3>
+  
+  <div id="paisesApariciones" class="placeholder">
+    Cargando países...
+  </div>
+  
 </div>
     
 <div class="card hidden" id="seccionContinentes">
@@ -5739,6 +5746,136 @@ const aparicionesPorPais = new Map();
 
   dibujar(mejoresTres, mejores);
   dibujar(peoresTres, peores);
+
+  const contenedorApariciones =
+    document.getElementById("paisesApariciones");
+
+  if (!contenedorApariciones) return;
+
+  const nombresRegiones = new Intl.DisplayNames(
+    ["es"], { type: "region" }
+  );
+
+  const listaApariciones = [...aparicionesPorPais.entries()]
+    .map(([pais, apariciones]) => {
+      const codigo = [...String(pais).trim()]
+        .map(caracter => {
+          const valor = caracter.codePointAt(0);
+          return valor >= 127462 && valor <= 127487
+            ? String.fromCharCode(valor - 127397)
+            : caracter;
+        })
+        .join("")
+        .toUpperCase();
+
+      const bandera = /^[A-Z]{2}$/.test(codigo)
+        ? String.fromCodePoint(
+            ...[...codigo].map(
+              letra => 127397 + letra.charCodeAt(0)
+            )
+          )
+        : "🌍";
+
+      let nombre = codigo;
+
+      if (/^[A-Z]{2}$/.test(codigo)) {
+        try {
+          nombre = nombresRegiones.of(codigo) || codigo;
+        } catch (error) {
+          nombre = codigo;
+        }
+      }
+
+      return { bandera, nombre, apariciones };
+    })
+    .sort((a, b) =>
+      b.apariciones - a.apariciones ||
+      a.nombre.localeCompare(b.nombre, "es")
+    );
+
+  if (!listaApariciones.length) {
+    contenedorApariciones.textContent =
+      "Todavía no hay países registrados.";
+    return;
+  }
+
+  const crearFilas = (mostrarTodos) => {
+    const visibles = mostrarTodos
+      ? listaApariciones
+      : listaApariciones.slice(0, 10);
+
+    contenedorApariciones.innerHTML = `
+      <div style="
+        font-size:12px;
+        color:#666;
+        margin-bottom:10px;
+      ">
+        ${listaApariciones.length} países diferentes
+        desde el 1 de octubre de 2026
+      </div>
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        font-size:11px;
+        font-weight:600;
+        color:#666;
+        padding:5px 0;
+      ">
+        <span>País</span>
+        <span>Apar.</span>
+      </div>
+
+      ${visibles.map((dato, indice) => `
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:8px;
+          padding:7px 0;
+          border-bottom:1px solid #e1e4e6;
+          font-size:13px;
+        ">
+          <span style="min-width:0;">
+            ${indice + 1}. ${dato.bandera} ${dato.nombre}
+          </span>
+          <strong style="
+            min-width:45px;
+            text-align:right;
+            flex-shrink:0;
+          ">
+            ${dato.apariciones}
+          </strong>
+        </div>
+      `).join("")}
+
+      ${listaApariciones.length > 10 ? `
+        <button
+          type="button"
+          id="btnVerPaisesApariciones"
+          style="
+            display:block;
+            margin:12px auto 2px;
+            cursor:pointer;
+          "
+        >
+          ${mostrarTodos ? "Ver menos" : "Ver todos"}
+        </button>
+      ` : ""}
+    `;
+
+    const boton = document.getElementById(
+      "btnVerPaisesApariciones"
+    );
+
+    if (boton) {
+      boton.addEventListener("click", () => {
+        crearFilas(!mostrarTodos);
+      });
+    }
+  };
+
+  crearFilas(false);
 }
   
   
