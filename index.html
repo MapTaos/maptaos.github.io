@@ -3933,6 +3933,7 @@ async function cargarRankingRachas() {
     supabaseClient
       .from("resultados")
       .select("jugador_id, fecha, final_score")
+      .gte("fecha", "2026-10-01")
       .order("fecha", { ascending: false })
       .limit(10000)
   ]);
