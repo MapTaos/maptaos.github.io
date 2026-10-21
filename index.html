@@ -1154,6 +1154,37 @@
       Una media más alta indica mejores resultados y una media
       más baja indica mayor dificultad.
     </p>
+
+    <p>
+      🔥 <strong>Ranking de rachas</strong> — clasifica a los
+      jugadores activos según el número de días consecutivos
+      que han jugado desde el 1 de octubre de 2026.
+      <br><br>
+    
+      <strong>Racha actual:</strong>
+      si un jugador ha jugado hoy, se cuenta ese día.
+      Si todavía no ha jugado hoy, conserva la racha
+      acumulada hasta ayer. Si su última partida fue
+      antes de ayer, su racha pasa a cero.
+      <br><br>
+    
+      <strong>Desempate:</strong>
+      queda por delante quien tenga mayor puntuación
+      media desde el 1 de octubre de 2026.
+      <br><br>
+    
+      <strong>📊 Media:</strong> promedio de puntos por partida
+      desde el 1 de octubre de 2026.
+      <br>
+      <strong>🎮 Partidas:</strong> número de partidas jugadas
+      desde esa misma fecha.
+      <br><br>
+    
+      La clasificación se actualiza después de guardar
+      cada resultado. El día de MapTap cambia a las
+      00:00 h (hora de Galicia).
+    </p>
+    
     <!-- PERFIL DEL JUGADOR -->
     
     <p>
@@ -3954,12 +3985,12 @@ async function cargarRankingRachas() {
     return;
   }
 
-  // Fecha del juego: cambio de día a las 00:00 UTC
-  const hoy = new Date().toISOString().slice(0, 10);
+// Fecha del juego: medianoche de Galicia
+const hoy = fechaMadridISO();
 
-  const fechaAyer = new Date(
-    Date.parse(hoy + "T00:00:00Z") - 86400000
-  ).toISOString().slice(0, 10);
+const fechaAyer = new Date(
+  Date.parse(hoy + "T00:00:00Z") - 86400000
+).toISOString().slice(0, 10);
 
   // Agrupar resultados por jugador
   const resultadosPorJugador = new Map();
