@@ -1081,12 +1081,12 @@
       🏅 <strong>Medallero</strong> — recoge las medallas obtenidas en las
       clasificaciones mensuales desde octubre de 2026.
       <br>
-      <strong>Mensual:</strong> muestra el podio 🥇 🥈 🥉 de cada mes y los
+      <strong>Mensual:</strong> muestra el podio  🥈 🥉 de cada mes y los
       puntos obtenidos por cada jugador. El mes en curso aparece como
       PROVISIONAL hasta que finaliza.
       <br>
       <strong>Total:</strong> suma las medallas mensuales conseguidas por cada
-      jugador. La clasificación se ordena por número de 🥇, 🥈 y 🥉.
+      jugador. La clasificación se ordena por número de , 🥈 y 🥉.
       Si coinciden las cantidades, los jugadores comparten posición.
       <br>
       <strong>Continentes:</strong> permite consultar los medalleros mensuales,
@@ -1096,7 +1096,7 @@
       <strong>Empates:</strong> cuando varios jugadores empatan en una posición,
       todos reciben la misma medalla y se saltan las posiciones siguientes.
       Por ejemplo, si dos jugadores empatan en el primer puesto, ambos
-      reciben 🥇 oro, no se concede 🥈 plata y el siguiente clasificado
+      reciben  oro, no se concede 🥈 plata y el siguiente clasificado
       recibe 🥉 bronce.
       <br>
       <strong>Total:</strong> indica la suma de todas las medallas conseguidas.
@@ -5119,17 +5119,7 @@ contenedor.innerHTML =
     const filas =
       jugadores.map((fila, indice) => {
 
-        let medalla = "";
-
-        if (fila.posicion === 1) {
-          medalla = "🥇";
-        }
-        else if (fila.posicion === 2) {
-          medalla = "🥈";
-        }
-        else if (fila.posicion === 3) {
-          medalla = "🥉";
-        }
+        const medalla = fila.posicion;
 
         const nombre =
           fila.alias || fila.nombre;
@@ -5214,13 +5204,13 @@ contenedor.innerHTML =
   </span>
 </div>
 
-        <div style="
-  display:flex;
-  justify-content:flex-end;
-  margin-bottom:2px;
-  font-size:11px;
-  color:#777;
-">
+  <div style="
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:2px;
+    font-size:11px;
+    color:#777;
+  ">
   <div style="
     display:grid;
     grid-template-columns:48px;
