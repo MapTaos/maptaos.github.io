@@ -5119,7 +5119,10 @@ contenedor.innerHTML =
     const filas =
       jugadores.map((fila, indice) => {
 
-        const medalla = fila.posicion;
+        const medalla =
+          fila.posicion === 1 ? "🥇" :
+          fila.posicion === 2 ? "🥈" :
+          fila.posicion === 3 ? "🥉" : "";
 
         const nombre =
           fila.alias || fila.nombre;
@@ -5138,11 +5141,9 @@ contenedor.innerHTML =
             <span>
               <span style="
                 display:inline-block;
-                width:20px;
+                width:26px;
                 text-align:center;
-              ">${medalla}</span>
-
-              ${fila.posicion}
+              ">${medalla || fila.posicion}</span>
 
               <strong
                 onclick="abrirPerfilJugador(${fila.jugador_id}, '${nombre}')"
