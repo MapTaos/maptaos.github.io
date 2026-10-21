@@ -1335,6 +1335,10 @@
       🏅 Marcas
     </button>
 
+    <button type="button" id="btnRachas">
+      🔥 Rachas
+    </button>
+      
     <button type="button" id="btnMediaHistorica">
       📊 Media
     </button>
@@ -1442,6 +1446,16 @@
 
 </div>
 
+<div class="card hidden" id="seccionRachas">
+  <h2 class="home-section-title">
+    🔥 Ranking de rachas
+  </h2>
+
+  <div id="rankingRachas" class="placeholder">
+    Cargando clasificación de rachas...
+  </div>
+</div>
+    
 <div class="card hidden" id="seccionSemana">
   <h2 class="home-section-title">
     Clasificación semanal
@@ -2935,6 +2949,7 @@ if (resultadoPendiente.tieneBanderas) {
     await cargarRankingHoy();
     await cargarRankingSemanal();
     await cargarRankingMensual();
+    await cargarRankingRachas();
     await cargarTop20General();
     await cargarRankingContinentes();
     await cargarMejoresMarcas();
@@ -3893,6 +3908,211 @@ const fechaAnterior =
 }
 
 
+// =====================================
+// RANKING DE RACHAS ACTUALES
+// =====================================
+
+async function cargarRankingRachas() {
+
+  const contenedor =
+    document.getElementById("rankingRachas");
+
+  if (!contenedor) return;
+
+  contenedor.textContent = "Cargando clasificación...";
+
+  const [
+    { data: jugadores, error: errorJugadores },
+    { data: resultados, error: errorResultados }
+  ] = await Promise.all([
+    supabaseClient
+      .from("jugadores")
+      .select("id, nombre, alias")
+      .eq("activo", true),
+
+    supabaseClient
+      .from("resultados")
+      .select("jugador_id, fecha, final_score")
+      .order("fecha", { ascending: false })
+      .limit(10000)
+  ]);
+
+  if (errorJugadores || errorResultados) {
+    console.error(
+      "Error cargando ranking de rachas:",
+      errorJugadores || errorResultados
+    );
+
+    contenedor.textContent =
+      "No se pudo cargar la clasificación de rachas.";
+
+    return;
+  }
+
+  // Fecha del juego: cambio de día a las 00:00 UTC
+  const hoy = new Date().toISOString().slice(0, 10);
+
+  const fechaAyer = new Date(
+    Date.parse(hoy + "T00:00:00Z") - 86400000
+  ).toISOString().slice(0, 10);
+
+  // Agrupar resultados por jugador
+  const resultadosPorJugador = new Map();
+
+  (resultados || []).forEach(resultado => {
+
+    if (!resultadosPorJugador.has(resultado.jugador_id)) {
+      resultadosPorJugador.set(resultado.jugador_id, []);
+    }
+
+    resultadosPorJugador
+      .get(resultado.jugador_id)
+      .push(resultado);
+  });
+
+  const clasificacion = (jugadores || []).map(jugador => {
+
+    const partidas =
+      resultadosPorJugador.get(jugador.id) || [];
+
+    let racha = 0;
+
+    if (partidas.length > 0) {
+
+      const ultimaFecha = partidas[0].fecha;
+
+      // La racha sigue vigente si jugó hoy o ayer
+      if (ultimaFecha === hoy || ultimaFecha === fechaAyer) {
+
+        racha = 1;
+
+        for (let i = 0; i < partidas.length - 1; i++) {
+
+          const fechaActual = Date.parse(
+            partidas[i].fecha + "T00:00:00Z"
+          );
+
+          const fechaAnterior = Date.parse(
+            partidas[i + 1].fecha + "T00:00:00Z"
+          );
+
+          const diferenciaDias =
+            Math.round(
+              (fechaActual - fechaAnterior) / 86400000
+            );
+
+          if (diferenciaDias === 1) {
+            racha++;
+          } else {
+            break;
+          }
+        }
+      }
+    }
+
+    const puntuaciones = partidas
+      .map(partida => Number(partida.final_score))
+      .filter(puntos => Number.isFinite(puntos));
+
+    const media = puntuaciones.length
+      ? puntuaciones.reduce(
+          (suma, puntos) => suma + puntos, 0
+        ) / puntuaciones.length
+      : 0;
+
+    return {
+      id: jugador.id,
+      nombre: jugador.alias || jugador.nombre,
+      racha,
+      media,
+      partidas: puntuaciones.length
+    };
+
+  }).sort((a, b) =>
+    b.racha - a.racha ||
+    b.media - a.media ||
+    a.nombre.localeCompare(b.nombre, "es")
+  );
+
+  if (!clasificacion.length) {
+    contenedor.textContent =
+      "Todavía no hay jugadores.";
+    return;
+  }
+
+  contenedor.innerHTML = clasificacion.map((jugador, indice) => {
+
+    const posicion = indice + 1;
+
+    const medalla =
+      posicion === 1 ? "🥇" :
+      posicion === 2 ? "🥈" :
+      posicion === 3 ? "🥉" : posicion;
+
+    const nombreParaClick = jugador.nombre
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'");
+
+    return `
+      <div style="
+        padding:10px 0;
+        border-bottom:1px solid #ddd;
+      ">
+
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:8px;
+        ">
+
+          <span style="
+            min-width:0;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+          ">
+
+            <span style="
+              display:inline-block;
+              width:28px;
+              text-align:center;
+            ">${medalla}</span>
+
+            <strong
+              onclick="abrirPerfilJugador(${jugador.id}, '${nombreParaClick}')"
+              style="cursor:pointer;"
+            >${jugador.nombre}</strong>
+
+          </span>
+
+          <strong style="
+            flex-shrink:0;
+            white-space:nowrap;
+          ">
+            🔥 ${jugador.racha}
+          </strong>
+
+        </div>
+
+        <div style="
+          margin-top:5px;
+          margin-left:28px;
+          font-size:12px;
+          color:#666;
+        ">
+          📊 <strong>${Math.round(jugador.media)}</strong>
+          &nbsp;·&nbsp;
+          🎮 <strong>${jugador.partidas}</strong>
+        </div>
+
+      </div>
+    `;
+
+  }).join("");
+}
+
+  
   // MEDALLERO DIARIO HISTÓRICO
 async function cargarMedalleroDiario() {
 
@@ -8322,6 +8542,7 @@ document.getElementById("profileName").textContent =
   await cargarRankingHoy();
   await cargarRankingSemanal();
   await cargarRankingMensual();
+  await cargarRankingRachas();
   await cargarTop20General();
   await cargarRankingContinentes();
   await cargarMejoresMarcas();  
@@ -9037,6 +9258,7 @@ function mostrarSeccionInicio(seccion) {
     continentes: "seccionContinentes",
     mejoresMarcas: "seccionMejoresMarcas",
     mediaHistorica: "seccionMediaHistorica",
+    rachas: "seccionRachas",
     medallero: "seccionMedallero",
     top50: "seccionTop50",
     dificultadPaises: "seccionDificultadPaises"
@@ -9050,6 +9272,7 @@ const botones = {
   continentes: "btnContinentes",
   mejoresMarcas: "btnMejoresMarcas",
   mediaHistorica: "btnMediaHistorica",
+  rachas: "btnRachas",
   medallero: "btnMedallero",
   top50: "btnTop50",
   dificultadPaises: "btnDificultadPaises"
@@ -9081,6 +9304,7 @@ if (
   seccion === "top20" ||
   seccion === "mejoresMarcas" ||
   seccion === "mediaHistorica" ||
+  seccion === "rachas" ||
   seccion === "medallero" ||
   seccion === "top50" ||
   seccion === "dificultadPaises"
@@ -9174,6 +9398,13 @@ document
   .getElementById("btnMediaHistorica")
   .addEventListener("click", () => mostrarSeccionInicio("mediaHistorica"));
 
+document
+  .getElementById("btnRachas")
+  .addEventListener("click", async () => {
+    mostrarSeccionInicio("rachas");
+    await cargarRankingRachas();
+  });
+  
 document
   .getElementById("btnMedallero")
   .addEventListener("click", () => mostrarSeccionInicio("medallero"));
@@ -9498,6 +9729,7 @@ async function iniciarApp() {
   await cargarRankingHoy();
   await cargarRankingSemanal();
   await cargarRankingMensual();
+  await cargarRankingRachas();
   await cargarTop20General();
   await cargarRankingContinentes();
   await cargarMejoresMarcas();
