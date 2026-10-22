@@ -3453,9 +3453,9 @@ textoRondas =
 
       const puntuacionColoreada =
         Number(puntosRonda) === 100
-          ? `<span style="color:#16a34a; font-weight:700;">${puntosRonda}</span>`
+          ? `<span style="position:relative;display:inline-block;">${puntosRonda}<span style="position:absolute;top:-1px;right:-5px;width:5px;height:5px;background:#16a34a;border-radius:50%;"></span></span>`
           : puntosRonda;
-
+      
       return codigoPais
         ? `<span style="
              display:inline-flex;
@@ -6439,7 +6439,7 @@ contenedor.innerHTML = ranking
 
         const puntuacionColoreada =
           Number(puntosRonda) === 100
-            ? `<span style="color:#16a34a; font-weight:700;">${puntosRonda}</span>`
+            ? `<span style="position:relative;display:inline-block;">${puntosRonda}<span style="position:absolute;top:-1px;right:-5px;width:5px;height:5px;background:#16a34a;border-radius:50%;"></span></span>`
             : puntosRonda;
 
         return codigoPais
@@ -7554,9 +7554,9 @@ if (resultadoHoy) {
         banderaACodigo(banderasHoy[i] || "");
 
       const puntuacionColoreada =
-        Number(puntos) === 100
-          ? `<span style="color:#16a34a; font-weight:700;">${puntos}</span>`
-          : (puntos ?? "");
+        Number(puntosRonda) === 100
+          ? `<span style="position:relative;display:inline-block;">${puntosRonda}<span style="position:absolute;top:-1px;right:-5px;width:5px;height:5px;background:#16a34a;border-radius:50%;"></span></span>`
+          : puntosRonda;
 
       return `
         <span style="
@@ -7973,7 +7973,7 @@ function mostrarTop10(top10, rondasPorFecha) {
 
           const puntuacionColoreada =
             Number(puntosRonda) === 100
-              ? `<span style="color:#16a34a; font-weight:700;">${puntosRonda}</span>`
+              ? `<span style="position:relative;display:inline-block;">${puntosRonda}<span style="position:absolute;top:-1px;right:-5px;width:5px;height:5px;background:#16a34a;border-radius:50%;"></span></span>`
               : puntosRonda;
 
           return codigoPais
@@ -8385,7 +8385,7 @@ const textoRondas = puntos
 
     const puntuacionColoreada =
       Number(puntosRonda) === 100
-        ? `<span style="color:#16a34a; font-weight:700;">${puntosRonda}</span>`
+        ? `<span style="position:relative;display:inline-block;">${puntosRonda}<span style="position:absolute;top:-1px;right:-5px;width:5px;height:5px;background:#16a34a;border-radius:50%;"></span></span>`
         : puntosRonda;
 
     return codigoPais
@@ -8562,7 +8562,7 @@ function mostrarTop50(top50, rondasPorFecha, errorTop50) {
 
           const puntuacionColoreada =
             Number(puntosRonda) === 100
-              ? `<span style="color:#16a34a; font-weight:700;">${puntosRonda}</span>`
+              ? `<span style="position:relative;display:inline-block;">${puntosRonda}<span style="position:absolute;top:-1px;right:-5px;width:5px;height:5px;background:#16a34a;border-radius:50%;"></span></span>`
               : puntosRonda;
           
 
