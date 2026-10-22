@@ -2240,7 +2240,7 @@
       gap:8px;
     ">
 
-  <span>📅 Historial de partidas</span>
+  <span>📅 Historial</span>
 
   <button
     type="button"
@@ -2270,40 +2270,65 @@
        ">
 
       <!-- NAVEGACIÓN MENSUAL -->
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        gap:6px;
-        margin-bottom:6px;
-      ">
-    
-        <button
-          type="button"
-          id="historialMesAnterior"
-          style="font-size:12px;padding:5px 8px;"
-        >
-          ◀ Anterior
-        </button>
-    
-        <strong
-          id="historialMesTitulo"
-          style="font-size:13px;text-align:center;"
-        >
-          —
-        </strong>
-    
-        <button
-          type="button"
-          id="historialMesSiguiente"
-          style="font-size:12px;padding:5px 8px;"
-        >
-          Siguiente ▶
-        </button>
-    
-      </div>
+<div style="text-align:center;margin-bottom:6px;">
 
-  <!-- RESUMEN DEL MES -->
+  <div
+    id="historialMesTitulo"
+    style="
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:6px;
+    "
+  >—</div>
+
+  <div style="
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:7px;
+  ">
+
+    <button
+      type="button"
+      id="historialMesAnterior"
+      class="btn-secondary"
+      style="
+        width:auto;
+        padding:5px 9px;
+        font-size:12px;
+        border:1px solid #9ca3af;
+        border-radius:16px;
+      "
+    >◀ Anterior</button>
+
+    <button
+      type="button"
+      id="historialMesActual"
+      class="btn-secondary"
+      style="
+        width:auto;
+        padding:5px 9px;
+        font-size:12px;
+        border:1px solid #9ca3af;
+        border-radius:16px;
+      "
+    >Actual</button>
+
+    <button
+      type="button"
+      id="historialMesSiguiente"
+      class="btn-secondary"
+      style="
+        width:auto;
+        padding:5px 9px;
+        font-size:12px;
+        border:1px solid #9ca3af;
+        border-radius:16px;
+      "
+    >Siguiente ▶</button>
+
+  </div>
+</div>
   <div
     id="historialMesResumen"
     style="
@@ -8047,6 +8072,7 @@ function mostrarTop10(top10, rondasPorFecha) {
   const listado = document.getElementById("historialMesResultados");
   const btnAnterior = document.getElementById("historialMesAnterior");
   const btnSiguiente = document.getElementById("historialMesSiguiente");
+  const btnActual = document.getElementById("historialMesActual");
 
   if (!titulo || !resumen || !listado || !btnAnterior || !btnSiguiente) return;
 
@@ -8227,10 +8253,10 @@ function mostrarTop10(top10, rondasPorFecha) {
             display:grid;
             grid-template-columns:repeat(5,minmax(0,1fr));
             gap:0;
-            margin-top:3px;
-            margin-left:12px;
-            margin-right:22px;
-            font-size:12px;
+            margin-top:4px;
+            margin-left:40px;
+            width:calc(100% - 40px);
+            font-size:13px;
           ">
             ${rondas}
           </div>
@@ -8252,7 +8278,10 @@ function mostrarTop10(top10, rondasPorFecha) {
       cargarMes();
     }
   };
-
+  btnActual.onclick = () => {
+  mesSeleccionado = mesActual;
+  cargarMes();
+};
   await cargarMes();
 }
 
