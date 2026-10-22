@@ -3452,9 +3452,9 @@ textoRondas =
         banderaACodigo(bandera);
 
       const puntuacionColoreada =
-  Number(puntosRonda) === 100
-    ? `<span style="font-weight:700;text-decoration:underline;text-underline-offset:2px;">${puntosRonda}</span>`
-    : puntosRonda;
+        Number(puntosRonda) === 100
+          ? `<span style="font-weight:700;text-decoration:underline;text-underline-offset:2px;">${puntosRonda}</span>`
+          : puntosRonda;
       
       return codigoPais
         ? `<span style="
@@ -8205,16 +8205,8 @@ function mostrarTop10(top10, rondasPorFecha) {
           : "";
 
         const distintivo = Number(puntos) === 100
-          ? `<span style="
-               position:absolute;
-               top:-1px;
-               right:-5px;
-               width:5px;
-               height:5px;
-               background:#16a34a;
-               border-radius:50%;
-             "></span>`
-          : "";
+          ? 'font-weight:700;text-decoration:underline;text-underline-offset:2px;'
+          : '';
 
         return `
           <span style="
@@ -8226,10 +8218,7 @@ function mostrarTop10(top10, rondasPorFecha) {
             white-space:nowrap;
           ">
             ${bandera}
-            <span style="position:relative;display:inline-block;">
-              ${puntos ?? "—"}
-              ${distintivo}
-            </span>
+            <span style="${distintivo}">${puntos??"—"}</span>
           </span>
         `;
       }).join("");
