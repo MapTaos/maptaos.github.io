@@ -2232,9 +2232,34 @@
   <!-- HISTORIAL MENSUAL DE PARTIDAS -->
   <div class="card" id="profileHistorialCard" style="margin-top:12px;">
   
-    <h2 class="home-section-title">
-      📅 Historial de partidas
-    </h2>
+    <h2 class="home-section-title"
+    style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    ">
+
+  <span>📅 Historial de partidas</span>
+
+  <button
+    type="button"
+    class="btn-secondary"
+    style="
+      width:auto;
+      flex-shrink:0;
+      padding:5px 9px;
+      font-size:12px;
+      border-radius:8px;
+      background:#d1d5db;
+      border:1px solid #9ca3af;
+    "
+    onclick="document.getElementById('backFromProfile').click()"
+  >
+    ← Volver
+  </button>
+
+</h2>
   
      <div id="profileHistorialPartidas"
        class="placeholder"
