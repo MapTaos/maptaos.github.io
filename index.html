@@ -8850,21 +8850,26 @@ plugins: {
   });
   
 function volverDesdePerfil() {
-    document
-      .getElementById("profileView")
-      .classList
-      .add("hidden");
+  document
+    .getElementById("profileView")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("appView")
+    .classList
+    .remove("hidden");
+
+  // Volver al principio de la pantalla principal
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+  });
+}
   
-    document
-      .getElementById("appView")
-      .classList
-      .remove("hidden");
-  }
   
   document
     .getElementById("backFromProfile")
     .addEventListener("click", volverDesdePerfil);
-    window.scrollTo(0, 0);
   
 
 async function editarAlias() {
