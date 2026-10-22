@@ -8282,22 +8282,41 @@ function mostrarTop10(top10, rondasPorFecha) {
     }).join("");
   }
 
+  function mantenerPosicionHistorial(accion) {
+    const referencia = document.getElementById("historialMesTitulo");
+    const posicionAntes = referencia.getBoundingClientRect().top;
+  
+    accion();
+  
+    requestAnimationFrame(() => {
+      const posicionDespues = referencia.getBoundingClientRect().top;
+      window.scrollBy(0, posicionDespues - posicionAntes);
+    });
+  }
+      
   btnAnterior.onclick = () => {
-    if (mesSeleccionado > primerMes) {
+  if (mesSeleccionado > primerMes) {
+    mantenerPosicionHistorial(() => {
       mesSeleccionado = moverMes(mesSeleccionado, -1);
       cargarMes();
-    }
-  };
+    });
+  }
+};
 
-  btnSiguiente.onclick = () => {
-    if (mesSeleccionado < mesActual) {
+btnSiguiente.onclick = () => {
+  if (mesSeleccionado < mesActual) {
+    mantenerPosicionHistorial(() => {
       mesSeleccionado = moverMes(mesSeleccionado, 1);
       cargarMes();
-    }
-  };
-  btnActual.onclick = () => {
-  mesSeleccionado = mesActual;
-  cargarMes();
+    });
+  }
+};
+
+btnActual.onclick = () => {
+  mantenerPosicionHistorial(() => {
+    mesSeleccionado = mesActual;
+    cargarMes();
+  });
 };
   await cargarMes();
 }
