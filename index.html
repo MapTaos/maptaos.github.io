@@ -2225,9 +2225,70 @@
   </h2>
 
   <div id="profileTop10" class="placeholder">
-    Cargando mejores resultados...
+  Cargando mejores resultados...
   </div>
+  </div>
+  
+  <!-- HISTORIAL MENSUAL DE PARTIDAS -->
+  <div class="card" id="profileHistorialCard" style="margin-top:12px;">
+  
+    <h2 class="home-section-title">
+      📅 Historial de partidas
+    </h2>
+  
+    <div id="profileHistorialPartidas">
+
+      <!-- NAVEGACIÓN MENSUAL -->
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:6px;
+        margin-bottom:6px;
+      ">
+    
+        <button
+          type="button"
+          id="historialMesAnterior"
+          style="font-size:12px;padding:5px 8px;"
+        >
+          ◀ Anterior
+        </button>
+    
+        <strong
+          id="historialMesTitulo"
+          style="font-size:13px;text-align:center;"
+        >
+          —
+        </strong>
+    
+        <button
+          type="button"
+          id="historialMesSiguiente"
+          style="font-size:12px;padding:5px 8px;"
+        >
+          Siguiente ▶
+        </button>
+    
+      </div>
+
+  <!-- RESUMEN DEL MES -->
+  <div
+    id="historialMesResumen"
+    style="
+      text-align:center;
+      font-size:12px;
+      color:#777;
+      margin-bottom:6px;
+    "
+  ></div>
+
+  <!-- PARTIDAS -->
+  <div id="historialMesResultados"></div>
+
 </div>
+  
+  </div>
    
   </section>
 
@@ -7795,6 +7856,7 @@ profileContent.innerHTML = `
   mostrarEvolucion(resultados, "30d");
   mostrarTop10(top10, rondasPorFecha);
   cargarPaisesPerfil(resultados, rondasPorFecha);
+  mostrarHistorialPartidas(jugadorId, resultados, rondasPorFecha);
 }
 
   
@@ -7947,6 +8009,217 @@ function mostrarTop10(top10, rondasPorFecha) {
 }
 
 
+  async function mostrarHistorialPartidas(jugadorId, resultados, rondasPorFecha) {
+
+  const titulo = document.getElementById("historialMesTitulo");
+  const resumen = document.getElementById("historialMesResumen");
+  const listado = document.getElementById("historialMesResultados");
+  const btnAnterior = document.getElementById("historialMesAnterior");
+  const btnSiguiente = document.getElementById("historialMesSiguiente");
+
+  if (!titulo || !resumen || !listado || !btnAnterior || !btnSiguiente) return;
+
+  const mesActual = fechaMadridISO().slice(0, 7);
+  let mesSeleccionado = mesActual;
+
+  const primerMes = resultados.length
+    ? resultados[0].fecha.slice(0, 7)
+    : mesActual;
+
+  const paisesPorFecha = new Map(
+    (rondasPorFecha || []).map(r => [r.fecha, r])
+  );
+
+  function moverMes(mes, desplazamiento) {
+    const [anio, numeroMes] = mes.split("-").map(Number);
+    const fecha = new Date(Date.UTC(anio, numeroMes - 1 + desplazamiento, 1));
+    return fecha.toISOString().slice(0, 7);
+  }
+
+  function nombreMes(mes) {
+    const [anio, numeroMes] = mes.split("-").map(Number);
+    const fecha = new Date(Date.UTC(anio, numeroMes - 1, 1));
+
+    const nombre = fecha.toLocaleDateString("es-ES", {
+      month: "long",
+      year: "numeric",
+      timeZone: "UTC"
+    });
+
+    return nombre.charAt(0).toUpperCase() + nombre.slice(1);
+  }
+
+  async function cargarMes() {
+
+    const mesConsultado = mesSeleccionado;
+    const inicio = mesConsultado + "-01";
+    const fin = moverMes(mesConsultado, 1) + "-01";
+
+    titulo.textContent = nombreMes(mesConsultado);
+
+    btnAnterior.disabled = mesConsultado <= primerMes;
+    btnSiguiente.disabled = mesConsultado >= mesActual;
+
+    resumen.textContent = "";
+    listado.textContent = "Cargando partidas...";
+
+    const partidasMes = resultados
+      .filter(r => r.fecha >= inicio && r.fecha < fin)
+      .sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+    if (!partidasMes.length) {
+      resumen.textContent = "0 partidas";
+      listado.textContent = "No hay partidas registradas este mes.";
+      return;
+    }
+
+    const totalPuntos = partidasMes.reduce(
+      (suma, r) => suma + Number(r.final_score), 0
+    );
+
+    const media = Math.round(totalPuntos / partidasMes.length);
+    const mejor = Math.max(
+      ...partidasMes.map(r => Number(r.final_score))
+    );
+
+    resumen.textContent =
+      `${partidasMes.length} partidas · Media ${media} · Mejor ${mejor}`;
+
+    const { data: ranking, error } = await supabaseClient
+      .from("ranking_diario")
+      .select("fecha, jugador_id, posicion")
+      .gte("fecha", inicio)
+      .lt("fecha", fin)
+      .order("fecha", { ascending: false })
+      .limit(10000);
+
+    // Evitar mostrar resultados de un mes anterior
+    // si el usuario ha navegado mientras se cargaban.
+    if (mesSeleccionado !== mesConsultado) return;
+
+    if (error) {
+      console.error("Error al cargar posiciones históricas:", error);
+      listado.textContent = "No se pudieron cargar las posiciones.";
+      return;
+    }
+
+    const participantesPorFecha = new Map();
+    const posicionPorFecha = new Map();
+
+    (ranking || []).forEach(r => {
+      participantesPorFecha.set(
+        r.fecha,
+        (participantesPorFecha.get(r.fecha) || 0) + 1
+      );
+
+      if (Number(r.jugador_id) === Number(jugadorId)) {
+        posicionPorFecha.set(r.fecha, r.posicion);
+      }
+    });
+
+    listado.innerHTML = partidasMes.map(partida => {
+
+      const fecha = partida.fecha.slice(8, 10) + "/" +
+                    partida.fecha.slice(5, 7);
+
+      const posicion = posicionPorFecha.get(partida.fecha);
+      const participantes = participantesPorFecha.get(partida.fecha);
+
+      const puesto = posicion && participantes
+        ? `${posicion}/${participantes}`
+        : "—";
+
+      const paises = paisesPorFecha.get(partida.fecha);
+
+      const rondas = [1, 2, 3, 4, 5].map(i => {
+
+        const puntos = partida[`ronda_${i}`];
+        const codigo = banderaACodigo(paises?.[`pais_${i}`] || "");
+
+        const bandera = codigo
+          ? `<img
+               src="https://flagcdn.com/20x15/${codigo.toLowerCase()}.png"
+               alt="${codigo}"
+               style="width:20px;height:15px;flex-shrink:0;"
+             >`
+          : "";
+
+        const distintivo = Number(puntos) === 100
+          ? `<span style="
+               position:absolute;
+               top:-1px;
+               right:-5px;
+               width:5px;
+               height:5px;
+               background:#16a34a;
+               border-radius:50%;
+             "></span>`
+          : "";
+
+        return `
+          <span style="
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:3px;
+            min-width:0;
+            white-space:nowrap;
+          ">
+            ${bandera}
+            <span style="position:relative;display:inline-block;">
+              ${puntos ?? "—"}
+              ${distintivo}
+            </span>
+          </span>
+        `;
+      }).join("");
+
+      return `
+        <div style="
+          padding:6px 0;
+          border-bottom:1px solid #ddd;
+        ">
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            font-size:13px;
+          ">
+            <span>${fecha}</span>
+            <span style="color:#777;">${puesto}</span>
+            <strong>${partida.final_score} pts</strong>
+          </div>
+
+          <div style="
+            display:grid;
+            grid-template-columns:repeat(5,minmax(0,1fr));
+            gap:2px;
+            margin-top:4px;
+            font-size:12px;
+          ">
+            ${rondas}
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  btnAnterior.onclick = () => {
+    if (mesSeleccionado > primerMes) {
+      mesSeleccionado = moverMes(mesSeleccionado, -1);
+      cargarMes();
+    }
+  };
+
+  btnSiguiente.onclick = () => {
+    if (mesSeleccionado < mesActual) {
+      mesSeleccionado = moverMes(mesSeleccionado, 1);
+      cargarMes();
+    }
+  };
+
+  await cargarMes();
+}
 
   
 function mostrarTop20(top20, rondasPorFecha, errorTop20) {
