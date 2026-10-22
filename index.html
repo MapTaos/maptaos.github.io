@@ -2236,7 +2236,13 @@
       📅 Historial de partidas
     </h2>
   
-    <div id="profileHistorialPartidas">
+     <div id="profileHistorialPartidas"
+       class="placeholder"
+       style="
+         text-align:left;
+         padding:8px;
+         margin:0;
+       ">
 
       <!-- NAVEGACIÓN MENSUAL -->
       <div style="
@@ -8126,8 +8132,8 @@ function mostrarTop10(top10, rondasPorFecha) {
       const participantes = participantesPorFecha.get(partida.fecha);
 
       const puesto = posicion && participantes
-        ? `${posicion}/${participantes}`
-        : "—";
+        ? `Puesto ${posicion}/${participantes}`
+        : "Puesto —";
 
       const paises = paisesPorFecha.get(partida.fecha);
 
@@ -8159,9 +8165,9 @@ function mostrarTop10(top10, rondasPorFecha) {
         return `
           <span style="
             display:flex;
-            justify-content:center;
+            justify-content:flex-start;
             align-items:center;
-            gap:3px;
+            gap:2px;
             min-width:0;
             white-space:nowrap;
           ">
@@ -8179,22 +8185,26 @@ function mostrarTop10(top10, rondasPorFecha) {
           padding:6px 0;
           border-bottom:1px solid #ddd;
         ">
-          <div style="
-            display:flex;
-            justify-content:space-between;
+         <div style="
+            display:grid;
+            grid-template-columns:55px 1fr 55px;
             align-items:center;
-            font-size:13px;
+            font-size:12px;
           ">
             <span>${fecha}</span>
-            <span style="color:#777;">${puesto}</span>
-            <strong>${partida.final_score} pts</strong>
+              <span style="color:#777;text-align:center;">${puesto}</span>
+              <strong style="text-align:right;font-size:13px;">
+                ${partida.final_score}
+              </strong>
           </div>
 
           <div style="
             display:grid;
             grid-template-columns:repeat(5,minmax(0,1fr));
-            gap:2px;
-            margin-top:4px;
+            gap:0;
+            margin-top:3px;
+            margin-left:12px;
+            margin-right:22px;
             font-size:12px;
           ">
             ${rondas}
