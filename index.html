@@ -3580,7 +3580,7 @@ onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.alias || fila.nombre}')"
         align-items:center;
         gap:5px;
       ">
-        ${Number(fila.final_score) >= 950 ? `
+        ${Number(fila.final_score) === 1000 ? `
           <span style="
             background:#333;
             border-radius:5px;
