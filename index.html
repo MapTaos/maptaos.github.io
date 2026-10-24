@@ -4102,7 +4102,13 @@ const fechaAnterior =
               🎮 <strong>${fila.dias_jugados}</strong>
               &nbsp;·&nbsp;
               🔥 <strong>${racha}</strong>
-              ${estrellasMes ? `&nbsp; ${estrellasMes}` : ""}
+              ${estrellasMes ? `
+                <span style="
+                  margin-left:5px;
+                  white-space:nowrap;
+                  font-weight:700;
+                ">${estrellasMes}</span>
+              ` : ""}
             </span>
           </div>
 
