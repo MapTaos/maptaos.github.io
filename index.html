@@ -7792,7 +7792,11 @@ const mejor = Number(mejorResultado.final_score);
 
 const fechaMejor =
   new Date(mejorResultado.fecha + "T00:00:00")
-    .toLocaleDateString("es-ES");
+    .toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit"
+    });
 
 const ultimo =
     Number(resultados[resultados.length - 1].final_score);
@@ -8263,7 +8267,8 @@ profileContent.innerHTML = `
 
         const fecha =
           partida.fecha.slice(8, 10) + "/" +
-          partida.fecha.slice(5, 7);
+          partida.fecha.slice(5, 7) + "/" +
+          partida.fecha.slice(0, 4);
 
         const paises =
           paisesPartidasPerfectas.get(partida.fecha);
