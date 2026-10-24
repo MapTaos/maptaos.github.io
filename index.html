@@ -8422,8 +8422,25 @@ function mostrarTop10(top10, rondasPorFecha) {
       ...partidasMes.map(r => Number(r.final_score))
     );
 
+    const { data: clasificacionMes, error: errorClasificacionMes } =
+      await supabaseClient
+        .from("ranking_mensual")
+        .select("jugador_id, posicion")
+        .eq("inicio_mes", inicio);
+    
+    if (errorClasificacionMes) {
+      console.error("Error al consultar el puesto mensual:", errorClasificacionMes);
+    }
+    
+    const puestoMes = clasificacionMes?.find(
+      fila => Number(fila.jugador_id) === Number(jugadorId)
+    )?.posicion;
+    
+    const totalJugadoresMes = clasificacionMes?.length ?? 0;
+    
     resumen.textContent =
-      `${partidasMes.length} partidas · Media ${media} · Mejor ${mejor}`;
+      `${partidasMes.length} partidas · Media ${media} · Mejor ${mejor}` +
+      (puestoMes != null ? ` · Puesto ${puestoMes}º/${totalJugadoresMes}` : "");
 
     const { data: ranking, error } = await supabaseClient
       .from("ranking_diario")
