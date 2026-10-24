@@ -2037,7 +2037,7 @@
 <div class="card hidden" id="seccionMediaHistorica">
 
   <h2 class="home-section-title">
-    📊 Media histórica
+    
   </h2>
 
   <div id="rankingMediaHistorica">
@@ -7944,21 +7944,21 @@ profileContent.innerHTML = `
     padding-right:8px;
   ">
     <div class="titulo-estadistica"
-         style="margin-bottom:8px;font-size:12px;white-space:nowrap;">
+         style="margin-bottom:8px;white-space:nowrap;">
       📊 Media histórica
     </div>
 
     <div style="display:grid;grid-template-columns:1fr;row-gap:10px;">
 
       <div>
-        <div style="font-size:10px;color:#777;">Media</div>
+        <div style="font-size:13px;color:#777;">Media</div>
         <div style="font-size:21px;font-weight:700;">
           ${mediaHistoricaJugador?.media ?? media}
         </div>
       </div>
 
       <div>
-        <div style="font-size:10px;color:#777;">Puesto</div>
+        <div style="font-size:13px;color:#777;">Puesto</div>
         <div style="font-size:16px;font-weight:700;white-space:nowrap;">
           ${mediaHistoricaJugador
             ? `${mediaHistoricaJugador.posicion}º/${totalMediaHistorica}`
@@ -7989,14 +7989,14 @@ profileContent.innerHTML = `
     ">
 
       <div style="min-width:0;">
-        <div style="font-size:10px;color:#777;">Media</div>
+        <div style="font-size:13px;color:#777;">Media</div>
         <div style="font-size:21px;font-weight:700;">
           ${mediaMesPerfil ?? "—"}
         </div>
       </div>
 
       <div style="min-width:0;">
-        <div style="font-size:10px;color:#777;">Puesto</div>
+        <div style="font-size:13px;color:#777;">Puesto</div>
         <div style="font-size:16px;font-weight:700;white-space:nowrap;">
           ${puestoMesPerfil != null
             ? `${puestoMesPerfil}º/${totalJugadoresMes}`
@@ -8005,14 +8005,14 @@ profileContent.innerHTML = `
       </div>
 
       <div style="min-width:0;">
-        <div style="font-size:10px;color:#777;">Mejor</div>
+        <div style="font-size:13px;color:#777;">Mejor</div>
         <div style="font-size:21px;font-weight:700;">
           ${mejorMes ?? "—"}
         </div>
       </div>
 
       <div style="min-width:0;">
-        <div style="font-size:10px;color:#777;">Partidas</div>
+        <div style="font-size:13px;color:#777;">Partidas</div>
         <div style="font-size:16px;font-weight:700;white-space:nowrap;">
           ${resultadosMes.length}/${Number(hoy.slice(8,10))}
         </div>
