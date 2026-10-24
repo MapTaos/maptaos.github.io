@@ -9672,6 +9672,7 @@ function mostrarSeccionInicio(seccion) {
     mejoresMarcas: "seccionMejoresMarcas",
     mediaHistorica: "seccionMediaHistorica",
     rachas: "seccionRachas",
+    club100: "seccionClub100",
     medallero: "seccionMedallero",
     top50: "seccionTop50",
     dificultadPaises: "seccionDificultadPaises"
@@ -9686,6 +9687,7 @@ const botones = {
   mejoresMarcas: "btnMejoresMarcas",
   mediaHistorica: "btnMediaHistorica",
   rachas: "btnRachas",
+  club100: "btnClub100",
   medallero: "btnMedallero",
   top50: "btnTop50",
   dificultadPaises: "btnDificultadPaises"
@@ -9718,6 +9720,7 @@ if (
   seccion === "mejoresMarcas" ||
   seccion === "mediaHistorica" ||
   seccion === "rachas" ||
+  seccion === "club100" ||
   seccion === "medallero" ||
   seccion === "top50" ||
   seccion === "dificultadPaises"
@@ -9816,6 +9819,13 @@ document
   .addEventListener("click", async () => {
     mostrarSeccionInicio("rachas");
     await cargarRankingRachas();
+  });
+
+document
+  .getElementById("btnClub100")
+  .addEventListener("click", async () => {
+    mostrarSeccionInicio("club100");
+    await cargarRankingClub100();
   });
   
 document
