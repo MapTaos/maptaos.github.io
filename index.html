@@ -4385,17 +4385,17 @@ async function cargarRankingClub100() {
   const cabecera = `
     <div style="
       display:grid;
-      grid-template-columns:minmax(85px,1fr) repeat(5,32px) 43px;
+      grid-template-columns:minmax(0,1fr) repeat(5,minmax(0,25px)) 34px;
       align-items:center;
       gap:2px;
       padding:8px 0;
       border-bottom:2px solid #bbb;
-      font-size:10px;
+      font-size:9px;
       font-weight:700;
       text-align:center;
     ">
       <span style="text-align:left;">Jugador</span>
-      ${columnas.map(n => `<span>${n}×100</span>`).join("")}
+      ${columnas.map(n => `<span>${n}×<wbr>100</span>`).join("")}
       <span>Total</span>
     </div>
   `;
@@ -4416,7 +4416,7 @@ async function cargarRankingClub100() {
     return `
       <div style="
         display:grid;
-        grid-template-columns:minmax(85px,1fr) repeat(5,32px) 43px;
+        grid-template-columns:minmax(0,1fr) repeat(5,minmax(0,25px)) 34px;
         align-items:center;
         gap:2px;
         padding:9px 0;
@@ -4451,13 +4451,11 @@ async function cargarRankingClub100() {
   }).join("");
 
   contenedor.innerHTML = `
-    <div style="overflow-x:auto;">
-      <div style="min-width:330px;">
-        ${cabecera}
-        ${filas}
-      </div>
-    </div>
-  `;
+  <div style="width:100%;min-width:0;">
+    ${cabecera}
+    ${filas}
+  </div>
+`;
 }
   
   
