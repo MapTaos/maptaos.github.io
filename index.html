@@ -7752,6 +7752,13 @@ const partidasPerfectas = resultados
     Number(fila.final_score) >= 950
   )
   .sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+const paisesPartidasPerfectas = new Map(
+  (rondasPorFecha || []).map(fila => [
+    fila.fecha,
+    fila
+  ])
+);
   
 const partidas = resultados.length;
 
@@ -8200,53 +8207,133 @@ profileContent.innerHTML = `
   padding:10px;
 ">
 
-  <div class="titulo-estadistica" style="margin-bottom:10px;">
-    ⭐ Partidas perfectas
-  </div>
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+  ">
+    <div class="titulo-estadistica">
+      ⭐ Partidas perfectas
+    </div>
 
-  <div style="font-size:13px;margin-bottom:10px;">
-    Total: <strong>${partidasPerfectas.length}</strong>
+    <span style="
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:13px;
+      font-weight:700;
+    ">
+      ${partidasPerfectas.length}
+
+      <span style="
+        background:#333;
+        border-radius:5px;
+        padding:2px 4px;
+        font-size:12px;
+      ">⭐</span>
+    </span>
   </div>
 
   ${partidasPerfectas.length > 0
-    ? partidasPerfectas.map(fila => `
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          gap:8px;
-          padding:7px 0;
-          border-top:1px solid #e1e4e6;
-          font-size:12px;
-        ">
-          <span style="white-space:nowrap;">
-            ${new Date(fila.fecha + "T00:00:00")
-              .toLocaleDateString("es-ES")}
-          </span>
+    ? partidasPerfectas.map(partida => {
 
-          <span style="
-            display:flex;
-            gap:6px;
-            align-items:center;
-            white-space:nowrap;
+        const fecha =
+          partida.fecha.slice(8, 10) + "/" +
+          partida.fecha.slice(5, 7);
+
+        const paises =
+          paisesPartidasPerfectas.get(partida.fecha);
+
+        const rondas = [1, 2, 3, 4, 5].map(i => {
+
+          const puntos = partida[`ronda_${i}`];
+
+          const codigo = banderaACodigo(
+            paises?.[`pais_${i}`] || ""
+          );
+
+          const bandera = codigo
+            ? `<img
+                 src="https://flagcdn.com/20x15/${codigo.toLowerCase()}.png"
+                 alt="${codigo}"
+                 style="width:20px;height:15px;flex-shrink:0;"
+               >`
+            : "";
+
+          const distintivo = Number(puntos) === 100
+            ? "font-weight:700;text-decoration:underline;text-underline-offset:2px;"
+            : "";
+
+          return `
+            <span style="
+              display:flex;
+              justify-content:flex-start;
+              align-items:center;
+              gap:2px;
+              min-width:0;
+              white-space:nowrap;
+            ">
+              ${bandera}
+              <span style="${distintivo}">
+                ${puntos ?? "—"}
+              </span>
+            </span>
+          `;
+        }).join("");
+
+        return `
+          <div style="
+            padding:6px 0;
+            border-bottom:1px solid #ddd;
           ">
-            <strong>100</strong>
-            <strong>100</strong>
-            <strong>100</strong>
-            <strong>100</strong>
-            <strong>100</strong>
-          </span>
 
-          <span style="
-            background:#333;
-            border-radius:5px;
-            padding:2px 4px;
-            font-size:12px;
-          ">⭐</span>
-        </div>
-      `).join("")
+            <div style="
+              display:grid;
+              grid-template-columns:55px 1fr 55px;
+              align-items:center;
+              font-size:12px;
+            ">
+
+              <strong style="text-align:left;">
+                ${fecha}
+              </strong>
+
+              <strong style="text-align:center;">
+                Partida perfecta
+              </strong>
+
+              <strong style="
+                text-align:right;
+                font-size:13px;
+              ">
+                ${partida.final_score}
+              </strong>
+
+            </div>
+
+            <div style="
+              display:grid;
+              grid-template-columns:repeat(5,minmax(0,1fr));
+              gap:0;
+              margin-top:4px;
+              margin-left:40px;
+              width:calc(100% - 40px);
+              font-size:13px;
+            ">
+              ${rondas}
+            </div>
+
+          </div>
+        `;
+      }).join("")
     : `
-      <div style="font-size:12px;color:#777;">
+      <div style="
+        font-size:12px;
+        color:#777;
+        text-align:center;
+        padding:8px 0;
+      ">
         Todavía no tiene partidas perfectas.
       </div>
     `}
@@ -8255,9 +8342,9 @@ profileContent.innerHTML = `
     font-size:11px;
     color:#777;
     margin-top:10px;
+    text-align:center;
   ">
-    Partidas de 1000 puntos, con cinco rondas de 100.
-    Desde el 1-10-2026.
+    Partidas de 1000 puntos desde el 1-10-2026.
   </div>
 
 </div>
