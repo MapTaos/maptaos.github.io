@@ -8234,26 +8234,28 @@ profileContent.innerHTML = `
     align-items:center;
     margin-bottom:10px;
   ">
-    <div class="titulo-estadistica">
-      ⭐ Partidas perfectas
-    </div>
-
-    <span style="
+    <div class="titulo-estadistica" style="
       display:flex;
       align-items:center;
       gap:6px;
-      font-size:13px;
-      font-weight:700;
     ">
-      ${partidasPerfectas.length}
-
       <span style="
         background:#333;
         border-radius:5px;
         padding:2px 4px;
         font-size:12px;
+        line-height:1.2;
       ">⭐</span>
-    </span>
+    
+      Partidas perfectas
+    </div>
+    
+    <span style="
+      font-size:13px;
+      font-weight:700;
+    ">
+  ${partidasPerfectas.length}
+</span>
   </div>
 
   ${partidasPerfectas.length > 0
