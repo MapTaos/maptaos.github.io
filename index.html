@@ -3914,7 +3914,7 @@ const fechaAnterior =
   const { data: resultadosHistoricos } =
     await supabaseClient
       .from("resultados")
-      .select("jugador_id, fecha")
+      .select("jugador_id, fecha, final_score")
       .order("fecha", { ascending: true });
   
 
@@ -3984,12 +3984,42 @@ const fechaAnterior =
       );
     
     const resultadosJugador =
+      const mesEstrellas =
+        fechaSeleccionada.getFullYear() + "-" +
+        String(fechaSeleccionada.getMonth() + 1).padStart(2, "0");
+      
+      const totalEstrellasMes = resultadosJugador.filter(
+        resultado =>
+          resultado.fecha.slice(0, 7) === mesEstrellas &&
+          Number(resultado.final_score) === 1000
+      ).length;
+      
+      const estrellasMes = totalEstrellasMes > 0
+        ? "⭐".repeat(Math.min(totalEstrellasMes, 5)) +
+          (totalEstrellasMes > 5
+            ? ` (+${totalEstrellasMes - 5})`
+            : "")
+        : "";
       (resultadosHistoricos || [])
         .filter(
           resultado =>
             resultado.jugador_id === fila.jugador_id
         );
+
+    const totalEstrellasMes = resultadosJugador.filter(
+      resultado =>
+        resultado.fecha.slice(0, 7) === mesSeleccionado &&
+        Number(resultado.final_score) === 1000
+    ).length;
     
+    const estrellasMes = totalEstrellasMes > 0
+      ? " " +
+        "⭐".repeat(Math.min(totalEstrellasMes, 5)) +
+        (totalEstrellasMes > 5
+          ? ` (+${totalEstrellasMes - 5})`
+          : "")
+      : "";
+      
     let racha = resultadosJugador.length > 0 ? 1 : 0;
     
     for (
@@ -4084,6 +4114,7 @@ const fechaAnterior =
               🎮 <strong>${fila.dias_jugados}</strong>
               &nbsp;·&nbsp;
               🔥 <strong>${racha}</strong>
+              ${estrellasMes ? `&nbsp; ${estrellasMes}` : ""}
             </span>
           </div>
 
