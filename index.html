@@ -3984,6 +3984,11 @@ const fechaAnterior =
       );
     
     const resultadosJugador =
+      (resultadosHistoricos || [])
+        .filter(
+          resultado =>
+            resultado.jugador_id === fila.jugador_id
+        );
       const mesEstrellas =
         fechaSeleccionada.getFullYear() + "-" +
         String(fechaSeleccionada.getMonth() + 1).padStart(2, "0");
