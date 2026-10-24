@@ -4285,6 +4285,181 @@ const fechaAyer = new Date(
   }).join("");
 }
 
+
+// CLUB DE LOS 100 — Desde el 1 de octubre de 2026
+async function cargarRankingClub100() {
+
+  const contenedor =
+    document.getElementById("rankingClub100");
+
+  if (!contenedor) return;
+
+  contenedor.textContent = "Cargando Club de los 100...";
+
+  const [
+    { data: jugadores, error: errorJugadores },
+    { data: resultados, error: errorResultados }
+  ] = await Promise.all([
+    supabaseClient
+      .from("jugadores")
+      .select("id, nombre, alias")
+      .eq("activo", true),
+
+    supabaseClient
+      .from("resultados")
+      .select("jugador_id, fecha, ronda_1, ronda_2, ronda_3, ronda_4, ronda_5")
+      .gte("fecha", "2026-10-01")
+      .order("fecha", { ascending: false })
+      .limit(10000)
+  ]);
+
+  if (errorJugadores || errorResultados) {
+    console.error(
+      "Error cargando Club de los 100:",
+      errorJugadores || errorResultados
+    );
+
+    contenedor.textContent =
+      "No se pudo cargar el Club de los 100.";
+
+    return;
+  }
+
+  // Contabilizar días según número de rondas perfectas
+  const datosPorJugador = new Map();
+
+  (resultados || []).forEach(partida => {
+
+    const cantidad100 = [1, 2, 3, 4, 5]
+      .filter(i => Number(partida[`ronda_${i}`]) === 100)
+      .length;
+
+    if (cantidad100 === 0) return;
+
+    if (!datosPorJugador.has(partida.jugador_id)) {
+      datosPorJugador.set(partida.jugador_id, {
+        dias: [0, 0, 0, 0, 0, 0],
+        total: 0
+      });
+    }
+
+    const datos = datosPorJugador.get(partida.jugador_id);
+
+    datos.dias[cantidad100]++;
+    datos.total += cantidad100;
+  });
+
+  const clasificacion = (jugadores || [])
+    .map(jugador => {
+
+      const datos = datosPorJugador.get(jugador.id);
+
+      return {
+        id: jugador.id,
+        nombre: jugador.alias || jugador.nombre,
+        dias: datos?.dias || [0, 0, 0, 0, 0, 0],
+        total: datos?.total || 0
+      };
+
+    })
+    .filter(jugador => jugador.total > 0)
+    .sort((a, b) =>
+      b.total - a.total ||
+      b.dias[5] - a.dias[5] ||
+      b.dias[4] - a.dias[4] ||
+      b.dias[3] - a.dias[3] ||
+      b.dias[2] - a.dias[2] ||
+      b.dias[1] - a.dias[1] ||
+      a.nombre.localeCompare(b.nombre, "es")
+    );
+
+  if (!clasificacion.length) {
+    contenedor.textContent =
+      "Todavía no hay rondas de 100 puntos.";
+    return;
+  }
+
+  // Construir tabla compacta
+  const columnas = [5, 4, 3, 2, 1];
+
+  const cabecera = `
+    <div style="
+      display:grid;
+      grid-template-columns:minmax(85px,1fr) repeat(5,32px) 43px;
+      align-items:center;
+      gap:2px;
+      padding:8px 0;
+      border-bottom:2px solid #bbb;
+      font-size:10px;
+      font-weight:700;
+      text-align:center;
+    ">
+      <span style="text-align:left;">Jugador</span>
+      ${columnas.map(n => `<span>${n}×100</span>`).join("")}
+      <span>Total</span>
+    </div>
+  `;
+
+  const filas = clasificacion.map((jugador, indice) => {
+
+    const posicion = indice + 1;
+
+    const medalla =
+      posicion === 1 ? "🥇" :
+      posicion === 2 ? "🥈" :
+      posicion === 3 ? "🥉" : posicion;
+
+    const nombreParaClick = jugador.nombre
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'");
+
+    return `
+      <div style="
+        display:grid;
+        grid-template-columns:minmax(85px,1fr) repeat(5,32px) 43px;
+        align-items:center;
+        gap:2px;
+        padding:9px 0;
+        border-bottom:1px solid #ddd;
+        font-size:12px;
+        text-align:center;
+      ">
+
+        <span style="
+          text-align:left;
+          min-width:0;
+          overflow:hidden;
+          text-overflow:ellipsis;
+          white-space:nowrap;
+        ">
+          ${medalla}
+          <strong
+            onclick="abrirPerfilJugador(${jugador.id}, '${nombreParaClick}')"
+            style="cursor:pointer;"
+          >${jugador.nombre}</strong>
+        </span>
+
+        ${columnas.map(n =>
+          `<span>${jugador.dias[n] || ""}</span>`
+        ).join("")}
+
+        <strong>${jugador.total}</strong>
+
+      </div>
+    `;
+
+  }).join("");
+
+  contenedor.innerHTML = `
+    <div style="overflow-x:auto;">
+      <div style="min-width:330px;">
+        ${cabecera}
+        ${filas}
+      </div>
+    </div>
+  `;
+}
+  
   
   // MEDALLERO DIARIO HISTÓRICO
 async function cargarMedalleroDiario() {
