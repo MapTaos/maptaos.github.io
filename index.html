@@ -1508,6 +1508,9 @@
   <h2 class="home-section-title">
     💯 Club de los 100
   </h2>
+  <div style="font-size:11px;color:#777;margin-bottom:10px;">
+    Número de días con 1, 2, 3, 4 o 5 rondas de 100 puntos.
+  </div>
 
   <div id="rankingClub100" class="placeholder">
      Cargando Club de los 100...
@@ -4389,7 +4392,7 @@ async function cargarRankingClub100() {
   }
 
   // Construir tabla compacta
-  const columnas = [5, 4, 3, 2, 1];
+  const columnas = [1, 2, 3, 4, 5];
 
   const cabecera = `
     <div style="
@@ -4404,7 +4407,7 @@ async function cargarRankingClub100() {
       text-align:center;
     ">
       <span></span>
-      ${columnas.map(n => `<span>${n}×<wbr>100</span>`).join("")}
+      ${columnas.map(n => `<span>${n}</span>`).join("")}
       <span>Total</span>
     </div>
   `;
