@@ -7761,7 +7761,7 @@ resultados
 const partidasPerfectas = resultados
   .filter(fila =>
     fila.fecha >= "2026-10-01" &&
-    Number(fila.final_score) >= 950
+    Number(fila.final_score) === 1000
   )
   .sort((a, b) => b.fecha.localeCompare(a.fecha));
 
