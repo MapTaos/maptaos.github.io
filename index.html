@@ -3997,7 +3997,7 @@ const fechaAnterior =
     const totalEstrellasMes = resultadosJugador.filter(
       resultado =>
         resultado.fecha.slice(0, 7) === mesEstrellas &&
-        Number(resultado.final_score) === 1000
+        Number(resultado.final_score) >= 950
     ).length;
     
     const estrellasMes = totalEstrellasMes > 0
