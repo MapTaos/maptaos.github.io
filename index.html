@@ -7744,6 +7744,17 @@ resultados
       totalRondas100 += cantidad100;
     }
   });
+
+// PARTIDAS PERFECTAS DEL JUGADOR
+const partidasPerfectas = resultados
+  .filter(fila =>
+    fila.fecha >= "2026-10-01" &&
+    Number(fila.final_score) === 1000 &&
+    [1, 2, 3, 4, 5].every(
+      n => Number(fila[`ronda_${n}`]) === 100
+    )
+  )
+  .sort((a, b) => b.fecha.localeCompare(a.fecha));
   
 const partidas = resultados.length;
 
@@ -8182,6 +8193,78 @@ profileContent.innerHTML = `
 
 </div>
 <!-- FIN RONDAS DE 100 -->
+
+<!-- PARTIDAS PERFECTAS DEL JUGADOR -->
+<div style="
+  grid-column:1 / -1;
+  background:#f8f9fa;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  padding:10px;
+">
+
+  <div class="titulo-estadistica" style="margin-bottom:10px;">
+    ⭐ Partidas perfectas
+  </div>
+
+  <div style="font-size:13px;margin-bottom:10px;">
+    Total: <strong>${partidasPerfectas.length}</strong>
+  </div>
+
+  ${partidasPerfectas.length > 0
+    ? partidasPerfectas.map(fila => `
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:8px;
+          padding:7px 0;
+          border-top:1px solid #e1e4e6;
+          font-size:12px;
+        ">
+          <span style="white-space:nowrap;">
+            ${new Date(fila.fecha + "T00:00:00")
+              .toLocaleDateString("es-ES")}
+          </span>
+
+          <span style="
+            display:flex;
+            gap:6px;
+            align-items:center;
+            white-space:nowrap;
+          ">
+            <strong>100</strong>
+            <strong>100</strong>
+            <strong>100</strong>
+            <strong>100</strong>
+            <strong>100</strong>
+          </span>
+
+          <span style="
+            background:#333;
+            border-radius:5px;
+            padding:2px 4px;
+            font-size:12px;
+          ">⭐</span>
+        </div>
+      `).join("")
+    : `
+      <div style="font-size:12px;color:#777;">
+        Todavía no tiene partidas perfectas.
+      </div>
+    `}
+
+  <div style="
+    font-size:11px;
+    color:#777;
+    margin-top:10px;
+  ">
+    Partidas de 1000 puntos, con cinco rondas de 100.
+    Desde el 1-10-2026.
+  </div>
+
+</div>
+<!-- FIN PARTIDAS PERFECTAS -->
 
 
 <!-- TARJETA DE DIFICULTAD DE PAÍSES DEL JUGADOR -->
