@@ -3888,14 +3888,24 @@ function celebrarRecordPersonal(nombreJugador, puntuacion) {
   // Destellos dorados en tres oleadas
   for (let i = 0; i < 90; i++) {
 
-    const estrella = document.createElement("span");
-    estrella.textContent = "✦";
+    
+const estrella = document.createElement("span");
+
+// Formas aleatorias para celebrar el récord
+const formas = ["✦", "★", "●", "◆", "■", "✧"];
+
+const forma = formas[
+  Math.floor(Math.random() * formas.length)
+];
+
+estrella.textContent = forma;
+
 
     estrella.style.cssText = `
       position:absolute;
       top:-25px;
       left:${Math.random() * 100}%;
-      color:${Math.random() > 0.5 ? "#b45309" : "#7e22ce"};
+      color:${["#b45309", "#7e22ce", "#be185d", "#1d4ed8"][Math.floor(Math.random() * 4)]};
       font-size:${12 + Math.random() * 16}px;
       opacity:0;
     `;
