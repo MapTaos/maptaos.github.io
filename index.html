@@ -10180,7 +10180,7 @@ async function cargarAdminJugadores() {
   const { data: jugadores, error } = await supabaseClient
     .from("jugadores")
     .select("id, nombre, alias, created_at, activo")
-    .order("nombre", { ascending: true });
+    .order("id", { ascending: true });
 
   if (error) {
     console.error("Error cargando jugadores:", error);
