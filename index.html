@@ -244,7 +244,7 @@
         margin-right: -14px;
       }
 
-      #rankingRachas {
+      #rankings {
         margin-left: -14px;
         margin-right: -14px;
       }
@@ -7909,7 +7909,7 @@ profileContent.innerHTML = `
           </div>
 
           ${rankingHoyJugador ? `
-              <div style="font-size:16px;font-weight:700;">
+              <div style="font-size:21px;font-weight:700;">
                 ${rankingHoyJugador.posicion}º/${jugadoresHoy}
               </div>
          ` : ""}
@@ -7975,7 +7975,7 @@ profileContent.innerHTML = `
 
       <div>
         <div style="font-size:13px;color:#777;">Puesto</div>
-        <div style="font-size:16px;font-weight:700;white-space:nowrap;">
+        <div style="font-size:21px;font-weight:700;white-space:nowrap;">
           ${mediaHistoricaJugador
             ? `${mediaHistoricaJugador.posicion}º/${totalMediaHistorica}`
             : "—"}
@@ -8013,7 +8013,7 @@ profileContent.innerHTML = `
 
       <div style="min-width:0;">
         <div style="font-size:13px;color:#777;">Puesto</div>
-        <div style="font-size:16px;font-weight:700;white-space:nowrap;">
+        <div style="font-size:21px;font-weight:700;white-space:nowrap;">
           ${puestoMesPerfil != null
             ? `${puestoMesPerfil}º/${totalJugadoresMes}`
             : "—"}
@@ -8029,7 +8029,7 @@ profileContent.innerHTML = `
 
       <div style="min-width:0;">
         <div style="font-size:13px;color:#777;">Partidas</div>
-        <div style="font-size:16px;font-weight:700;white-space:nowrap;">
+        <div style="font-size:21px;font-weight:700;white-space:nowrap;">
           ${resultadosMes.length}/${Number(hoy.slice(8,10))}
         </div>
       </div>
