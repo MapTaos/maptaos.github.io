@@ -3769,7 +3769,7 @@ function celebrar1000Puntos(nombreJugador) {
       { transform:"translateY(0) rotate(0deg)", opacity:1 },
       { transform:"translateY(105vh) rotate(720deg)", opacity:0 }
     ], {
-      duration:2500 + Math.random() * 1500,
+      duration:5500 + Math.random() * 2000,
       delay:Math.random() * 500,
       easing:"linear",
       fill:"forwards"
@@ -3777,7 +3777,7 @@ function celebrar1000Puntos(nombreJugador) {
   }
 
   document.body.appendChild(capa);
-  setTimeout(() => capa.remove(), 4500);
+  setTimeout(() => capa.remove(), 8000);
 }
 
 
