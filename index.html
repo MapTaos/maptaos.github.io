@@ -5893,7 +5893,7 @@ contenedor.innerHTML =
               <strong
                 onclick="abrirPerfilJugador(${fila.jugador_id}, '${nombre}')"
                 style="cursor:pointer;"
-                color:#333 !important;
+                color:#666666 !important;"
               >
                 ${nombre}
               </strong>
@@ -5904,10 +5904,11 @@ contenedor.innerHTML =
               grid-template-columns:62px 48px;
               text-align:right;
               align-items:center;
-              flex-shrink:0;
-              color:#333;
-            ">
-              <strong>
+              flex-shrink:0;"
+            >
+              <strong style="
+                  color:#666666 !important;"
+              >
                 ${Number(fila.porcentaje).toFixed(1).replace(".", ",")} %
               </strong>
             
