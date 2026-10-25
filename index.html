@@ -8769,28 +8769,29 @@ function mostrarTop10(top10, rondasPorFecha) {
 
       return `
         <div style="
-          padding:6px 0;
-          border-bottom:1px solid #ddd;
+          display:grid;
+          grid-template-columns:55px 1fr 55px;
+          align-items:center;
+          font-size:12px;
         ">
-         <div style="
-            display:grid;
-            grid-template-columns:55px 1fr 55px;
-            align-items:center;
-            font-size:12px;
+          <strong style="
+            text-align:left;
+            font-size:14px;
           ">
-            <strong style="text-align:left;">
-              ${fecha}
-            </strong>
-            
-            <strong style="text-align:center;">
-              ${puesto}
-            </strong>
-            
-            <strong style="text-align:right;font-size:13px;">
-              ${partida.final_score}
-            </strong>
-          </div>
-
+            ${fecha}
+          </strong>
+        
+          <strong style="text-align:center;">
+            ${puesto}
+          </strong>
+        
+          <strong style="
+            text-align:right;
+            font-size:14px;
+          ">
+            ${partida.final_score}
+          </strong>
+        </div>
           <div style="
             display:grid;
             grid-template-columns:repeat(5,minmax(0,1fr));
