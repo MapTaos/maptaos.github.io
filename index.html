@@ -3751,7 +3751,7 @@ function celebrar1000Puntos(nombreJugador) {
 
   const colores = ["#facc15", "#22c55e", "#3b82f6", "#ec4899", "#f97316"];
 
-  for (let i = 0; i < 150; i++) {
+  for (let i = 0; i < 200; i++) {
     const pieza = document.createElement("span");
     pieza.style.cssText = `
       position:absolute;
@@ -3770,14 +3770,14 @@ function celebrar1000Puntos(nombreJugador) {
       { transform:"translateY(105vh) rotate(720deg)", opacity:0 }
     ], {
       duration:5500 + Math.random() * 2000,
-      delay:Math.random() * 500,
+      delay: (i % 3) * 2000 + Math.random() * 500,
       easing:"linear",
       fill:"forwards"
     });
   }
 
   document.body.appendChild(capa);
-  setTimeout(() => capa.remove(), 8000);
+  setTimeout(() => capa.remove(), 12000);
 }
 
 
