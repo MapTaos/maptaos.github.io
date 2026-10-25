@@ -10169,6 +10169,79 @@ btnCerrarAvisoGeneral.addEventListener("click", async () => {
   }
 });
 
+
+
+async function cargarAdminJugadores() {
+  const contenedor = document.getElementById("listadoAdminJugadores");
+  if (!contenedor) return;
+
+  contenedor.textContent = "Cargando jugadores...";
+
+  const { data: jugadores, error } = await supabaseClient
+    .from("jugadores")
+    .select("id, nombre, alias, created_at, activo")
+    .order("nombre", { ascending: true });
+
+  if (error) {
+    console.error("Error cargando jugadores:", error);
+    contenedor.textContent = "No se pudo cargar el listado.";
+    return;
+  }
+
+  if (!jugadores || jugadores.length === 0) {
+    contenedor.textContent = "No hay jugadores registrados.";
+    return;
+  }
+
+  const escaparHTML = valor => String(valor ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+  const filas = jugadores.map(jugador => {
+    const fechaAlta = jugador.created_at
+      ? new Date(jugador.created_at).toLocaleDateString("es-ES", {
+          timeZone: "Europe/Madrid",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric"
+        })
+      : "—";
+
+    return `
+      <tr style="border-bottom:1px solid #ddd;">
+        <td style="padding:8px 5px;">${escaparHTML(jugador.id)}</td>
+        <td style="padding:8px 5px;">${escaparHTML(jugador.nombre)}</td>
+        <td style="padding:8px 5px;">${escaparHTML(jugador.alias)}</td>
+        <td style="padding:8px 5px;white-space:nowrap;">${fechaAlta}</td>
+        <td style="padding:8px 5px;">
+          ${jugador.activo === true ? "Activo" : "Inactivo"}
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  contenedor.innerHTML = `
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">
+        <thead>
+          <tr style="border-bottom:2px solid #ddd;">
+            <th style="padding:8px 5px;">ID</th>
+            <th style="padding:8px 5px;">Nombre</th>
+            <th style="padding:8px 5px;">Alias</th>
+            <th style="padding:8px 5px;">Fecha de alta</th>
+            <th style="padding:8px 5px;">Estado</th>
+          </tr>
+        </thead>
+        <tbody>${filas}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+  
   
   
 async function cargarAvisoGeneral() {
