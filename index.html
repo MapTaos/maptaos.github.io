@@ -8846,8 +8846,13 @@ function mostrarTop10(top10, rondasPorFecha) {
         `;
       }).join("");
 
+      
       return `
         <div style="
+          margin-bottom:12px;
+        ">
+      
+          <div style="
             display:grid;
             grid-template-columns:55px 1fr 55px;
             align-items:center;
@@ -8856,31 +8861,33 @@ function mostrarTop10(top10, rondasPorFecha) {
             <strong style="text-align:left;">
               ${fecha}
             </strong>
-            
+      
             <strong style="text-align:center;">
               ${puesto}
             </strong>
-            
+      
             <strong style="text-align:right;font-size:13px;">
               ${partida.final_score}
             </strong>
           </div>
-          
+      
           <div style="
             display:grid;
             grid-template-columns:repeat(5,minmax(0,1fr));
             gap:0;
             margin-top:4px;
-            margin-left:40px;
-            width:calc(100% - 40px);
+            margin-left:25px;
+            width:calc(100% - 45px);
             font-size:13px;
           ">
             ${rondas}
           </div>
+      
         </div>
       `;
-    }).join("");
-  }
+      }).join("");
+      }
+
 
   function mantenerPosicionHistorial(accion) {
     const referencia = document.getElementById("historialMesTitulo");
