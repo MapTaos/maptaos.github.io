@@ -9619,7 +9619,7 @@ const panelCatalogoPaises =
 const panelRondasAdmin =
   document.getElementById("panelRondasAdmin");
 
-btnAdminPaisesCatalogo.("click", async () => {
+btnAdminPaisesCatalogo.addEventListener("click", async () => {
   panelCatalogoPaises.classList.remove("hidden");
   panelRondasAdmin.classList.add("hidden");
 
@@ -9675,7 +9675,7 @@ continentes.forEach(continente => {
 });
 
 selector.value = item.continente;
-selector.("change", async () => {
+selector.addEventListener("change", async () => {
   const continenteAnterior = item.continente;
   const continenteNuevo = selector.value;
 
@@ -9721,7 +9721,7 @@ lista.appendChild(fila);
 const buscarPaisAdmin =
   document.getElementById("buscarPaisAdmin");
 
-buscarPaisAdmin.("input", () => {
+buscarPaisAdmin.addEventListener("input", () => {
   const texto = buscarPaisAdmin.value
     .trim()
     .toLocaleLowerCase("es");
@@ -9738,7 +9738,7 @@ buscarPaisAdmin.("input", () => {
   });
 });
   
-btnAdminPaisesRondas.("click", () => {
+btnAdminPaisesRondas.addEventListener("click", () => {
   panelCatalogoPaises.classList.add("hidden");
   panelRondasAdmin.classList.remove("hidden");
 });
