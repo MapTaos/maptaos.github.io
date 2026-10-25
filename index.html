@@ -8233,12 +8233,13 @@ profileContent.innerHTML = `
 ">
 
   <div style="
-    display:flex;
-    justify-content:space-between;
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
     align-items:center;
     margin-bottom:10px;
   ">
     <div class="titulo-estadistica" style="
+      grid-column:1 / 6;
       display:flex;
       align-items:center;
       gap:6px;
@@ -8255,6 +8256,8 @@ profileContent.innerHTML = `
     </div>
     
     <span style="
+      grid-column:6;
+      text-align:center;
       font-size:13px;
       font-weight:700;
     ">
