@@ -3217,6 +3217,11 @@ if (resultadoPendiente.tieneBanderas) {
       + " puntos.",
       "success"
     );
+
+if (Number(resultadoPendiente.score) === 1000) {
+  celebrar1000Puntos(jugadorActual.alias || jugadorActual.nombre);
+}
+    
     await cargarRankingHoy();
     await cargarRankingSemanal();
     await cargarRankingMensual();
@@ -3700,6 +3705,83 @@ onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.alias || fila.nombre}')"
     }).join("");
 }
 
+
+
+  
+function celebrar1000Puntos(nombreJugador) {
+  const anterior = document.getElementById("celebracion1000");
+  if (anterior) anterior.remove();
+
+  const capa = document.createElement("div");
+  capa.id = "celebracion1000";
+  capa.style.cssText = `
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    pointer-events:none;
+    overflow:hidden;
+  `;
+
+  const mensaje = document.createElement("div");
+  mensaje.style.cssText = `
+    position:absolute;
+    top:12%;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(17,17,17,0.92);
+    color:white;
+    padding:14px 22px;
+    border:2px solid #facc15;
+    border-radius:14px;
+    text-align:center;
+    font-weight:bold;
+    font-size:18px;
+    box-shadow:0 5px 25px rgba(0,0,0,0.25);
+    white-space:nowrap;
+    max-width:90%;
+    box-sizing:border-box;
+  `;
+  const titulo = document.createElement("div");
+  titulo.textContent = "🏆 ¡PARTIDA PERFECTA!";
+  const detalle = document.createElement("div");
+  detalle.textContent = `${nombreJugador} · 1.000 PUNTOS`;
+  detalle.style.cssText = "font-size:14px;margin-top:5px;";
+  mensaje.append(titulo, detalle);
+  capa.appendChild(mensaje);
+
+  const colores = ["#facc15", "#22c55e", "#3b82f6", "#ec4899", "#f97316"];
+
+  for (let i = 0; i < 75; i++) {
+    const pieza = document.createElement("span");
+    pieza.style.cssText = `
+      position:absolute;
+      top:-20px;
+      left:${Math.random() * 100}%;
+      width:7px;
+      height:11px;
+      background:${colores[i % colores.length]};
+      opacity:0;
+      transform:rotate(${Math.random() * 360}deg);
+    `;
+    capa.appendChild(pieza);
+
+    pieza.animate([
+      { transform:"translateY(0) rotate(0deg)", opacity:1 },
+      { transform:"translateY(105vh) rotate(720deg)", opacity:0 }
+    ], {
+      duration:2500 + Math.random() * 1500,
+      delay:Math.random() * 500,
+      easing:"linear",
+      fill:"forwards"
+    });
+  }
+
+  document.body.appendChild(capa);
+  setTimeout(() => capa.remove(), 4500);
+}
+
+
+  
   
 async function cargarRankingSemanal() {
 
