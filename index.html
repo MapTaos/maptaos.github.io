@@ -3779,7 +3779,15 @@ function celebrar1000Puntos(nombreJugador) {
   mensaje.append(titulo, detalle);
   capa.appendChild(mensaje);
 
-  const colores = ["#facc15", "#22c55e", "#3b82f6", "#ec4899", "#f97316"];
+  const colores = [
+    "#d97706", // Dorado oscuro
+    "#15803d", // Verde intenso
+    "#1d4ed8", // Azul intenso
+    "#be185d", // Fucsia oscuro
+    "#c2410c", // Naranja oscuro
+    "#7e22ce", // Violeta
+    "#dc2626"  // Rojo intenso
+  ];
 
   for (let i = 0; i < 200; i++) {
     const pieza = document.createElement("span");
@@ -3872,7 +3880,7 @@ function celebrarRecordPersonal(nombreJugador, puntuacion) {
       position:absolute;
       top:-25px;
       left:${Math.random() * 100}%;
-      color:${Math.random() > 0.5 ? "#facc15" : "#ffffff"};
+      color:${Math.random() > 0.5 ? "#b45309" : "#7e22ce"};
       font-size:${12 + Math.random() * 16}px;
       opacity:0;
     `;
