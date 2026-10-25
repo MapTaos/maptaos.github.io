@@ -539,9 +539,56 @@
       🌍 Gestionar países y continentes ›
     </button>
 
+    <button
+      type="button"
+      id="btnMenuAdminJugadores"
+      style="
+        width:100%;
+        padding:13px 12px;
+        background:#fffaf0;
+        color:#292524;
+        border:2px solid #f59e0b;
+        border-radius:10px;
+        font-size:14px;
+        font-weight:600;
+        text-align:left;
+        cursor:pointer;
+      "
+    >
+      👥 Listado de jugadores ›
+    </button>
   </div>
 </div>
 
+    <!-- PANEL ADMINISTRACIÓN DE JUGADORES -->
+<div id="adminJugadores" class="card hidden">
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  ">
+    <h2 class="home-section-title" style="margin:0;">
+      👥 Listado de jugadores
+    </h2>
+
+    <button
+      type="button"
+      id="btnCerrarAdminJugadores"
+      style="padding:6px 10px;cursor:pointer;"
+    >
+      ✕ Cerrar
+    </button>
+  </div>
+
+  <div id="listadoAdminJugadores">
+    Cargando jugadores...
+  </div>
+
+</div>
+<!-- FIN PANEL JUGADORES -->
 
     <style>
   /* Botones interiores de administración */
@@ -9537,6 +9584,28 @@ btnCerrarAdminPaises.addEventListener("click", () => {
   adminPaises.classList.add("hidden");
 });
 
+const btnMenuAdminJugadores =
+  document.getElementById("btnMenuAdminJugadores");
+
+const adminJugadores =
+  document.getElementById("adminJugadores");
+
+const btnCerrarAdminJugadores =
+  document.getElementById("btnCerrarAdminJugadores");
+
+btnMenuAdminJugadores.addEventListener("click", () => {
+  menuAdministracion.style.display = "none";
+  adminAvisos.classList.add("hidden");
+  adminPaises.classList.add("hidden");
+  adminJugadores.classList.remove("hidden");
+
+  cargarAdminJugadores();
+});
+
+btnCerrarAdminJugadores.addEventListener("click", () => {
+  adminJugadores.classList.add("hidden");
+});
+  
 const btnAdminPaisesCatalogo =
   document.getElementById("btnAdminPaisesCatalogo");
 
