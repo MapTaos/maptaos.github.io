@@ -8582,12 +8582,11 @@ function mostrarTop10(top10, rondasPorFecha) {
 
           return codigoPais
             ? `<span style="
-                 display:inline-flex;
-                 align-items:center;
-                 width:20%;
-                 white-space:nowrap;
-                 box-sizing:border-box;
-                 padding-right:10px;
+                  display:flex;
+                  align-items:center;
+                  gap:2px;
+                  min-width:0;
+                  white-space:nowrap;
                "><img
                  src="https://flagcdn.com/20x15/${codigoPais.toLowerCase()}.png"
                  alt="${codigoPais}"
@@ -8595,15 +8594,14 @@ function mostrarTop10(top10, rondasPorFecha) {
                    width:20px;
                    height:15px;
                    vertical-align:middle;
-                   margin-right:1px;
+                   flex-shrink:0;
                  ">${puntuacionColoreada}</span>`
             : `<span style="
-                 display:inline-flex;
-                 align-items:center;
-                 width:20%;
-                 white-space:nowrap;
-                 box-sizing:border-box;
-                 padding-right:10px;
+                  display:flex;
+                  align-items:center;
+                  gap:2px;
+                  min-width:0;
+                  white-space:nowrap;
                ">${puntuacionColoreada}</span>`;
         })
         .filter(Boolean)
@@ -8659,10 +8657,13 @@ function mostrarTop10(top10, rondasPorFecha) {
           </div>
 
           <div style="
+            display:grid;
+            grid-template-columns:repeat(5,minmax(0,1fr));
+            gap:0;
             margin-top:4px;
-            margin-left:40px;
+            margin-left:25px;
+            width:calc(100% - 45px);
             font-size:13px;
-            width:calc(100% - 40px);
           ">
             ${textoRondas}
           </div>
