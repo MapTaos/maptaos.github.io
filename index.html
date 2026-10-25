@@ -10191,7 +10191,7 @@ async function cargarAdminJugadores() {
 
   const { data: jugadores, error } = await supabaseClient
     .from("jugadores")
-    .select("id, nombre, alias, created_at, activo")
+    .select("id, nombre, alias, created_at, activo, ultimo_aviso_visto")
     .order("id", { ascending: true });
 
   if (error) {
@@ -10228,9 +10228,8 @@ async function cargarAdminJugadores() {
         <td style="padding:8px 5px;">${escaparHTML(jugador.nombre)}</td>
         <td style="padding:8px 5px;">${escaparHTML(jugador.alias)}</td>
         <td style="padding:8px 5px;white-space:nowrap;">${fechaAlta}</td>
-        <td style="padding:8px 5px;">
-          ${jugador.activo === true ? "Activo" : "Inactivo"}
-        </td>
+        <td style="padding:8px 5px;">${jugador.activo === true ? "Activo" : "Inactivo"}</td>
+        <td style="padding:8px 5px;text-align:center;">${escaparHTML(jugador.ultimo_aviso_visto ?? "—")}</td>
       </tr>
     `;
   }).join("");
@@ -10245,6 +10244,7 @@ async function cargarAdminJugadores() {
             <th style="padding:8px 5px;">Alias</th>
             <th style="padding:8px 5px;">Fecha de alta</th>
             <th style="padding:8px 5px;">Estado</th>
+            <th style="padding:8px 5px;text-align:center;">Último aviso visto</th>
           </tr>
         </thead>
         <tbody>${filas}</tbody>
