@@ -3789,14 +3789,29 @@ function celebrar1000Puntos(nombreJugador) {
     "#dc2626"  // Rojo intenso
   ];
 
-  for (let i = 0; i < 200; i++) {
-    const pieza = document.createElement("span");
-    pieza.style.cssText = `
+  
+for (let i = 0; i < 200; i++) {
+  const pieza = document.createElement("span");
+
+  // Elegir una forma aleatoria
+  const formas = [
+    { ancho: 7, alto: 11, radio: "0" },    // Rectángulo
+    { ancho: 9, alto: 9, radio: "0" },     // Cuadrado
+    { ancho: 8, alto: 8, radio: "50%" },   // Círculo
+    { ancho: 4, alto: 17, radio: "2px" },  // Tira
+    { ancho: 12, alto: 6, radio: "2px" }   // Rectángulo ancho
+  ];
+
+  const forma = formas[Math.floor(Math.random() * formas.length)];
+
+  pieza.style.cssText = `
+
       position:absolute;
       top:-20px;
       left:${Math.random() * 100}%;
-      width:10px;
-      height:15px;
+      width:${forma.ancho}px;
+      height:${forma.alto}px;
+      border-radius:${forma.radio};
       background:${colores[i % colores.length]};
       opacity:0;
       transform:rotate(${Math.random() * 360}deg);
