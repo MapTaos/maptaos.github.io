@@ -9606,6 +9606,28 @@ btnCerrarAdminJugadores.addEventListener("click", () => {
   adminJugadores.classList.add("hidden");
 });
   
+const btnMenuAdminJugadores =
+  document.getElementById("btnMenuAdminJugadores");
+
+const adminJugadores =
+  document.getElementById("adminJugadores");
+
+const btnCerrarAdminJugadores =
+  document.getElementById("btnCerrarAdminJugadores");
+
+btnMenuAdminJugadores.addEventListener("click", () => {
+  menuAdministracion.style.display = "none";
+  adminAvisos.classList.add("hidden");
+  adminPaises.classList.add("hidden");
+  adminJugadores.classList.remove("hidden");
+
+  cargarAdminJugadores();
+});
+
+btnCerrarAdminJugadores.addEventListener("click", () => {
+  adminJugadores.classList.add("hidden");
+});
+  
 const btnAdminPaisesCatalogo =
   document.getElementById("btnAdminPaisesCatalogo");
 
@@ -10168,6 +10190,31 @@ btnCerrarAvisoGeneral.addEventListener("click", async () => {
   }
 });
 
+
+
+ const btnMenuAdminJugadores =
+  document.getElementById("btnMenuAdminJugadores");
+
+const adminJugadores =
+  document.getElementById("adminJugadores");
+
+const btnCerrarAdminJugadores =
+  document.getElementById("btnCerrarAdminJugadores");
+
+btnMenuAdminJugadores.addEventListener("click", () => {
+  menuAdministracion.style.display = "none";
+  adminAvisos.classList.add("hidden");
+  adminPaises.classList.add("hidden");
+  adminJugadores.classList.remove("hidden");
+
+  cargarAdminJugadores();
+});
+
+btnCerrarAdminJugadores.addEventListener("click", () => {
+  adminJugadores.classList.add("hidden");
+}); 
+
+  
   
 async function cargarAvisoGeneral() {
   const { data, error } = await supabaseClient
