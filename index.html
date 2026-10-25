@@ -7611,6 +7611,7 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
       <div style="
         display:grid;
         grid-template-columns:repeat(6,minmax(0,1fr));
+        column-gap:0;
         gap:2px;
         padding:4px 0 8px;
         font-size:11px;
@@ -7653,16 +7654,22 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
         <div style="
           display:grid;
           grid-template-columns:repeat(6,minmax(0,1fr));
+          column-gap:0;
           gap:2px;
           align-items:center;
           padding:7px 0;
           border-bottom:1px solid #e1e4e6;
           font-size:13px;
+          text-align:left;
         ">
       
           <span style="
             grid-column:1 / 5;
             min-width:0;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            text-align:left;
           ">
             ${indice + 1}. ${bandera} ${nombrePais}
           </span>
