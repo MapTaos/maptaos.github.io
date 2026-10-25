@@ -576,7 +576,7 @@
 
     <button
       type="button"
-      id="btnCerrarAdminJugadores"
+      id=""
       style="padding:6px 10px;cursor:pointer;"
     >
       ✕ Cerrar
@@ -9602,23 +9602,10 @@ btnMenuAdminJugadores.addEventListener("click", () => {
   cargarAdminJugadores();
 });
 
-btnCerrarAdminJugadores.addEventListener("click", () => {
+.addEventListener("click", () => {
   adminJugadores.classList.add("hidden");
 });
   
-
-btnMenuAdminJugadores.addEventListener("click", () => {
-  menuAdministracion.style.display = "none";
-  adminAvisos.classList.add("hidden");
-  adminPaises.classList.add("hidden");
-  adminJugadores.classList.remove("hidden");
-
-  cargarAdminJugadores();
-});
-
-btnCerrarAdminJugadores.addEventListener("click", () => {
-  adminJugadores.classList.add("hidden");
-});
   
 const btnAdminPaisesCatalogo =
   document.getElementById("btnAdminPaisesCatalogo");
@@ -10187,8 +10174,8 @@ btnCerrarAvisoGeneral.addEventListener("click", async () => {
 const adminJugadores =
   document.getElementById("adminJugadores");
 
-const btnCerrarAdminJugadores =
-  document.getElementById("btnCerrarAdminJugadores");
+const  =
+  document.getElementById("");
 
 btnMenuAdminJugadores.addEventListener("click", () => {
   menuAdministracion.style.display = "none";
@@ -10199,7 +10186,7 @@ btnMenuAdminJugadores.addEventListener("click", () => {
   cargarAdminJugadores();
 });
 
-btnCerrarAdminJugadores.addEventListener("click", () => {
+.addEventListener("click", () => {
   adminJugadores.classList.add("hidden");
 }); 
 
