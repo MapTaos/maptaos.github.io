@@ -8826,15 +8826,18 @@ function mostrarTop10(top10, rondasPorFecha) {
             banderaACodigo(banderas[j] || "");
 
           const puntuacionColoreada = Number(puntosRonda) === 100
-            ? `<span style="
-                display:inline-block;
-                background:#222222;
-                color:#ffffff;
-                border-radius:5px;
-                padding:2px 4px;
-                font-weight:700;
-              ">${puntosRonda}</span>`
-            : puntosRonda;
+          ? `<span style="
+              display:inline-block;
+              background:#222222;
+              color:#ffffff;
+              border-radius:4px;
+              padding:1px 2px;
+              font-size:11px;
+              line-height:14px;
+              font-weight:400;
+              white-space:nowrap;
+            ">${puntosRonda}</span>`
+          : puntosRonda;
 
           return codigoPais
             ? `<span style="
