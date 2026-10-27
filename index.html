@@ -3847,6 +3847,7 @@ for (let i = 0; i < 500; i++) {
 
 
 
+
 function celebrarRecordPersonal(nombreJugador, puntuacion) {
 
   const anterior = document.getElementById("celebracionRecord");
@@ -3881,6 +3882,7 @@ function celebrarRecordPersonal(nombreJugador, puntuacion) {
     box-shadow:0 5px 25px rgba(0,0,0,0.25);
     max-width:90%;
     box-sizing:border-box;
+    z-index:2;
   `;
 
   const titulo = document.createElement("div");
@@ -3888,6 +3890,7 @@ function celebrarRecordPersonal(nombreJugador, puntuacion) {
 
   const detalle = document.createElement("div");
   detalle.textContent = `${nombreJugador} · ${puntuacion} PUNTOS`;
+
   detalle.style.cssText = `
     font-size:14px;
     color:white;
@@ -3897,54 +3900,77 @@ function celebrarRecordPersonal(nombreJugador, puntuacion) {
   mensaje.append(titulo, detalle);
   capa.appendChild(mensaje);
 
-  // Destellos dorados en tres oleadas
+  document.body.appendChild(capa);
+
+  const formas = ["✦", "★", "●", "◆", "■", "✧"];
+  const colores = ["#b45309", "#7e22ce", "#be185d", "#1d4ed8"];
+
+  const ancho = window.innerWidth;
+  const alto = window.innerHeight;
+
+  // Confeti lanzado desde abajo en tres oleadas
   for (let i = 0; i < 300; i++) {
 
-    
-const estrella = document.createElement("span");
+    const estrella = document.createElement("span");
 
-// Formas aleatorias para celebrar el récord
-const formas = ["✦", "★", "●", "◆", "■", "✧"];
+    estrella.textContent =
+      formas[Math.floor(Math.random() * formas.length)];
 
-const forma = formas[
-  Math.floor(Math.random() * formas.length)
-];
+    // Punto de salida próximo al centro inferior
+    const origenX = ancho * (0.25 + Math.random() * 0.5);
 
-estrella.textContent = forma;
+    // Desplazamiento lateral durante el vuelo
+    const desplazamientoX =
+      (Math.random() - 0.5) * ancho * 1.5;
 
+    // Altura máxima de subida
+    const subida =
+      alto * (0.65 + Math.random() * 0.45);
+
+    // Caída hasta salir por abajo
+    const caida = alto + 100;
+
+    const giro = 360 + Math.random() * 720;
 
     estrella.style.cssText = `
       position:absolute;
-      top:-25px;
-      left:${Math.random() * 100}%;
-      color:${["#b45309", "#7e22ce", "#be185d", "#1d4ed8"][Math.floor(Math.random() * 4)]};
+      left:${origenX}px;
+      top:${alto + 20}px;
+      color:${colores[Math.floor(Math.random() * colores.length)]};
       font-size:${12 + Math.random() * 16}px;
       opacity:0;
+      will-change:transform,opacity;
     `;
 
     capa.appendChild(estrella);
 
     estrella.animate([
       {
-        transform:"translateY(0) rotate(0deg)",
-        opacity:1
+        transform:"translate(0px,0px) rotate(0deg)",
+        opacity:0,
+        offset:0
       },
       {
-        transform:"translateY(105vh) rotate(540deg)",
-        opacity:0
+        transform:`translate(${desplazamientoX * 0.55}px,${-subida}px) rotate(${giro * 0.55}deg)`,
+        opacity:1,
+        offset:0.42
+      },
+      {
+        transform:`translate(${desplazamientoX}px,${caida}px) rotate(${giro}deg)`,
+        opacity:0,
+        offset:1
       }
     ], {
-      duration:3000 + Math.random() * 1500,
-      delay:(i % 3) * 1000 + Math.random() * 400,
-      easing:"linear",
+      duration:4500 + Math.random() * 1500,
+      delay:(i % 3) * 650 + Math.random() * 400,
+      easing:"ease-in-out",
       fill:"forwards"
     });
   }
 
-  document.body.appendChild(capa);
-
-  setTimeout(() => capa.remove(), 6500);
+  setTimeout(() => capa.remove(), 8500);
 }
+
 
 
   
