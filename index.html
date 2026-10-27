@@ -7026,10 +7026,22 @@ contenedor.innerHTML = ranking
         const codigoPais =
           banderaACodigo(banderas[j] || "");
 
+        
         const puntuacionColoreada =
           Number(puntosRonda) === 100
-            ? `<span style="font-weight:700;text-decoration:underline;text-underline-offset:2px;">${puntosRonda}</span>`
+            ? `<span style="
+                display:inline-block;
+                background:#222222;
+                color:#ffffff;
+                border-radius:4px;
+                padding:1px 2px;
+                font-size:11px;
+                line-height:14px;
+                font-weight:400;
+                white-space:nowrap;
+              ">${puntosRonda}</span>`
             : puntosRonda;
+
 
         return codigoPais
           ? `<span style="
@@ -8198,10 +8210,22 @@ if (resultadoHoy) {
       const codigoPais =
         banderaACodigo(banderasHoy[i] || "");
 
+      
       const puntuacionColoreada =
-        Number(puntos) === 100
-          ? `<span style="font-weight:700;text-decoration:underline;text-underline-offset:2px;">${puntos}</span>`
-          : puntos;
+        Number(puntosRonda) === 100
+          ? `<span style="
+              display:inline-block;
+              background:#222222;
+              color:#ffffff;
+              border-radius:4px;
+              padding:1px 2px;
+              font-size:11px;
+              line-height:14px;
+              font-weight:400;
+              white-space:nowrap;
+            ">${puntosRonda}</span>`
+          : puntosRonda;
+
 
       return `
         <span style="
@@ -9270,10 +9294,22 @@ const textoRondas = puntos
     const codigoPais =
       banderaACodigo(banderas[j] || "");
 
+    
     const puntuacionColoreada =
       Number(puntosRonda) === 100
-        ? `<span style="font-weight:700;text-decoration:underline;text-underline-offset:2px;">${puntosRonda}</span>`
+        ? `<span style="
+            display:inline-block;
+            background:#222222;
+            color:#ffffff;
+            border-radius:4px;
+            padding:1px 2px;
+            font-size:11px;
+            line-height:14px;
+            font-weight:400;
+            white-space:nowrap;
+          ">${puntosRonda}</span>`
         : puntosRonda;
+
 
     return codigoPais
       ? `<span style="
@@ -9447,10 +9483,22 @@ function mostrarTop50(top50, rondasPorFecha, errorTop50) {
           const codigoPais =
             banderaACodigo(banderas[j] || "");
 
+          
           const puntuacionColoreada =
             Number(puntosRonda) === 100
-              ? `<span style="font-weight:700;text-decoration:underline;text-underline-offset:2px;">${puntosRonda}</span>`
+              ? `<span style="
+                  display:inline-block;
+                  background:#222222;
+                  color:#ffffff;
+                  border-radius:4px;
+                  padding:1px 2px;
+                  font-size:11px;
+                  line-height:14px;
+                  font-weight:400;
+                  white-space:nowrap;
+                ">${puntosRonda}</span>`
               : puntosRonda;
+
           
 
           return codigoPais
