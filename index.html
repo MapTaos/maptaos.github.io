@@ -8212,7 +8212,7 @@ if (resultadoHoy) {
 
       
       const puntuacionColoreada =
-        Number(puntosRonda) === 100
+        Number(puntos) === 100
           ? `<span style="
               display:inline-block;
               background:#222222;
@@ -8223,8 +8223,8 @@ if (resultadoHoy) {
               line-height:14px;
               font-weight:400;
               white-space:nowrap;
-            ">${puntosRonda}</span>`
-          : puntosRonda;
+            ">${puntos}</span>`
+          : puntos;
 
 
       return `
