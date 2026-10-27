@@ -3953,7 +3953,7 @@ function celebrarRecordPersonal(nombreJugador, puntuacion) {
       {
         transform:`translate(${desplazamientoX * 0.55}px,${-subida}px) rotate(${giro * 0.55}deg)`,
         opacity:1,
-        offset:0.30
+        offset:0.18
       },
       {
         transform:`translate(${desplazamientoX}px,${caida}px) rotate(${giro}deg)`,
@@ -3962,15 +3962,15 @@ function celebrarRecordPersonal(nombreJugador, puntuacion) {
       }
     
     ], {
-      duration:3500 + Math.random() * 1000,
+      duration:6000 + Math.random() * 1500,
       delay:(i % 3) * 450 + Math.random() * 250,
-      easing:"ease-in",
+      easing:"linear",
       fill:"forwards"
     });
 
   }
 
-  setTimeout(() => capa.remove(), 8500);
+  setTimeout(() => capa.remove(), 10000);
 }
 
 
