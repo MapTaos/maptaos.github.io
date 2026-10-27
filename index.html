@@ -8412,22 +8412,30 @@ profileContent.innerHTML = `
 </div>
 <!-- FIN TARJETA COMBINADA -->
 
-    <!-- PARTIDAS + RACHA + MEJOR RESULTADO -->
+    
+<!-- PARTIDAS + RACHA + MEJOR: TRES TARJETAS -->
 <div style="
   grid-column:1 / -1;
-  background:#f8f9fa;
-  border:1px solid #d1d5db;
-  border-radius:10px;
-  padding:10px;
   display:grid;
-  grid-template-columns:30% 36% 34%;
-  align-items:start;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
+  align-items:stretch;
 ">
 
   <!-- PARTIDAS -->
-  <div style="min-width:0; padding-right:5px;">
-    <div class="titulo-estadistica" style="white-space:nowrap;">🎮 Partidas</div>
-    <div style="font-size:21px; font-weight:700;">
+  <div style="
+    min-width:0;
+    background:#f8f9fa;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    padding:10px 3px;
+    text-align:center;
+  ">
+    <div class="titulo-estadistica"
+         style="white-space:nowrap;">
+      🎮 Partidas
+    </div>
+    <div style="font-size:21px;font-weight:700;">
       ${partidas}
     </div>
   </div>
@@ -8435,40 +8443,52 @@ profileContent.innerHTML = `
   <!-- RACHA -->
   <div style="
     min-width:0;
-    border-left:1px solid #d1d5db;
-    padding-left:10px;
+    background:#f8f9fa;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    padding:10px 3px;
+    text-align:center;
   ">
-    <div class="titulo-estadistica" style="white-space:nowrap;">🔥 Racha</div>
-    <div style="font-size:21px; font-weight:700; white-space:nowrap;">
-      ${racha}<span style="font-size:13px; font-weight:400;"> días</span>
+    <div class="titulo-estadistica"
+         style="white-space:nowrap;">
+      🔥 Racha
+    </div>
+    <div style="font-size:21px;font-weight:700;">
+      ${racha}
+    </div>
+    <div style="font-size:11px;color:#777;">
+      días
     </div>
   </div>
 
   <!-- MEJOR RESULTADO -->
   <div style="
     min-width:0;
-    border-left:1px solid #d1d5db;
-    padding-left:10px;
+    background:#f8f9fa;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    padding:10px 3px;
+    text-align:center;
   ">
-    <div class="titulo-estadistica" style="white-space:nowrap;">🏆 Mejor</div>
-
+    <div class="titulo-estadistica"
+         style="white-space:nowrap;">
+      🏆 Mejor
+    </div>
+    <div style="font-size:21px;font-weight:700;">
+      ${mejor}
+    </div>
     <div style="
-      display:flex;
-      align-items:baseline;
-      gap:5px;
+      font-size:11px;
+      color:#777;
       white-space:nowrap;
     ">
-      <span style="font-size:21px; font-weight:700;">
-        ${mejor}
-      </span>
-      <span style="font-size:11px; color:#777;">
-        ${fechaMejor}
-      </span>
+      ${fechaMejor}
     </div>
   </div>
 
 </div>
-<!-- FIN TARJETA COMBINADA -->
+<!-- FIN TRES TARJETAS -->
+
   
 <!-- TARJETA ÚNICA DE MEDALLAS -->
 <div style="
