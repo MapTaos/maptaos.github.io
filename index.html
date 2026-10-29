@@ -620,6 +620,129 @@
 
   </div>
 
+
+  <!-- FORMULARIO NUEVO JUGADOR -->
+  <div id="formNuevoJugador"
+       class="hidden"
+       style="
+         background:#ffffff;
+         border:1px solid #f59e0b;
+         border-radius:10px;
+         padding:12px;
+         margin-bottom:14px;
+       ">
+  
+    <div style="
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:12px;
+    ">
+      👤 Alta de nuevo jugador
+    </div>
+  
+    <form id="formAltaJugador">
+  
+      <label for="nuevoJugadorNombre"
+             style="display:block;font-size:13px;margin-bottom:4px;">
+        Nombre
+      </label>
+      <input
+        id="nuevoJugadorNombre"
+        type="text"
+        required
+        autocomplete="off"
+        style="
+          width:100%;
+          box-sizing:border-box;
+          margin-bottom:10px;
+        "
+      >
+  
+      <label for="nuevoJugadorAlias"
+             style="display:block;font-size:13px;margin-bottom:4px;">
+        Alias (máximo 15 caracteres)
+      </label>
+      <input
+        id="nuevoJugadorAlias"
+        type="text"
+        maxlength="15"
+        required
+        autocomplete="off"
+        style="
+          width:100%;
+          box-sizing:border-box;
+          margin-bottom:10px;
+        "
+      >
+  
+      <label for="nuevoJugadorEmail"
+             style="display:block;font-size:13px;margin-bottom:4px;">
+        Correo electrónico
+      </label>
+      <input
+        id="nuevoJugadorEmail"
+        type="email"
+        required
+        autocomplete="off"
+        style="
+          width:100%;
+          box-sizing:border-box;
+          margin-bottom:14px;
+        "
+      >
+  
+      <div style="
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+      ">
+        <button
+          type="submit"
+          id="btnEnviarInvitacionJugador"
+          style="
+            background:#f59e0b;
+            color:#111;
+            border:1px solid #d97706;
+            border-radius:6px;
+            padding:9px 12px;
+            font-size:13px;
+            cursor:pointer;
+          "
+        >
+          Enviar invitación
+        </button>
+  
+        <button
+          type="button"
+          id="btnCancelarNuevoJugador"
+          style="
+            background:#ffffff;
+            color:#333;
+            border:1px solid #999;
+            border-radius:6px;
+            padding:9px 12px;
+            font-size:13px;
+            cursor:pointer;
+          "
+        >
+          Cancelar
+        </button>
+      </div>
+  
+      <div id="mensajeAltaJugador"
+           role="status"
+           aria-live="polite"
+           style="
+             font-size:12px;
+             margin-top:10px;
+           ">
+      </div>
+  
+    </form>
+  </div>
+  <!-- FIN FORMULARIO NUEVO JUGADOR -->
+
+  
   <div id="listadoAdminJugadores">
     Cargando jugadores...
   </div>
@@ -10062,6 +10185,49 @@ btnCerrarAdminJugadores.addEventListener("click", () => {
   adminJugadores.classList.add("hidden");
 });
   
+
+// ABRIR FORMULARIO DE NUEVO JUGADOR
+document.getElementById("btnNuevoJugador")
+  .addEventListener("click", () => {
+
+    document.getElementById("formNuevoJugador")
+      .classList.remove("hidden");
+
+    document.getElementById("mensajeAltaJugador")
+      .textContent = "";
+
+    document.getElementById("nuevoJugadorNombre")
+      .focus();
+  });
+
+
+// CANCELAR ALTA DE JUGADOR
+document.getElementById("btnCancelarNuevoJugador")
+  .addEventListener("click", () => {
+
+    document.getElementById("formNuevoJugador")
+      .classList.add("hidden");
+
+    document.getElementById("formAltaJugador")
+      .reset();
+
+    document.getElementById("mensajeAltaJugador")
+      .textContent = "";
+  });
+
+
+// BLOQUEAR EL ENVÍO HASTA CONECTAR SUPABASE
+document.getElementById("formAltaJugador")
+  .addEventListener("submit", (event) => {
+
+    event.preventDefault();
+
+    document.getElementById("mensajeAltaJugador")
+      .textContent =
+        "El envío de invitaciones todavía no está habilitado.";
+  });
+
+
   
 const btnAdminPaisesCatalogo =
   document.getElementById("btnAdminPaisesCatalogo");
