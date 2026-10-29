@@ -2885,7 +2885,7 @@ async function cargarPaisesNoReconocidos() {
         pendientes.push({
           fecha: partida.fecha,
           ronda,
-          pais: partida[`pais_${ronda}`] || "—"
+          pais: String(partida[`pais_${ronda}`] || "—").toUpperCase()
         });
       }
     }
