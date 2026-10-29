@@ -10216,16 +10216,66 @@ document.getElementById("btnCancelarNuevoJugador")
   });
 
 
-// BLOQUEAR EL ENVÍO HASTA CONECTAR SUPABASE
+
+// ENVIAR INVITACIÓN DE NUEVO JUGADOR
 document.getElementById("formAltaJugador")
-  .addEventListener("submit", (event) => {
+  .addEventListener("submit", async (event) => {
 
     event.preventDefault();
 
-    document.getElementById("mensajeAltaJugador")
-      .textContent =
-        "El envío de invitaciones todavía no está habilitado.";
+    const nombre = document.getElementById("nuevoJugadorNombre").value.trim();
+    const alias = document.getElementById("nuevoJugadorAlias").value.trim();
+    const email = document.getElementById("nuevoJugadorEmail").value.trim();
+
+    const mensaje = document.getElementById("mensajeAltaJugador");
+    const boton = document.getElementById("btnEnviarInvitacionJugador");
+
+    mensaje.textContent = "Enviando invitación...";
+    boton.disabled = true;
+
+    try {
+
+      const { data, error } = await supabaseClient.functions.invoke(
+        "invitar-jugador",
+        {
+          body: { nombre, alias, email }
+        }
+      );
+
+      if (error) {
+        let detalle = error.message;
+
+        if (error.context) {
+          try {
+            const respuesta = await error.context.json();
+            detalle = respuesta.error || detalle;
+          } catch {
+            // Conservar el mensaje original
+          }
+        }
+
+        throw new Error(detalle);
+      }
+
+      if (!data?.ok) {
+        throw new Error(data?.error || "No se pudo completar el alta.");
+      }
+
+      mensaje.textContent = "✅ Invitación enviada correctamente.";
+
+      document.getElementById("formAltaJugador").reset();
+
+    } catch (error) {
+
+      console.error("Error al invitar jugador:", error);
+      mensaje.textContent = "❌ " + error.message;
+
+    } finally {
+      boton.disabled = false;
+    }
+
   });
+
 
 
   
