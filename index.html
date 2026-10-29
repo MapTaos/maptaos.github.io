@@ -539,6 +539,27 @@
       🌍 Gestionar países y continentes ›
     </button>
 
+
+    <button
+      type="button"
+      id="btnMenuAdminNoReconocidos"
+      style="
+        width:100%;
+        padding:13px 12px;
+        background:#fffaf0;
+        color:#292524;
+        border:2px solid #f59e0b;
+        border-radius:10px;
+        font-size:14px;
+        font-weight:600;
+        text-align:left;
+        cursor:pointer;
+      "
+    >
+      🔎 Países no reconocidos ›
+    </button>
+
+    
     <button
       type="button"
       id="btnMenuAdminJugadores"
@@ -560,6 +581,61 @@
   </div>
 </div>
 
+
+<!-- PANEL PAÍSES NO RECONOCIDOS -->
+<div
+  id="adminNoReconocidos"
+  class="card hidden"
+  style="
+    display:none;
+    background:#fff6e5;
+    border:2px solid #f59e0b;
+    border-radius:12px;
+    padding:14px;
+  "
+>
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    margin-bottom:12px;
+  ">
+    <h2
+      class="home-section-title"
+      style="margin:0;font-size:16px;"
+    >
+      🔎 Países no reconocidos
+    </h2>
+
+    <button
+      type="button"
+      id="btnCerrarAdminNoReconocidos"
+      style="
+        padding:5px 8px;
+        font-size:11px;
+        width:auto;
+        background:#fff;
+        color:#333;
+        border:1px solid #999;
+        border-radius:6px;
+        cursor:pointer;
+      "
+    >
+      Cerrar
+    </button>
+  </div>
+
+  <div
+    id="contenidoAdminNoReconocidos"
+    style="font-size:13px;"
+  >
+    Pendiente de consultar...
+  </div>
+</div>
+
+    
+    
     <!-- PANEL ADMINISTRACIÓN DE JUGADORES -->
 
 <div id="adminJugadores" class="card hidden"
