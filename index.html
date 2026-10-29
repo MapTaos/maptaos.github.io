@@ -2864,16 +2864,33 @@ async function cargarPaisesNoReconocidos() {
   const contenido = document.getElementById("contenidoAdminNoReconocidos");
   contenido.textContent = "Consultando países...";
 
-  const { data, error } = await supabaseClient
+  
+const data = [];
+const tamanoPagina = 1000;
+let desde = 0;
+
+while (true) {
+  const { data: pagina, error } = await supabaseClient
     .from("rondas_dia")
     .select("fecha,pais_1,pais_2,pais_3,pais_4,pais_5,continente_1,continente_2,continente_3,continente_4,continente_5")
-    .order("fecha", { ascending: false });
+    .order("fecha", { ascending: false })
+    .range(desde, desde + tamanoPagina - 1);
 
   if (error) {
     console.error("Error consultando países:", error);
     contenido.textContent = "❌ Error al consultar los países.";
     return;
   }
+
+  data.push(...pagina);
+
+  if (pagina.length < tamanoPagina) {
+    break;
+  }
+
+  desde += tamanoPagina;
+}
+
 
   const pendientes = [];
 
