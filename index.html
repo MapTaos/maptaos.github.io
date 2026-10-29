@@ -10260,6 +10260,27 @@ btnMenuAdminJugadores.addEventListener("click", () => {
 btnCerrarAdminJugadores.addEventListener("click", () => {
   adminJugadores.classList.add("hidden");
 });
+
+
+document.getElementById("btnMenuAdminNoReconocidos")
+  .addEventListener("click", () => {
+    const panel = document.getElementById("adminNoReconocidos");
+
+    panel.classList.remove("hidden");
+    panel.style.display = "block";
+
+    document.getElementById("menuAdministracion")
+      .style.display = "none";
+  });
+
+document.getElementById("btnCerrarAdminNoReconocidos")
+  .addEventListener("click", () => {
+    const panel = document.getElementById("adminNoReconocidos");
+
+    panel.classList.add("hidden");
+    panel.style.display = "none";
+  });
+
   
 
 // ABRIR FORMULARIO DE NUEVO JUGADOR
