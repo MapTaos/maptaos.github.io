@@ -2858,6 +2858,83 @@ jugadorActual.password_configurada = true;
     await iniciarApp();
   });
 
+
+  
+async function cargarPaisesNoReconocidos() {
+  const contenido = document.getElementById("contenidoAdminNoReconocidos");
+  contenido.textContent = "Consultando países...";
+
+  const { data, error } = await supabaseClient
+    .from("rondas_dia")
+    .select("fecha,pais_1,pais_2,pais_3,pais_4,pais_5,continente_1,continente_2,continente_3,continente_4,continente_5")
+    .order("fecha", { ascending: false });
+
+  if (error) {
+    console.error("Error consultando países:", error);
+    contenido.textContent = "❌ Error al consultar los países.";
+    return;
+  }
+
+  const pendientes = [];
+
+  for (const partida of data || []) {
+    for (let ronda = 1; ronda <= 5; ronda++) {
+      const continente = partida[`continente_${ronda}`];
+
+      if (String(continente || "").toLowerCase().includes("no reconocido")) {
+        pendientes.push({
+          fecha: partida.fecha,
+          ronda,
+          pais: partida[`pais_${ronda}`] || "—"
+        });
+      }
+    }
+  }
+
+  contenido.replaceChildren();
+
+  const resumen = document.createElement("p");
+  resumen.textContent = `${pendientes.length} apariciones sin reconocer`;
+  resumen.style.fontWeight = "bold";
+  contenido.appendChild(resumen);
+
+  if (pendientes.length === 0) {
+    const mensaje = document.createElement("p");
+    mensaje.textContent = "✅ Todos los países están reconocidos.";
+    contenido.appendChild(mensaje);
+    return;
+  }
+
+  const tabla = document.createElement("table");
+  tabla.style.cssText = "width:100%;border-collapse:collapse;font-size:12px;";
+
+  const cabecera = document.createElement("tr");
+  for (const titulo of ["Fecha", "Ronda", "País"]) {
+    const celda = document.createElement("th");
+    celda.textContent = titulo;
+    celda.style.cssText = "padding:7px 4px;border-bottom:1px solid #d97706;text-align:left;";
+    cabecera.appendChild(celda);
+  }
+  tabla.appendChild(cabecera);
+
+  for (const item of pendientes) {
+    const fila = document.createElement("tr");
+
+    for (const valor of [item.fecha, item.ronda, item.pais]) {
+      const celda = document.createElement("td");
+      celda.textContent = valor;
+      celda.style.cssText = "padding:7px 4px;border-bottom:1px solid #f3d7a4;";
+      fila.appendChild(celda);
+    }
+
+    tabla.appendChild(fila);
+  }
+
+  contenido.appendChild(tabla);
+}
+
+
+  
 async function cargarJugador() {
 
   const {
@@ -10268,6 +10345,8 @@ document.getElementById("btnMenuAdminNoReconocidos")
 
     panel.classList.remove("hidden");
     panel.style.display = "block";
+    
+    cargarPaisesNoReconocidos();
 
     document.getElementById("menuAdministracion")
       .style.display = "none";
