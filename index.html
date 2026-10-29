@@ -2885,7 +2885,28 @@ async function cargarPaisesNoReconocidos() {
         pendientes.push({
           fecha: partida.fecha,
           ronda,
-          pais: String(partida[`pais_${ronda}`] || "—").toUpperCase()
+          
+          pais: (() => {
+            const bandera = partida[`pais_${ronda}`] || "";
+            const caracteres = Array.from(bandera);
+          
+            if (
+              caracteres.length === 2 &&
+              caracteres.every(c =>
+                c.codePointAt(0) >= 0x1F1E6 &&
+                c.codePointAt(0) <= 0x1F1FF
+              )
+            ) {
+              return caracteres
+                .map(c => String.fromCharCode(
+                  c.codePointAt(0) - 0x1F1E6 + 65
+                ))
+                .join("");
+            }
+          
+            return bandera || "—";
+          })()
+
         });
       }
     }
