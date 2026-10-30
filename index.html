@@ -9231,22 +9231,52 @@ contenedor.querySelectorAll(".franja-distribucion").forEach(franja => {
 
     detalle.style.display = "block";
 
+    
     detalle.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:8px;
+      ">
         <strong>${minimo}–${maximo} puntos</strong>
-        <button type="button" class="cerrar-detalle-distribucion"
-          style="width:auto;padding:2px 8px;font-size:12px;">✕</button>
+        <button
+          type="button"
+          class="cerrar-detalle-distribucion"
+          style="width:auto;padding:2px 8px;font-size:12px;"
+        >✕</button>
       </div>
-
-      <div style="margin-top:8px;color:#15803d;">
-        <strong>${nombreJugador}</strong>:
-        ${partidasJugador} partidas · ${porcentajeJugador.toFixed(1)} %
-      </div>
-
-      <div style="margin-top:5px;color:#ea580c;">
-        <strong>Resto de jugadores</strong>:
-        ${partidasRivales} partidas · ${porcentajeRivales.toFixed(1)} %
-      </div>
+    
+      <table style="
+        width:100%;
+        border-collapse:collapse;
+        font-size:12px;
+        text-align:right;
+      ">
+        <thead>
+          <tr style="border-bottom:1px solid #bbb;">
+            <th style="text-align:left;padding:6px 3px;"></th>
+            <th style="color:#15803d;padding:6px 3px;">
+              ${nombreJugador}
+            </th>
+            <th style="color:#ea580c;padding:6px 3px;">
+              Resto
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left;padding:7px 3px;">Partidas</td>
+            <td>${partidasJugador}</td>
+            <td>${partidasRivales}</td>
+          </tr>
+          <tr style="border-top:1px solid #e5e7eb;">
+            <td style="text-align:left;padding:7px 3px;">Porcentaje</td>
+            <td>${porcentajeJugador.toFixed(1)} %</td>
+            <td>${porcentajeRivales.toFixed(1)} %</td>
+          </tr>
+        </tbody>
+      </table>
     `;
 
     detalle.querySelector(".cerrar-detalle-distribucion").onclick = () => {
