@@ -8610,6 +8610,106 @@ function obtenerPeriodoDistribucion(tipo = "todo", desplazamientoMes = 0) {
 
 
 
+let consultaDistribucionActual = 0;
+
+async function cargarEstadisticasDistribucion(jugadorId) {
+
+  const contenedor = document.getElementById(
+    "graficaDistribucion"
+  );
+
+  if (!contenedor) return;
+
+  const numeroConsulta = ++consultaDistribucionActual;
+
+  const periodo = obtenerPeriodoDistribucion(
+    periodoDistribucionActivo,
+    desplazamientoMesDistribucion
+  );
+
+  if (!periodo.valido) {
+    contenedor.textContent = "Período no disponible.";
+    return;
+  }
+
+  contenedor.textContent = "Cargando estadísticas...";
+
+  try {
+
+    const datos = await obtenerDatosDistribucion(
+      jugadorId,
+      periodo.fechaInicio,
+      periodo.fechaFin
+    );
+
+    // Evitar que una consulta anterior sobrescriba
+    // los datos de un período seleccionado después.
+    if (numeroConsulta !== consultaDistribucionActual) return;
+
+    const estadisticas = calcularEstadisticasDistribucion(
+      datos.puntuacionesJugador,
+      datos.puntuacionesRivales
+    );
+
+    const { jugador, rivales, diferenciaMedias, percentil } =
+      estadisticas;
+
+    const formato = valor =>
+      valor === null
+        ? "—"
+        : valor.toLocaleString("es-ES", {
+            maximumFractionDigits: 1
+          });
+
+    contenedor.innerHTML = `
+      <div style="font-size:13px;text-align:left;line-height:1.8;">
+
+        <strong>${periodo.etiqueta}</strong>
+        <div style="font-size:11px;color:#777;">
+          ${periodo.fechaInicio} a ${periodo.fechaFin}
+        </div>
+
+        <hr>
+
+        <strong>🟢 Jugador seleccionado</strong>
+        <div>Partidas: ${jugador.partidas}</div>
+        <div>Media: ${formato(jugador.media)}</div>
+        <div>Desviación típica: ${formato(jugador.desviacion)}</div>
+
+        <hr>
+
+        <strong>🔵 Resto de jugadores</strong>
+        <div>Partidas: ${rivales.partidas}</div>
+        <div>Media: ${formato(rivales.media)}</div>
+        <div>Desviación típica: ${formato(rivales.desviacion)}</div>
+
+        <hr>
+
+        <div>
+          Diferencia de medias:
+          <strong>${formato(diferenciaMedias)}</strong>
+        </div>
+
+        <div>
+          Partidas rivales por debajo de tu media:
+          <strong>${formato(percentil)} %</strong>
+        </div>
+
+      </div>
+    `;
+
+  } catch (error) {
+
+    if (numeroConsulta !== consultaDistribucionActual) return;
+
+    console.error(error);
+    contenedor.textContent =
+      "No se pudieron cargar las estadísticas.";
+  }
+}
+
+  
+let jugadorDistribucionActual = null;
 let periodoDistribucionActivo = "todo";
 let desplazamientoMesDistribucion = 0;
 
@@ -8673,9 +8773,12 @@ function actualizarSelectorDistribucion() {
     botonSiguiente.disabled = desplazamientoMesDistribucion >= 0;
   }
 
-  contenedor.textContent = periodo.valido
-    ? `${periodo.etiqueta}: ${periodo.fechaInicio} a ${periodo.fechaFin}`
-    : "Período no disponible.";
+  if (periodo.valido) {
+    cargarEstadisticasDistribucion(jugadorDistribucionActual);
+  } else {
+    ++consultaDistribucionActual;
+    contenedor.textContent = "Período no disponible.";
+  }
 }
 
 function inicializarSelectorDistribucion() {
@@ -8761,6 +8864,8 @@ async function abrirPerfilJugador(jugadorId, nombre) {
   profileContent.innerHTML =
     "Cargando estadísticas...";
 
+jugadorDistribucionActual = jugadorId;
+  
 inicializarSelectorDistribucion();
   
 const { data: resultados, error } =
