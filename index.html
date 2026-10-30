@@ -8974,12 +8974,34 @@ function alturaMaximaGauss(serie) {
     "#ea580c"
   );
 
+  // Avisos cuando no se puede dibujar una curva
+  const avisosCurvas = [];
+
+  if (jugador.partidas < 5 || !(jugador.desviacion > 0)) {
+    avisosCurvas.push(nombreJugadorDistribucionActual || "Jugador");
+  }
+
+  if (rivales.partidas < 5 || !(rivales.desviacion > 0)) {
+    avisosCurvas.push("Resto de jugadores");
+  }
+
   elementos += generarCurvaGaussDistribucion(
     jugador,
     xPuntuacion,
     posicionY,
     "#15803d"
   );
+
+  // Avisos cuando no se puede dibujar una curva
+  const avisosCurvas = [];
+
+  if (jugador.partidas < 5 || !(jugador.desviacion > 0)) {
+    avisosCurvas.push(nombreJugadorDistribucionActual || "Jugador");
+  }
+
+  if (rivales.partidas < 5 || !(rivales.desviacion > 0)) {
+    avisosCurvas.push("Resto de jugadores");
+  }
 
   // Eje X: línea negra fina
   elementos += `
@@ -9014,17 +9036,34 @@ function alturaMaximaGauss(serie) {
   }
 
   return `
-    <div style="width:100%;overflow:hidden;">
-      <svg
-        viewBox="0 0 ${ancho} ${alto}"
-        xmlns="http://www.w3.org/2000/svg"
-        style="width:100%;height:auto;display:block;"
-        role="img"
-        aria-label="Distribución porcentual de puntuaciones del jugador y sus rivales"
-      >
-        ${elementos}
-      </svg>
-    </div>
+    
+<div style="width:100%;overflow:hidden;">
+  <svg
+    viewBox="0 0 ${ancho} ${alto}"
+    xmlns="http://www.w3.org/2000/svg"
+    style="width:100%;height:auto;display:block;"
+    role="img"
+    aria-label="Distribución porcentual de puntuaciones del jugador y sus rivales"
+  >
+    ${elementos}
+  </svg>
+</div>
+
+${avisosCurvas.length > 0 ? `
+  <div style="
+    margin:4px 0 8px;
+    font-size:11px;
+    line-height:1.4;
+    color:#666;
+    text-align:center;
+  ">
+    Curva no disponible para
+    <strong>${avisosCurvas.join(" y ")}</strong>:
+    se requieren al menos 5 partidas
+    y una desviación típica mayor que cero.
+  </div>
+` : ""}
+
 
     
     <div style="
