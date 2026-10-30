@@ -11225,18 +11225,6 @@ let seccionInicioActiva = "hoy";
   
 function mostrarSeccionInicio(seccion) {
 
-  // Al entrar en Hoy, volver al día actual
-  if (seccion === "hoy") {
-    desplazamientoDia = 0;
-    cargarRankingHoy();
-  }
-
-  // Al entrar en Mes, volver al mes actual
-  if (seccion === "mes") {
-    desplazamientoMes = 0;
-    cargarRankingMensual();
-  }
-
   seccionInicioActiva = seccion;
   
   const secciones = {
@@ -11364,15 +11352,23 @@ btnMasRankings.addEventListener("click", () => {
   
 document
   .getElementById("btnHoy")
-  .addEventListener("click", () => mostrarSeccionInicio("hoy"));
-
+  .addEventListener("click", async () => {
+    desplazamientoDia = 0;
+    mostrarSeccionInicio("hoy");
+    await cargarRankingHoy();
+  });
+  
 document
   .getElementById("btnSemana")
   .addEventListener("click", () => mostrarSeccionInicio("semana"));
 
 document
   .getElementById("btnMes")
-  .addEventListener("click", () => mostrarSeccionInicio("mes"));
+  .addEventListener("click", async () => {
+    desplazamientoMes = 0;
+    mostrarSeccionInicio("mes");
+    await cargarRankingMensual();
+  });
 
 document
   .getElementById("btnTop20")
