@@ -8610,6 +8610,59 @@ function obtenerPeriodoDistribucion(tipo = "todo", desplazamientoMes = 0) {
 
 
 
+function generarCurvaGaussDistribucion(
+  serie,
+  posicionX,
+  posicionY,
+  color
+) {
+
+  // No dibujar una curva con muestras insuficientes.
+  if (
+    serie.partidas < 30 ||
+    serie.media === null ||
+    serie.desviacion === null ||
+    serie.desviacion <= 0
+  ) {
+    return "";
+  }
+
+  const puntos = [];
+
+  for (let puntuacion = 0; puntuacion <= 1000; puntuacion += 5) {
+
+    const z = (puntuacion - serie.media) / serie.desviacion;
+
+    // Densidad normal convertida a porcentaje
+    // esperado dentro de un intervalo de 25 puntos.
+    const porcentaje =
+      100 * 25 /
+      (serie.desviacion * Math.sqrt(2 * Math.PI)) *
+      Math.exp(-0.5 * z * z);
+
+    const x = posicionX(puntuacion);
+    const y = posicionY(porcentaje);
+
+    puntos.push(
+      `${puntos.length === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`
+    );
+  }
+
+  return `
+    <path
+      d="${puntos.join(" ")}"
+      fill="none"
+      stroke="${color}"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  `;
+}
+
+  
+
+
 function dibujarHistogramaDistribucion(jugador, rivales) {
 
   const ancho = 680;
@@ -8622,11 +8675,22 @@ function dibujarHistogramaDistribucion(jugador, rivales) {
   const anchoGrafica = ancho - izquierda - derecha;
   const altoGrafica = alto - arriba - abajo;
 
+  
+function alturaMaximaGauss(serie) {
+  if (serie.partidas < 30 || !serie.desviacion) return 0;
+
+  return 100 * 25 /
+    (serie.desviacion * Math.sqrt(2 * Math.PI));
+}
+
   const maximo = Math.max(
     5,
     ...jugador.porcentajes,
-    ...rivales.porcentajes
+    ...rivales.porcentajes,
+    alturaMaximaGauss(jugador),
+    alturaMaximaGauss(rivales)
   );
+
 
   const maximoY = Math.ceil(maximo / 5) * 5;
 
@@ -8693,6 +8757,26 @@ function dibujarHistogramaDistribucion(jugador, rivales) {
     `;
   }
 
+
+  // Curvas de Gauss superpuestas al histograma.
+  const xPuntuacion = puntos =>
+    izquierda + (puntos / 1000) * anchoGrafica;
+
+  elementos += generarCurvaGaussDistribucion(
+    rivales,
+    xPuntuacion,
+    posicionY,
+    "#475569"
+  );
+
+  elementos += generarCurvaGaussDistribucion(
+    jugador,
+    xPuntuacion,
+    posicionY,
+    "#15803d"
+  );
+
+  
   // Marcas de puntuación.
   for (let puntos = 0; puntos <= 1000; puntos += 200) {
 
