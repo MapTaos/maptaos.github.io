@@ -8822,7 +8822,7 @@ const primerIntervaloConDatos = frecuenciasTotales.findIndex(
 
 const minimoEje = primerIntervaloConDatos === -1
   ? 0
-  : Math.max(0, (primerIntervaloConDatos - 2) * 25);
+  : Math.max(0, (primerIntervaloConDatos - 1) * 25);
 
 const numeroIntervalos = (1000 - minimoEje) / 25;
   
@@ -8949,9 +8949,9 @@ function alturaMaximaGauss(serie) {
         y1="${arriba}"
         x2="${xMedia}"
         y2="${arriba + altoGrafica}"
-        stroke="#eab308"
-        stroke-width="2"
-        stroke-dasharray="6 5"
+        stroke="#1d4ed8"
+        stroke-width="2.5"
+        stroke-dasharray="7 4"
         pointer-events="none"
       />
     `;
