@@ -6613,7 +6613,7 @@ async function cargarRankingContinentes() {
       suma + Number(fila.media || 0) * Number(fila.partidas || 0),
     0
   );
-
+console.log("Partidas calculadas dentro de cargarMediaHistorica:", totalPartidas);
   const mediaGlobal = totalPartidas > 0
     ? Math.round(totalPuntos / totalPartidas)
     : 0;
