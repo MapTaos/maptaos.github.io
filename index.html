@@ -9247,7 +9247,7 @@ async function cargarEstadisticasDistribucion(jugadorId) {
           </strong>
         </div>
       
-        <div style="
+         <div style="
           display:grid;
           grid-template-columns:1fr 80px 80px;
           align-items:center;
@@ -9259,11 +9259,24 @@ async function cargarEstadisticasDistribucion(jugadorId) {
             ${formato(percentil)} %
           </strong>
         </div>
-      
-      </div>
-      
+
+        <!-- Nota sobre desviación típica -->
+        <div style="
+          margin-top:8px;
+          padding-top:6px;
+          border-top:1px solid #ccc;
+          font-size:11px;
+          line-height:1.4;
+          color:#666;
+        ">
+          <strong>Desv. típica:</strong>
+          mide la regularidad de las puntuaciones.
+          Cuanto menor sea, más constantes son los resultados.
+        </div>
+
       </div>
 
+      </div>
 
     `;
 
