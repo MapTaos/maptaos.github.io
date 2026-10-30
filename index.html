@@ -8974,16 +8974,7 @@ function alturaMaximaGauss(serie) {
     "#ea580c"
   );
 
-  // Avisos cuando no se puede dibujar una curva
-  const avisosCurvas = [];
-
-  if (jugador.partidas < 5 || !(jugador.desviacion > 0)) {
-    avisosCurvas.push(nombreJugadorDistribucionActual || "Jugador");
-  }
-
-  if (rivales.partidas < 5 || !(rivales.desviacion > 0)) {
-    avisosCurvas.push("Resto de jugadores");
-  }
+ 
 
   elementos += generarCurvaGaussDistribucion(
     jugador,
@@ -8992,7 +8983,7 @@ function alturaMaximaGauss(serie) {
     "#15803d"
   );
 
-  // Avisos cuando no se puede dibujar una curva
+   // Avisos cuando no se puede dibujar una curva
   const avisosCurvas = [];
 
   if (jugador.partidas < 5 || !(jugador.desviacion > 0)) {
