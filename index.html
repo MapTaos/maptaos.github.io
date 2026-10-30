@@ -8609,6 +8609,128 @@ function obtenerPeriodoDistribucion(tipo = "todo", desplazamientoMes = 0) {
 }
 
 
+
+let periodoDistribucionActivo = "todo";
+let desplazamientoMesDistribucion = 0;
+
+function actualizarSelectorDistribucion() {
+
+  const selector = document.getElementById(
+    "selectorPeriodoDistribucion"
+  );
+
+  const navegacion = document.getElementById(
+    "navegacionMesDistribucion"
+  );
+
+  const contenedor = document.getElementById(
+    "graficaDistribucion"
+  );
+
+  if (!selector || !navegacion || !contenedor) return;
+
+  selector.querySelectorAll("button").forEach(boton => {
+    const activo =
+      boton.dataset.periodo === periodoDistribucionActivo;
+
+    boton.classList.toggle("active", activo);
+    boton.style.background = activo ? "#222" : "#e7ebee";
+    boton.style.color = activo ? "#fff" : "#222";
+  });
+
+  // Mostrar navegación solamente en modo Mes.
+  navegacion.classList.toggle(
+    "hidden",
+    periodoDistribucionActivo !== "mes"
+  );
+
+  // El estilo inline display:flex del HTML necesita
+  // esta asignación para ocultar correctamente el bloque.
+  navegacion.style.display =
+    periodoDistribucionActivo === "mes" ? "flex" : "none";
+
+  const periodo = obtenerPeriodoDistribucion(
+    periodoDistribucionActivo,
+    desplazamientoMesDistribucion
+  );
+
+  const botonAnterior = document.getElementById(
+    "btnDistribucionAnterior"
+  );
+
+  const botonSiguiente = document.getElementById(
+    "btnDistribucionSiguiente"
+  );
+
+  if (periodoDistribucionActivo === "mes") {
+
+    const anterior = obtenerPeriodoDistribucion(
+      "mes",
+      desplazamientoMesDistribucion - 1
+    );
+
+    botonAnterior.disabled = !anterior.valido;
+    botonSiguiente.disabled = desplazamientoMesDistribucion >= 0;
+  }
+
+  contenedor.textContent = periodo.valido
+    ? `${periodo.etiqueta}: ${periodo.fechaInicio} a ${periodo.fechaFin}`
+    : "Período no disponible.";
+}
+
+function inicializarSelectorDistribucion() {
+
+  periodoDistribucionActivo = "todo";
+  desplazamientoMesDistribucion = 0;
+
+  const selector = document.getElementById(
+    "selectorPeriodoDistribucion"
+  );
+
+  if (!selector) return;
+
+  selector.querySelectorAll("button").forEach(boton => {
+    boton.onclick = () => {
+      periodoDistribucionActivo = boton.dataset.periodo;
+      desplazamientoMesDistribucion = 0;
+      actualizarSelectorDistribucion();
+    };
+  });
+
+  document.getElementById(
+    "btnDistribucionAnterior"
+  ).onclick = () => {
+    const anterior = obtenerPeriodoDistribucion(
+      "mes",
+      desplazamientoMesDistribucion - 1
+    );
+
+    if (anterior.valido) {
+      desplazamientoMesDistribucion--;
+      actualizarSelectorDistribucion();
+    }
+  };
+
+  document.getElementById(
+    "btnDistribucionActual"
+  ).onclick = () => {
+    desplazamientoMesDistribucion = 0;
+    actualizarSelectorDistribucion();
+  };
+
+  document.getElementById(
+    "btnDistribucionSiguiente"
+  ).onclick = () => {
+    if (desplazamientoMesDistribucion < 0) {
+      desplazamientoMesDistribucion++;
+      actualizarSelectorDistribucion();
+    }
+  };
+
+  actualizarSelectorDistribucion();
+}
+
+  
   
   
 async function abrirPerfilJugador(jugadorId, nombre) {
@@ -8639,6 +8761,8 @@ async function abrirPerfilJugador(jugadorId, nombre) {
   profileContent.innerHTML =
     "Cargando estadísticas...";
 
+inicializarSelectorDistribucion();
+  
 const { data: resultados, error } =
     await supabaseClient
         .from("resultados")
