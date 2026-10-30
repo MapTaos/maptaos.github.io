@@ -2563,21 +2563,57 @@
     >Todo</button>
   </div>
 
-  <div
-    id="navegacionMesDistribucion"
-    class="hidden"
-    style="display:flex;justify-content:center;gap:6px;"
+  
+<div
+  id="navegacionMesDistribucion"
+  class="hidden"
+  style="
+    display:none;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin:0 0 10px;
+  "
+>
+  <button
+    type="button"
+    id="btnDistribucionAnterior"
+    style="
+      width:auto;
+      padding:5px 10px;
+      font-size:12px;
+      border:1px solid #9ca3af;
+    "
   >
-    <button type="button" id="btnDistribucionAnterior">
-      ◀ Anterior
-    </button>
-    <button type="button" id="btnDistribucionActual">
-      Actual
-    </button>
-    <button type="button" id="btnDistribucionSiguiente">
-      Siguiente ▶
-    </button>
-  </div>
+    ◀ Anterior
+  </button>
+
+  <button
+    type="button"
+    id="btnDistribucionActual"
+    style="
+      width:auto;
+      padding:5px 10px;
+      font-size:12px;
+      border:1px solid #9ca3af;
+    "
+  >
+    Actual
+  </button>
+
+  <button
+    type="button"
+    id="btnDistribucionSiguiente"
+    style="
+      width:auto;
+      padding:5px 10px;
+      font-size:12px;
+      border:1px solid #9ca3af;
+    "
+  >
+    Siguiente ▶
+  </button>
+</div>
 
   <div
     id="graficaDistribucion"
