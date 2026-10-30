@@ -8638,7 +8638,11 @@ function generarCurvaGaussDistribucion(
 
   const puntos = [];
 
-  for (let puntuacion = 0; puntuacion <= 1000; puntuacion += 5) {
+  for (
+    let puntuacion = Math.max(0, serie.minimoVisible ?? 0);
+    puntuacion <= 1000;
+    puntuacion += 5
+  ) {
 
     const z = (puntuacion - serie.media) / serie.desviacion;
 
@@ -8675,12 +8679,27 @@ function generarCurvaGaussDistribucion(
 function dibujarHistogramaDistribucion(jugador, rivales) {
 
   const ancho = 680;
-  const alto = 300;
-  const izquierda = 46;
-  const derecha = 12;
+  const alto = 390;
+  const izquierda = 55;
+  const derecha = 18;
   const arriba = 20;
-  const abajo = 48;
+  const abajo = 52;
 
+// Escala automática con 50 puntos de margen a la izquierda.
+const frecuenciasTotales = jugador.frecuencias.map(
+  (cantidad, i) => cantidad + rivales.frecuencias[i]
+);
+
+const primerIntervaloConDatos = frecuenciasTotales.findIndex(
+  cantidad => cantidad > 0
+);
+
+const minimoEje = primerIntervaloConDatos === -1
+  ? 0
+  : Math.max(0, (primerIntervaloConDatos - 2) * 25);
+
+const numeroIntervalos = (1000 - minimoEje) / 25;
+  
   const anchoGrafica = ancho - izquierda - derecha;
   const altoGrafica = alto - arriba - abajo;
 
@@ -8704,7 +8723,8 @@ function alturaMaximaGauss(serie) {
   const maximoY = Math.ceil(maximo / 5) * 5;
 
   const posicionX = indice =>
-    izquierda + indice * anchoGrafica / 40;
+    izquierda + (indice * 25 - minimoEje) *
+    anchoGrafica / (1000 - minimoEje);
 
   const posicionY = porcentaje =>
     arriba + altoGrafica * (1 - porcentaje / maximoY);
@@ -8723,17 +8743,17 @@ function alturaMaximaGauss(serie) {
         stroke="#e5e7eb" stroke-width="1"/>
 
       <text x="${izquierda - 7}" y="${y + 4}"
-        text-anchor="end" font-size="11" fill="#666">
+        text-anchor="end" font-size="15" fill="#666">
         ${Number(porcentaje.toFixed(1))}%
       </text>
     `;
   }
 
-  const anchoIntervalo = anchoGrafica / 40;
+  const anchoIntervalo = anchoGrafica / numeroIntervalos;
   const anchoBarra = anchoIntervalo * 0.42;
 
   // Dos barras por intervalo.
-  for (let i = 0; i < 40; i++) {
+  for (let i = minimoEje / 25; i < 40; i++) {
 
     const porcentajeJugador = jugador.porcentajes[i];
     const porcentajeRivales = rivales.porcentajes[i];
@@ -8769,8 +8789,13 @@ function alturaMaximaGauss(serie) {
 
   // Curvas de Gauss superpuestas al histograma.
   const xPuntuacion = puntos =>
-    izquierda + (puntos / 1000) * anchoGrafica;
-
+    izquierda + ((puntos - minimoEje) / (1000 - minimoEje)) *
+    anchoGrafica;
+  
+  // Límite inferior visible de ambas curvas
+  jugador.minimoVisible = minimoEje;
+  rivales.minimoVisible = minimoEje;
+  
   elementos += generarCurvaGaussDistribucion(
     rivales,
     xPuntuacion,
@@ -8787,13 +8812,20 @@ function alturaMaximaGauss(serie) {
 
   
   // Marcas de puntuación.
-  for (let puntos = 0; puntos <= 1000; puntos += 200) {
+  const pasoEje = (1000 - minimoEje) <= 400 ? 100 : 200;
 
-    const x = izquierda + puntos / 1000 * anchoGrafica;
+  for (
+    let puntos = Math.ceil(minimoEje / pasoEje) * pasoEje;
+    puntos <= 1000;
+    puntos += pasoEje
+  ) {
+
+    const x = izquierda +
+      (puntos - minimoEje) / (1000 - minimoEje) * anchoGrafica;
 
     elementos += `
       <text x="${x}" y="${alto - 25}"
-        text-anchor="middle" font-size="11" fill="#666">
+        text-anchor="middle" font-size="15" fill="#666">
         ${puntos}
       </text>
     `;
