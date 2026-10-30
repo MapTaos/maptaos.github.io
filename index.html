@@ -2531,6 +2531,64 @@
 
 </div>
 
+
+<!-- DISTRIBUCIÓN DE RESULTADOS -->
+<div class="card" id="tarjetaDistribucion">
+
+  <h2 class="home-section-title">
+    📊 Distribución de resultados
+  </h2>
+
+  <div
+    id="selectorPeriodoDistribucion"
+    style="display:flex;gap:5px;margin:12px 0;"
+  >
+    <button type="button" data-periodo="mes">Mes</button>
+    <button type="button" data-periodo="6m">6 meses</button>
+    <button type="button" data-periodo="1a">1 año</button>
+    <button
+      type="button"
+      data-periodo="todo"
+      class="active"
+      style="background:#222;color:white;"
+    >Todo</button>
+  </div>
+
+  <div
+    id="navegacionMesDistribucion"
+    class="hidden"
+    style="display:flex;justify-content:center;gap:6px;"
+  >
+    <button type="button" id="btnDistribucionAnterior">
+      ◀ Anterior
+    </button>
+    <button type="button" id="btnDistribucionActual">
+      Actual
+    </button>
+    <button type="button" id="btnDistribucionSiguiente">
+      Siguiente ▶
+    </button>
+  </div>
+
+  <div
+    id="graficaDistribucion"
+    class="placeholder"
+    style="margin-top:12px;"
+  >
+    Gráfica pendiente de cargar...
+  </div>
+
+  <p style="font-size:11px;color:#666;line-height:1.5;">
+    El eje horizontal representa las puntuaciones y el vertical,
+    el porcentaje de partidas en intervalos de 25 puntos.
+    Por ejemplo, un 15 % entre 800 y 824 puntos significa
+    que el 15 % de las partidas obtuvo esa puntuación.
+  </p>
+
+</div>
+<!-- FIN DISTRIBUCIÓN DE RESULTADOS -->
+
+  
 <div class="card">
   <h2 class="home-section-title" style="
     display:flex;
@@ -8330,6 +8388,227 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
   dibujar(mejoresTres, mejores);
   dibujar(peoresTres, peores);
 }
+
+
+// DATOS PARA LA DISTRIBUCIÓN DE RESULTADOS
+// Desde el 1 de octubre de 2026
+
+async function obtenerDatosDistribucion(jugadorId, fechaInicio, fechaFin) {
+
+  const resultados = [];
+  const tamanoPagina = 1000;
+
+  for (let desde = 0; ; desde += tamanoPagina) {
+
+    const { data, error } = await supabaseClient
+      .from("resultados")
+      .select("jugador_id, fecha, final_score")
+      .gte("fecha", fechaInicio)
+      .lte("fecha", fechaFin)
+      .order("fecha", { ascending: true })
+      .order("jugador_id", { ascending: true })
+      .range(desde, desde + tamanoPagina - 1);
+
+    if (error) {
+      console.error("Error al obtener datos de distribución:", error);
+      throw error;
+    }
+
+    resultados.push(...(data || []));
+
+    if (!data || data.length < tamanoPagina) {
+      break;
+    }
+  }
+
+  const puntuacionesJugador = [];
+  const puntuacionesRivales = [];
+
+  for (const fila of resultados) {
+
+    const puntos = Number(fila.final_score);
+
+    if (!Number.isFinite(puntos) ||
+        puntos < 0 ||
+        puntos > 1000) {
+      continue;
+    }
+
+    if (Number(fila.jugador_id) === Number(jugadorId)) {
+      puntuacionesJugador.push(puntos);
+    } else {
+      puntuacionesRivales.push(puntos);
+    }
+  }
+
+  return {
+    puntuacionesJugador,
+    puntuacionesRivales
+  };
+}
+  
+
+
+function calcularEstadisticasDistribucion(
+  puntuacionesJugador,
+  puntuacionesRivales
+) {
+
+  function calcularSerie(puntuaciones) {
+    const n = puntuaciones.length;
+
+    // 40 intervalos de 25 puntos:
+    // 0-24, 25-49, ... 975-1000
+    const frecuencias = Array(40).fill(0);
+
+    for (const puntos of puntuaciones) {
+      const intervalo = Math.min(39, Math.floor(puntos / 25));
+      frecuencias[intervalo]++;
+    }
+
+    const porcentajes = frecuencias.map(
+      cantidad => n > 0 ? (cantidad / n) * 100 : 0
+    );
+
+    const media = n > 0
+      ? puntuaciones.reduce((suma, puntos) => suma + puntos, 0) / n
+      : null;
+
+    const desviacion = n > 0
+      ? Math.sqrt(
+          puntuaciones.reduce(
+            (suma, puntos) => suma + Math.pow(puntos - media, 2),
+            0
+          ) / n
+        )
+      : null;
+
+    return {
+      partidas: n,
+      media,
+      desviacion,
+      frecuencias,
+      porcentajes
+    };
+  }
+
+  const jugador = calcularSerie(puntuacionesJugador);
+  const rivales = calcularSerie(puntuacionesRivales);
+
+  // Porcentaje de partidas rivales inferiores
+  // a la media del jugador.
+  const percentil = jugador.media !== null &&
+                    rivales.partidas > 0
+    ? 100 * puntuacionesRivales.filter(
+        puntos => puntos < jugador.media
+      ).length / rivales.partidas
+    : null;
+
+  return {
+    jugador,
+    rivales,
+    diferenciaMedias:
+      jugador.media !== null && rivales.media !== null
+        ? jugador.media - rivales.media
+        : null,
+    percentil
+  };
+}
+
+
+
+const FECHA_INICIO_DISTRIBUCION = "2026-10-01";
+
+function obtenerPeriodoDistribucion(tipo = "todo", desplazamientoMes = 0) {
+
+  // Fecha actual según el calendario de Galicia.
+  const partes = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Madrid",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
+
+  const valor = campo =>
+    Number(partes.find(p => p.type === campo).value);
+
+  const anio = valor("year");
+  const mes = valor("month");
+  const dia = valor("day");
+
+  const fechaFin = [
+    anio,
+    String(mes).padStart(2, "0"),
+    String(dia).padStart(2, "0")
+  ].join("-");
+
+  function formatoFecha(fecha) {
+    return [
+      fecha.getUTCFullYear(),
+      String(fecha.getUTCMonth() + 1).padStart(2, "0"),
+      String(fecha.getUTCDate()).padStart(2, "0")
+    ].join("-");
+  }
+
+  let inicio = FECHA_INICIO_DISTRIBUCION;
+  let fin = fechaFin;
+  let etiqueta = "Histórico completo";
+
+  if (tipo === "mes") {
+
+    const mesSeleccionado = new Date(
+      Date.UTC(anio, mes - 1 + desplazamientoMes, 1)
+    );
+
+    inicio = formatoFecha(mesSeleccionado);
+
+    const finMes = new Date(Date.UTC(
+      mesSeleccionado.getUTCFullYear(),
+      mesSeleccionado.getUTCMonth() + 1,
+      0
+    ));
+
+    fin = formatoFecha(finMes);
+
+    if (fin > fechaFin) fin = fechaFin;
+
+    etiqueta = mesSeleccionado.toLocaleDateString("es-ES", {
+      timeZone: "UTC",
+      month: "long",
+      year: "numeric"
+    });
+
+  } else if (tipo === "6m" || tipo === "1a") {
+
+    const meses = tipo === "6m" ? 6 : 12;
+
+    // Ventana móvil de 6 o 12 meses hasta hoy.
+    const inicioMovil = new Date(Date.UTC(
+      anio,
+      mes - 1 - meses,
+      dia + 1
+    ));
+
+    inicio = formatoFecha(inicioMovil);
+    etiqueta = tipo === "6m"
+      ? "Últimos 6 meses"
+      : "Último año";
+  }
+
+  // Nunca consultar resultados anteriores al 01/10/2026.
+  if (inicio < FECHA_INICIO_DISTRIBUCION) {
+    inicio = FECHA_INICIO_DISTRIBUCION;
+  }
+
+  return {
+    fechaInicio: inicio,
+    fechaFin: fin,
+    etiqueta,
+    valido: inicio <= fin
+  };
+}
+
+
   
   
 async function abrirPerfilJugador(jugadorId, nombre) {
