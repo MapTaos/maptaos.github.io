@@ -9226,24 +9226,44 @@ async function cargarEstadisticasDistribucion(jugadorId) {
         </tbody>
       </table>
     
+     
       <div style="
         border-top:1px solid #aaa;
         margin-top:8px;
-        padding-top:9px;
-        line-height:1.8;
+        padding-top:6px;
+        font-size:12px;
       ">
-        <div>
-          Diferencia de medias:
-          <strong>${diferenciaMedias > 0 ? "+" : ""}${formato(diferenciaMedias)}</strong>
+      
+        <div style="
+          display:grid;
+          grid-template-columns:1fr 80px 80px;
+          align-items:center;
+          padding:3px 0;
+        ">
+          <span>Diferencia de medias:</span>
+          <strong style="text-align:right;">
+            ${diferenciaMedias > 0 ? "+" : ""}${formato(diferenciaMedias)}
+          </strong>
+          <span></span>
         </div>
-    
-        <div>
-          <strong>Partidas rivales por debajo de tu media:</strong>
-          <strong>${formato(percentil)} %</strong>
+      
+        <div style="
+          display:grid;
+          grid-template-columns:1fr 80px 80px;
+          align-items:center;
+          padding:3px 0;
+        ">
+          <span>Partidas rivales por debajo de tu media:</span>
+          <strong style="text-align:right;">
+            ${formato(percentil)} %
+          </strong>
+          <span></span>
         </div>
+      
       </div>
-    
-    </div>
+      
+      </div>
+
 
     `;
 
