@@ -11225,6 +11225,18 @@ let seccionInicioActiva = "hoy";
   
 function mostrarSeccionInicio(seccion) {
 
+  // Al entrar en Hoy, volver al día actual
+  if (seccion === "hoy") {
+    desplazamientoDia = 0;
+    cargarRankingHoy();
+  }
+
+  // Al entrar en Mes, volver al mes actual
+  if (seccion === "mes") {
+    desplazamientoMes = 0;
+    cargarRankingMensual();
+  }
+
   seccionInicioActiva = seccion;
   
   const secciones = {
