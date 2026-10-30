@@ -8907,40 +8907,83 @@ async function cargarEstadisticasDistribucion(jugadorId) {
     contenedor.innerHTML = `
       ${dibujarHistogramaDistribucion(jugador, rivales)}
     
-      <div style="font-size:13px;text-align:left;line-height:1.8;">
-
-        <strong>${periodo.etiqueta}</strong>
-        <div style="font-size:11px;color:#777;">
-          ${periodo.fechaInicio} a ${periodo.fechaFin}
-        </div>
-
-        <hr>
-
-        <strong>🟢 ${nombreJugadorDistribucionActual}</strong>
-        <div>Partidas: ${jugador.partidas}</div>
-        <div>Media: ${formato(jugador.media)}</div>
-        <div>Desviación típica: ${formato(jugador.desviacion)}</div>
-
-        <hr>
-
-        <strong>🔵 Resto de jugadores</strong>
-        <div>Partidas: ${rivales.partidas}</div>
-        <div>Media: ${formato(rivales.media)}</div>
-        <div>Desviación típica: ${formato(rivales.desviacion)}</div>
-
-        <hr>
-
+      
+    <div style="font-size:12px;line-height:1.5;text-align:left;">
+    
+      <div style="font-weight:bold;margin-bottom:3px;">
+        ${periodo.etiqueta}
+      </div>
+    
+      <div style="font-size:11px;color:#777;margin-bottom:10px;">
+        ${periodo.fechaInicio} a ${periodo.fechaFin}
+      </div>
+    
+      <table style="
+        width:100%;
+        border-collapse:collapse;
+        font-size:12px;
+        table-layout:fixed;
+      ">
+        <thead>
+          <tr style="border-bottom:1px solid #aaa;">
+            <th style="width:34%;text-align:left;padding:6px 2px;"></th>
+            <th style="
+              width:33%;
+              text-align:right;
+              padding:6px 3px;
+              color:#15803d;
+              overflow-wrap:anywhere;
+            ">
+              ${nombreJugadorDistribucionActual}
+            </th>
+            <th style="
+              width:33%;
+              text-align:right;
+              padding:6px 3px;
+              color:#ea580c;
+            ">
+              Resto
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:6px 2px;">Partidas</td>
+            <td style="text-align:right;padding:6px 3px;">${jugador.partidas}</td>
+            <td style="text-align:right;padding:6px 3px;">${rivales.partidas}</td>
+          </tr>
+          <tr style="background:#f8fafc;">
+            <td style="padding:6px 2px;">Media</td>
+            <td style="text-align:right;padding:6px 3px;">${formato(jugador.media)}</td>
+            <td style="text-align:right;padding:6px 3px;">${formato(rivales.media)}</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 2px;">Desv. típica</td>
+            <td style="text-align:right;padding:6px 3px;">${formato(jugador.desviacion)}</td>
+            <td style="text-align:right;padding:6px 3px;">${formato(rivales.desviacion)}</td>
+          </tr>
+        </tbody>
+      </table>
+    
+      <div style="
+        border-top:1px solid #aaa;
+        margin-top:8px;
+        padding-top:9px;
+        line-height:1.8;
+      ">
         <div>
           Diferencia de medias:
-          <strong>${formato(diferenciaMedias)}</strong>
+          <strong>${diferenciaMedias > 0 ? "+" : ""}${formato(diferenciaMedias)}</strong>
         </div>
-
+    
         <div>
           Partidas rivales por debajo de tu media:
           <strong>${formato(percentil)} %</strong>
         </div>
-
       </div>
+    
+    </div>
+
     `;
 
   } catch (error) {
