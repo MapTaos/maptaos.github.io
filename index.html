@@ -11228,17 +11228,27 @@ function mostrarSeccionInicio(seccion) {
   // Reiniciar y recargar al cambiar de sección
   if (seccion !== seccionInicioActiva) {
 
-    if (seccion === "hoy") {
-      desplazamientoDia = 0;
-      cargarRankingHoy();
-    }
-
-    if (seccion === "mes") {
-      desplazamientoMes = 0;
-      cargarRankingMensual();
-    }
-
+  if (seccion === "hoy") {
+    desplazamientoDia = 0;
+    cargarRankingHoy();
   }
+
+  if (seccion === "mes") {
+    desplazamientoMes = 0;
+    cargarRankingMensual();
+  }
+
+  if (seccion === "continentes") {
+    desplazamientoMesContinentes = 0;
+    cargarRankingContinentes();
+  }
+
+  if (seccion === "top20") {
+    desplazamientoTrimestreTop20 = 0;
+    cargarTop20General();
+  }
+
+}
 
   seccionInicioActiva = seccion;
   
