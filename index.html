@@ -7734,6 +7734,14 @@ async function cargarMediaHistorica() {
   }
 
 console.log("Datos ranking medias:", data.slice(0, 3));
+console.table(
+  data.slice(0, 3).map(fila => ({
+    nombre: fila.nombre,
+    media: fila.media,
+    partidas: fila.partidas,
+    partidasConvertidas: Number(fila.partidas || 0)
+  }))
+);
   
     contenedor.innerHTML = `
       <div style="
