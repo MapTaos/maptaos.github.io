@@ -8679,7 +8679,7 @@ function generarCurvaGaussDistribucion(
 function dibujarHistogramaDistribucion(jugador, rivales) {
 
   const ancho = 680;
-  const alto = 390;
+  const alto = 420;
   const izquierda = 55;
   const derecha = 18;
   const arriba = 20;
@@ -8738,9 +8738,9 @@ function alturaMaximaGauss(serie) {
     const y = posicionY(porcentaje);
 
     elementos += `
-      <line x1="${izquierda}" y1="${y}"
-        x2="${ancho - derecha}" y2="${y}"
-        stroke="#e5e7eb" stroke-width="1"/>
+        <line x1="${izquierda}" y1="${y}"
+          x2="${ancho - derecha}" y2="${y}"
+          stroke="#d1d5db" stroke-width="0.6"/>
 
       <text x="${izquierda - 7}" y="${y + 4}"
         text-anchor="end" font-size="18" fill="#666">
@@ -8810,6 +8810,17 @@ function alturaMaximaGauss(serie) {
     "#15803d"
   );
 
+  // Eje X: línea negra fina
+  elementos += `
+    <line
+      x1="${izquierda}"
+      y1="${arriba + altoGrafica}"
+      x2="${ancho - derecha}"
+      y2="${arriba + altoGrafica}"
+      stroke="#222"
+      stroke-width="1"
+    />
+  `;
   
   // Marcas de puntuación.
   const pasoEje = (1000 - minimoEje) <= 400 ? 100 : 200;
