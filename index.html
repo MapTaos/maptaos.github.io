@@ -8709,6 +8709,71 @@ function generarCurvaGaussDistribucion(
   `;
 }
 
+
+
+function mostrarDetalleBarraDistribucion(
+  grupo,
+  intervalo,
+  partidas,
+  porcentaje
+) {
+  const detalle = document.getElementById(
+    "detalleBarraDistribucion"
+  );
+
+  if (!detalle) return;
+
+  const minimo = intervalo * 25;
+  const maximo = intervalo === 39 ? 1000 : minimo + 24;
+
+  const esJugador = grupo === "jugador";
+  const nombre = esJugador
+    ? nombreJugadorDistribucionActual
+    : "Resto de jugadores";
+
+  const color = esJugador ? "#15803d" : "#ea580c";
+
+  detalle.style.display = "block";
+
+  detalle.innerHTML = `
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    ">
+      <strong style="color:${color};">
+        ${nombre}
+      </strong>
+      <button
+        type="button"
+        id="cerrarDetalleBarraDistribucion"
+        style="
+          width:auto;
+          padding:2px 8px;
+          font-size:12px;
+          border:1px solid #aaa;
+        "
+      >✕</button>
+    </div>
+
+    <div style="margin-top:6px;">
+      <strong>${minimo}–${maximo} puntos</strong>
+    </div>
+
+    <div>
+      Partidas: <strong>${partidas}</strong>
+      · Porcentaje: <strong>${porcentaje.toFixed(1)} %</strong>
+    </div>
+  `;
+
+  document.getElementById(
+    "cerrarDetalleBarraDistribucion"
+  ).onclick = () => {
+    detalle.style.display = "none";
+  };
+}
+
   
 
 
@@ -8806,7 +8871,13 @@ function alturaMaximaGauss(serie) {
         width="${anchoBarra}"
         height="${arriba + altoGrafica - yJugador}"
         fill="#16a34a"
-        opacity="0.35">
+        opacity="0.35"
+        data-grupo="jugador"
+        data-intervalo="${i}"
+        data-partidas="${jugador.frecuencias[i]}"
+        data-porcentaje="${porcentajeJugador}"
+        class="barra-distribucion"
+        style="cursor:pointer;">
         <title>${i * 25}-${i === 39 ? 1000 : i * 25 + 24}: Jugador ${porcentajeJugador.toFixed(1)}%</title>
       </rect>
 
@@ -8816,7 +8887,13 @@ function alturaMaximaGauss(serie) {
         width="${anchoBarra}"
         height="${arriba + altoGrafica - yRivales}"
         fill="#ea580c"
-        opacity="0.35">
+        opacity="0.35"
+        data-grupo="rivales"
+        data-intervalo="${i}"
+        data-partidas="${rivales.frecuencias[i]}"
+        data-porcentaje="${porcentajeRivales}"
+        class="barra-distribucion"
+        style="cursor:pointer;">
         <title>${i * 25}-${i === 39 ? 1000 : i * 25 + 24}: Rivales ${porcentajeRivales.toFixed(1)}%</title>
       </rect>
     `;
@@ -9007,7 +9084,21 @@ async function cargarEstadisticasDistribucion(jugadorId) {
       </div>
     
       ${dibujarHistogramaDistribucion(jugador, rivales)}
-    
+
+    <div
+      id="detalleBarraDistribucion"
+      style="
+        display:none;
+        margin:8px 0 12px;
+        padding:10px;
+        background:#fff;
+        border:1px solid #cbd5e1;
+        border-radius:8px;
+        font-size:12px;
+        text-align:left;
+        line-height:1.6;
+      "
+    ></div>
       
     <div style="font-size:12px;line-height:1.5;text-align:left;">
     
@@ -9080,6 +9171,19 @@ async function cargarEstadisticasDistribucion(jugadorId) {
 
     `;
 
+
+  contenedor.querySelectorAll(".barra-distribucion").forEach(barra => {
+    barra.addEventListener("click", () => {
+      mostrarDetalleBarraDistribucion(
+        barra.dataset.grupo,
+        Number(barra.dataset.intervalo),
+        Number(barra.dataset.partidas),
+        Number(barra.dataset.porcentaje)
+      );
+    });
+  });
+
+    
   } catch (error) {
 
     if (numeroConsulta !== consultaDistribucionActual) return;
