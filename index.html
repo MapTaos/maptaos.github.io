@@ -8689,7 +8689,7 @@ function generarCurvaGaussDistribucion(
 
   // No dibujar una curva con muestras insuficientes.
   if (
-    serie.partidas < 30 ||
+    serie.partidas < 5 ||
     serie.media === null ||
     serie.desviacion === null ||
     serie.desviacion <= 0
@@ -8831,7 +8831,7 @@ const numeroIntervalos = (1000 - minimoEje) / 25;
 
   
 function alturaMaximaGauss(serie) {
-  if (serie.partidas < 30 || !serie.desviacion) return 0;
+  if (serie.partidas < 5 || !serie.desviacion) return 0;
 
   return 100 * 25 /
     (serie.desviacion * Math.sqrt(2 * Math.PI));
