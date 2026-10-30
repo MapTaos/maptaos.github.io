@@ -7733,15 +7733,32 @@ async function cargarMediaHistorica() {
     return;
   }
 
-console.log("Datos ranking medias:", data.slice(0, 3));
-console.table(
-  data.slice(0, 3).map(fila => ({
-    nombre: fila.nombre,
-    media: fila.media,
-    partidas: fila.partidas,
-    partidasConvertidas: Number(fila.partidas || 0)
-  }))
-);
+  
+  // Calcular la media global de todas las partidas
+  const totalPartidas = data.reduce(
+    (suma, fila) => suma + Number(fila.partidas || 0),
+    0
+  );
+
+  const totalPuntos = data.reduce(
+    (suma, fila) =>
+      suma + Number(fila.media || 0) * Number(fila.partidas || 0),
+    0
+  );
+
+  const mediaGlobal = totalPartidas > 0
+    ? Math.round(totalPuntos / totalPartidas)
+    : 0;
+
+  // Mostrar la media global a la derecha del título
+  const elementoMediaGlobal =
+    document.getElementById("mediaGlobalHistorica");
+
+  if (elementoMediaGlobal) {
+    elementoMediaGlobal.textContent =
+      totalPartidas > 0 ? `📈 ${mediaGlobal}` : "📈 —";
+  }
+
   
     contenedor.innerHTML = `
       <div style="
