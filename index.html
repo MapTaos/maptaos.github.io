@@ -296,7 +296,16 @@
       border: 1px solid #b8bec5;
       border-radius: 9px;
     }
-
+      /* Botones de Distribución de resultados */
+      #selectorPeriodoDistribucion button {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+        padding: 8px 2px;
+        font-size: 12px;
+        border: 1px solid #b8bec5;
+        border-radius: 9px;
+    }
 </style>
 </head>
 
@@ -2541,7 +2550,7 @@
 
   <div
     id="selectorPeriodoDistribucion"
-    style="display:flex;gap:5px;margin:12px 0;"
+    style="display:flex;gap:6px;margin:12px 0;"
   >
     <button type="button" data-periodo="mes">Mes</button>
     <button type="button" data-periodo="6m">6 meses</button>
@@ -8750,7 +8759,7 @@ function alturaMaximaGauss(serie) {
         y="${yRivales}"
         width="${anchoBarra}"
         height="${arriba + altoGrafica - yRivales}"
-        fill="#fb923c"
+        fill="#ea580c"
         opacity="0.35">
         <title>${i * 25}-${i === 39 ? 1000 : i * 25 + 24}: Rivales ${porcentajeRivales.toFixed(1)}%</title>
       </rect>
@@ -8952,7 +8961,7 @@ async function cargarEstadisticasDistribucion(jugadorId) {
             <td style="text-align:right;padding:6px 3px;">${jugador.partidas}</td>
             <td style="text-align:right;padding:6px 3px;">${rivales.partidas}</td>
           </tr>
-          <tr style="background:#f8fafc;">
+          <tr>
             <td style="padding:6px 2px;">Media</td>
             <td style="text-align:right;padding:6px 3px;">${formato(jugador.media)}</td>
             <td style="text-align:right;padding:6px 3px;">${formato(rivales.media)}</td>
