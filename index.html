@@ -8806,8 +8806,8 @@ function dibujarHistogramaDistribucion(jugador, rivales) {
 
   const ancho = 680;
   const alto = 420;
-  const izquierda = 55;
-  const derecha = 18;
+  const izquierda = 43;
+  const derecha = 8;
   const arriba = 20;
   const abajo = 52;
 
@@ -8920,9 +8920,22 @@ function alturaMaximaGauss(serie) {
         class="barra-distribucion"
         style="cursor:pointer;">
         <title>${i * 25}-${i === 39 ? 1000 : i * 25 + 24}: Rivales ${porcentajeRivales.toFixed(1)}%</title>
+      
       </rect>
+
+      <rect
+        x="${x}"
+        y="${arriba}"
+        width="${anchoIntervalo}"
+        height="${altoGrafica}"
+        fill="transparent"
+        data-intervalo="${i}"
+        class="franja-distribucion"
+        style="cursor:pointer;"
+      />
     `;
   }
+
 
 
   // Curvas de Gauss superpuestas al histograma.
@@ -9197,16 +9210,50 @@ async function cargarEstadisticasDistribucion(jugadorId) {
     `;
 
 
-  contenedor.querySelectorAll(".barra-distribucion").forEach(barra => {
-    barra.addEventListener("click", () => {
-      mostrarDetalleBarraDistribucion(
-        barra.dataset.grupo,
-        Number(barra.dataset.intervalo),
-        Number(barra.dataset.partidas),
-        Number(barra.dataset.porcentaje)
-      );
-    });
+  
+contenedor.querySelectorAll(".franja-distribucion").forEach(franja => {
+  franja.addEventListener("click", () => {
+    const i = Number(franja.dataset.intervalo);
+
+    const minimo = i * 25;
+    const maximo = i === 39 ? 1000 : minimo + 24;
+
+    const detalle = document.getElementById("detalleBarraDistribucion");
+    if (!detalle) return;
+
+    const nombreJugador = nombreJugadorDistribucionActual || "Jugador";
+
+    const partidasJugador = jugador.frecuencias[i];
+    const partidasRivales = rivales.frecuencias[i];
+
+    const porcentajeJugador = jugador.porcentajes[i];
+    const porcentajeRivales = rivales.porcentajes[i];
+
+    detalle.style.display = "block";
+
+    detalle.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <strong>${minimo}–${maximo} puntos</strong>
+        <button type="button" class="cerrar-detalle-distribucion"
+          style="width:auto;padding:2px 8px;font-size:12px;">✕</button>
+      </div>
+
+      <div style="margin-top:8px;color:#15803d;">
+        <strong>${nombreJugador}</strong>:
+        ${partidasJugador} partidas · ${porcentajeJugador.toFixed(1)} %
+      </div>
+
+      <div style="margin-top:5px;color:#ea580c;">
+        <strong>Resto de jugadores</strong>:
+        ${partidasRivales} partidas · ${porcentajeRivales.toFixed(1)} %
+      </div>
+    `;
+
+    detalle.querySelector(".cerrar-detalle-distribucion").onclick = () => {
+      detalle.style.display = "none";
+    };
   });
+});
 
     
   } catch (error) {
