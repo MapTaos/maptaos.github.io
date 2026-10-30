@@ -2356,7 +2356,7 @@
     <span>📊 Ranking de medias</span>
     <span id="mediaGlobalHistorica"
           style="font-size:12px;font-weight:normal;white-space:nowrap;">
-      📊 —
+      📊 ${mediaGlobal}
     </span>
   </h2>
 
@@ -6623,7 +6623,7 @@ async function cargarRankingContinentes() {
 
   if (elementoMediaGlobal) {
     elementoMediaGlobal.textContent =
-      totalPartidas > 0 ? `📈 ${mediaGlobal}` : "📈 —";
+      totalPartidas > 0 ? `📊 ${mediaGlobal}` : "📊 —";
   }
 
 const continentes = [
