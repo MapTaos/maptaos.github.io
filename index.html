@@ -5483,39 +5483,60 @@ async function cargarMedalleroDiario() {
 
   const medallas = new Map();
 
-  for (const [fecha, partidas] of porFecha) {
+  
+for (const [fecha, partidas] of porFecha) {
 
-    partidas.sort((a, b) =>
-      b.final_score - a.final_score ||
-      new Date(a.created_at) - new Date(b.created_at) ||
-      Number(a.jugador_id) - Number(b.jugador_id)
-    );
+  // Ordenar únicamente por puntuación
+  partidas.sort((a, b) =>
+    Number(b.final_score) - Number(a.final_score)
+  );
 
-    partidas.slice(0, 3).forEach((r, posicion) => {
+  let posicionActual = 0;
+  let puntuacionAnterior = null;
 
-      const id = String(r.jugador_id);
+  partidas.forEach((r, indice) => {
 
-      if (!medallas.has(id)) {
-        medallas.set(id, {
-          id,
-          oro: 0,
-          plata: 0,
-          bronce: 0,
-          provisional: [0, 0, 0]
-        });
-      }
+    const puntuacion = Number(r.final_score);
 
-      const jugador = medallas.get(id);
+    // Si cambia la puntuación, cambia la posición.
+    // Los empates comparten posición.
+    if (
+      indice === 0 ||
+      puntuacion !== puntuacionAnterior
+    ) {
+      posicionActual = indice + 1;
+    }
 
-      if (fecha === hoy) {
-        jugador.provisional[posicion]++;
-      } else if (fecha < hoy) {
-        if (posicion === 0) jugador.oro++;
-        if (posicion === 1) jugador.plata++;
-        if (posicion === 2) jugador.bronce++;
-      }
-    });
-  }
+    puntuacionAnterior = puntuacion;
+
+    // Solo reciben medallas las posiciones 1, 2 y 3
+    if (posicionActual > 3) return;
+
+    const id = String(r.jugador_id);
+
+    if (!medallas.has(id)) {
+      medallas.set(id, {
+        id,
+        oro: 0,
+        plata: 0,
+        bronce: 0,
+        provisional: [0, 0, 0]
+      });
+    }
+
+    const jugador = medallas.get(id);
+    const indiceMedalla = posicionActual - 1;
+
+    if (fecha === hoy) {
+      jugador.provisional[indiceMedalla]++;
+    } else if (fecha < hoy) {
+      if (posicionActual === 1) jugador.oro++;
+      if (posicionActual === 2) jugador.plata++;
+      if (posicionActual === 3) jugador.bronce++;
+    }
+
+  });
+}
 
   const clasificacion = [...medallas.values()]
     .sort((a, b) =>
