@@ -7197,8 +7197,15 @@ async function cargarDificultadPaises() {
   const mejores = document.getElementById("paisesMejores");
   const peores = document.getElementById("paisesPeores");
 
-  const { data: resultados, error: errorResultados } =
-    await supabaseClient
+  
+  // Recuperar todos los resultados por páginas
+  const resultados = [];
+  let errorResultados = null;
+  const tamanoPagina = 1000;
+
+  for (let desde = 0; ; desde += tamanoPagina) {
+
+    const { data, error } = await supabaseClient
       .from("resultados")
       .select(`
         fecha,
@@ -7211,14 +7218,44 @@ async function cargarDificultadPaises() {
       `)
       .gte("fecha", "2026-10-01")
       .order("fecha", { ascending: true })
-      .limit(10000);
+      .order("jugador_id", { ascending: true })
+      .range(desde, desde + tamanoPagina - 1);
 
-  const { data: rondas, error: errorRondas } =
-    await supabaseClient
-      .from("rondas_dia")
-      .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5")
-      .gte("fecha", "2026-10-01")
-      .limit(10000);
+    if (error) {
+      errorResultados = error;
+      break;
+    }
+
+    resultados.push(...(data || []));
+
+    if (!data || data.length < tamanoPagina) break;
+  }
+
+  // Recuperar todas las rondas por páginas
+  const rondas = [];
+  let errorRondas = null;
+
+  if (!errorResultados) {
+    for (let desde = 0; ; desde += tamanoPagina) {
+
+      const { data, error } = await supabaseClient
+        .from("rondas_dia")
+        .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5")
+        .gte("fecha", "2026-10-01")
+        .order("fecha", { ascending: true })
+        .range(desde, desde + tamanoPagina - 1);
+
+      if (error) {
+        errorRondas = error;
+        break;
+      }
+
+      rondas.push(...(data || []));
+
+      if (!data || data.length < tamanoPagina) break;
+    }
+  }
+
 
   if (errorResultados || errorRondas) {
     console.error(errorResultados || errorRondas);
