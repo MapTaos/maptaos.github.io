@@ -8042,7 +8042,7 @@ async function cargarTop50Historico() {
         .order("final_score", { ascending: false })
         .order("fecha", { ascending: true })
         .order("created_at", { ascending: true })
-        .limit(50);
+        .limit(1000);
 
   const { data: rondasPorFecha } =
     await supabaseClient
@@ -11199,6 +11199,16 @@ function mostrarTop50(top50, rondasPorFecha, errorTop50) {
     return;
   }
 
+
+  // Incluir todas las partidas empatadas en el puesto 50
+  const puntuacionCorte =
+    top50[Math.min(49, top50.length - 1)].final_score;
+
+  top50 = top50.filter(
+    fila => Number(fila.final_score) >= Number(puntuacionCorte)
+  );
+
+  
    const apariciones = {};
 
   top50.forEach(fila => {
