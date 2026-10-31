@@ -9919,19 +9919,56 @@ nombreJugadorDistribucionActual = nombre;
   
 inicializarSelectorDistribucion();
   
-const { data: resultados, error } =
-    await supabaseClient
-        .from("resultados")
-        .select("fecha, final_score, ronda_1, ronda_2, ronda_3, ronda_4, ronda_5")
-        .eq("jugador_id", jugadorId)
-        .order("fecha", { ascending: true });
- 
+
+// Recuperar todas las partidas del jugador
+const resultados = [];
+let error = null;
+const tamanoPagina = 1000;
+
+for (let desde = 0; ; desde += tamanoPagina) {
+
+  const { data, error: errorPagina } = await supabaseClient
+    .from("resultados")
+    .select("fecha, final_score, ronda_1, ronda_2, ronda_3, ronda_4, ronda_5")
+    .eq("jugador_id", jugadorId)
+    .order("fecha", { ascending: true })
+    .range(desde, desde + tamanoPagina - 1);
+
+  if (errorPagina) {
+    error = errorPagina;
+    break;
+  }
+
+  resultados.push(...(data || []));
+
+  if (!data || data.length < tamanoPagina) break;
+}
+
 const hoy = fechaMadridISO();
 
-const { data: rondasPorFecha } =
-  await supabaseClient
-    .from("rondas_dia")
-    .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5");
+// Recuperar todas las fechas y países
+const rondasPorFecha = [];
+
+if (!error) {
+  for (let desde = 0; ; desde += tamanoPagina) {
+
+    const { data, error: errorPagina } = await supabaseClient
+      .from("rondas_dia")
+      .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5")
+      .order("fecha", { ascending: true })
+      .range(desde, desde + tamanoPagina - 1);
+
+    if (errorPagina) {
+      error = errorPagina;
+      break;
+    }
+
+    rondasPorFecha.push(...(data || []));
+
+    if (!data || data.length < tamanoPagina) break;
+  }
+}
+
 
 const rondasHoy =
   rondasPorFecha?.find(fila => fila.fecha === hoy);
