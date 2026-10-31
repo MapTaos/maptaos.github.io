@@ -9057,6 +9057,30 @@ function alturaMaximaGauss(serie) {
 
 
   
+  
+  // Curvas de Gauss superpuestas al histograma
+  const xPuntuacion = puntos =>
+    izquierda + ((puntos - minimoEje) / (1000 - minimoEje)) *
+    anchoGrafica;
+
+  // Límite inferior visible de ambas curvas
+  jugador.minimoVisible = minimoEje;
+  rivales.minimoVisible = minimoEje;
+
+  elementos += generarCurvaGaussDistribucion(
+    rivales,
+    xPuntuacion,
+    posicionY,
+    "#ea580c"
+  );
+
+  elementos += generarCurvaGaussDistribucion(
+    jugador,
+    xPuntuacion,
+    posicionY,
+    "#15803d"
+  );
+
   // Media del jugador: verde
   if (jugador.partidas > 0 && Number.isFinite(jugador.media)) {
     const xMediaJugador = xPuntuacion(jugador.media);
@@ -9089,31 +9113,6 @@ function alturaMaximaGauss(serie) {
     `;
   }
 
-
-  // Curvas de Gauss superpuestas al histograma.
-  const xPuntuacion = puntos =>
-    izquierda + ((puntos - minimoEje) / (1000 - minimoEje)) *
-    anchoGrafica;
-  
-  // Límite inferior visible de ambas curvas
-  jugador.minimoVisible = minimoEje;
-  rivales.minimoVisible = minimoEje;
-  
-  elementos += generarCurvaGaussDistribucion(
-    rivales,
-    xPuntuacion,
-    posicionY,
-    "#ea580c"
-  );
-
- 
-
-  elementos += generarCurvaGaussDistribucion(
-    jugador,
-    xPuntuacion,
-    posicionY,
-    "#15803d"
-  );
 
    // Avisos cuando no se puede dibujar una curva
   const avisosCurvas = [];
