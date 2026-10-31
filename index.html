@@ -9056,19 +9056,32 @@ function alturaMaximaGauss(serie) {
   }
 
 
-  // Línea vertical de la media del jugador
-  if (jugador.media != null && Number.isFinite(jugador.media)) {
-
-    const xMedia = izquierda +
-      ((jugador.media - minimoEje) / (1000 - minimoEje)) * anchoGrafica;
+  
+  // Media del jugador: verde
+  if (jugador.partidas > 0 && Number.isFinite(jugador.media)) {
+    const xMediaJugador = xPuntuacion(jugador.media);
 
     elementos += `
       <line
-        x1="${xMedia}"
-        y1="${arriba}"
-        x2="${xMedia}"
-        y2="${arriba + altoGrafica}"
-        stroke="#1d4ed8"
+        x1="${xMediaJugador}" y1="${arriba}"
+        x2="${xMediaJugador}" y2="${arriba + altoGrafica}"
+        stroke="#15803d"
+        stroke-width="5"
+        stroke-dasharray="7 4"
+        pointer-events="none"
+      />
+    `;
+  }
+
+  // Media del resto: naranja
+  if (rivales.partidas > 0 && Number.isFinite(rivales.media)) {
+    const xMediaResto = xPuntuacion(rivales.media);
+
+    elementos += `
+      <line
+        x1="${xMediaResto}" y1="${arriba}"
+        x2="${xMediaResto}" y2="${arriba + altoGrafica}"
+        stroke="#ea580c"
         stroke-width="5"
         stroke-dasharray="7 4"
         pointer-events="none"
@@ -9219,6 +9232,7 @@ ${avisosCurvas.length > 0 ? `
       Resto de jugadores
     </span>
     
+    
     <span style="
       display:inline-flex;
       align-items:center;
@@ -9229,11 +9243,28 @@ ${avisosCurvas.length > 0 ? `
         display:inline-block;
         width:22px;
         height:0;
-        border-top:4px dashed #1d4ed8;
+        border-top:4px dashed #15803d;
         flex-shrink:0;
       "></span>
       Media de ${nombreJugadorDistribucionActual}
     </span>
+    
+    <span style="
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      white-space:nowrap;
+    ">
+      <span style="
+        display:inline-block;
+        width:22px;
+        height:0;
+        border-top:4px dashed #ea580c;
+        flex-shrink:0;
+      "></span>
+      Media del resto
+    </span>
+
     
     </div>
 
