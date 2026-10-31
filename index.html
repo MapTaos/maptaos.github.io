@@ -10838,6 +10838,22 @@ function mostrarTop10(top10, rondasPorFecha) {
     return;
   }
 
+
+  // Calcular posiciones compartidas en caso de empate
+  const posiciones = [];
+
+  top10.forEach((fila, i) => {
+    if (
+      i > 0 &&
+      Number(fila.final_score) === Number(top10[i - 1].final_score)
+    ) {
+      posiciones.push(posiciones[i - 1]);
+    } else {
+      posiciones.push(i + 1);
+    }
+  });
+
+  
   contenedor.innerHTML = top10
     .map((fila, i) => {
 
@@ -10936,7 +10952,7 @@ function mostrarTop10(top10, rondasPorFecha) {
             font-size:12px;
             font-weight:700;
           ">
-            ${i + 1}
+            ${posiciones[i]}
           </span>
         
           <span style="
