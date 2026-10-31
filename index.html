@@ -11525,10 +11525,23 @@ datasets: [
         }
       },
     
-      plugins: {
- legend: {
-  display: false
-},
+     
+plugins: {
+  legend: {
+    display: true,
+    position: "bottom",
+    labels: {
+      color: "#666666",
+      font: {
+        size: 11
+      },
+      boxWidth: 22,
+      boxHeight: 2,
+      padding: 12,
+      usePointStyle: false
+    }
+  },
+
   
   tooltip: {
     filter: function(item) {
