@@ -4883,11 +4883,50 @@ const fechaAnterior =
         { ascending: true }
       );
 
-  const { data: resultadosHistoricos } =
-    await supabaseClient
+  
+  // Recuperar todos los resultados históricos por páginas
+  const resultadosHistoricos = [];
+  let errorHistoricos = null;
+  const tamanoPaginaHistoricos = 1000;
+
+  for (
+    let desde = 0;
+    ;
+    desde += tamanoPaginaHistoricos
+  ) {
+
+    const { data, error } = await supabaseClient
       .from("resultados")
       .select("jugador_id, fecha, final_score")
-      .order("fecha", { ascending: true });
+      .order("fecha", { ascending: true })
+      .order("jugador_id", { ascending: true })
+      .range(
+        desde,
+        desde + tamanoPaginaHistoricos - 1
+      );
+
+    if (error) {
+      errorHistoricos = error;
+      break;
+    }
+
+    resultadosHistoricos.push(...(data || []));
+
+    if (!data || data.length < tamanoPaginaHistoricos) {
+      break;
+    }
+  }
+
+  if (errorHistoricos) {
+    console.error(
+      "Error al cargar resultados históricos:",
+      errorHistoricos
+    );
+    rankingMensual.innerHTML =
+      "No se pudieron cargar las estadísticas históricas.";
+    return;
+  }
+
   
 
   if (errorActual) {
