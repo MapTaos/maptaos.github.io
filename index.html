@@ -11207,17 +11207,21 @@ function mostrarTop50(top50, rondasPorFecha, errorTop50) {
   });
 
   // Posiciones compartidas cuando hay empate
-  const posiciones = top50.map((fila, i) => {
-    if (
-      i > 0 &&
-      Number(fila.final_score) ===
-        Number(top50[i - 1].final_score)
-    ) {
-      return posiciones[i - 1];
-    }
+  
+const posiciones = [];
 
-    return i + 1;
-  });
+top50.forEach((fila, i) => {
+  if (
+    i > 0 &&
+    Number(fila.final_score) ===
+      Number(top50[i - 1].final_score)
+  ) {
+    posiciones.push(posiciones[i - 1]);
+  } else {
+    posiciones.push(i + 1);
+  }
+});
+
 
   contenedor.innerHTML = top50
     .map((fila, i) => {
