@@ -8028,15 +8028,31 @@ async function cargarTop20General() {
       .lt("fecha", inicioSiguienteTrimestre)
       .order("final_score", { ascending: false })
       .order("created_at", { ascending: true })
-      .limit(20);
+      .limit(1000);
 
   const { data: rondasPorFecha } =
     await supabaseClient
       .from("rondas_dia")
       .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5");
 
-  mostrarTop20(
-    top20General,
+  
+  // Conservar las 20 mejores partidas y todos
+  // los empates en la última posición
+  const puntuacionCorte =
+    top20General && top20General.length >= 20
+      ? Number(top20General[19].final_score)
+      : null;
+
+  const top20ConEmpates =
+    puntuacionCorte === null
+      ? top20General
+      : top20General.filter(
+          fila => Number(fila.final_score) >= puntuacionCorte
+        );
+
+  
+    mostrarTop20(
+    top20ConEmpates,
     rondasPorFecha,
     errorTop20
   );
@@ -11062,6 +11078,23 @@ const apariciones = {};
     apariciones[fila.jugador_id] =
       (apariciones[fila.jugador_id] || 0) + 1;
   });
+
+
+  // Calcular posiciones compartidas en caso de empate
+  const posiciones = [];
+
+  top20.forEach((fila, i) => {
+    if (
+      i > 0 &&
+      Number(fila.final_score) ===
+        Number(top20[i - 1].final_score)
+    ) {
+      posiciones.push(posiciones[i - 1]);
+    } else {
+      posiciones.push(i + 1);
+    }
+  });
+
   
   contenedor.innerHTML = top20
     .map((fila, i) => {
@@ -11169,7 +11202,7 @@ const textoRondas = puntos
     display:inline-block;
     width:16px;
   ">
-    ${i + 1}
+    ${posiciones[i]}
   </span>
 
   <strong style="
