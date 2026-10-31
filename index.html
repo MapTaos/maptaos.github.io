@@ -10019,11 +10019,23 @@ window.resultadosPerfilActual = resultados;
 const resultadoHoy =
   resultados.find(fila => fila.fecha === hoy);  
 
-const top10 = [...resultados]
+
+const resultadosOrdenados = [...resultados]
   .sort((a, b) =>
     Number(b.final_score) - Number(a.final_score)
-  )
-  .slice(0, 10);
+  );
+
+const puntuacionCorteTop10 =
+  resultadosOrdenados.length >= 10
+    ? Number(resultadosOrdenados[9].final_score)
+    : null;
+
+const top10 = puntuacionCorteTop10 === null
+  ? resultadosOrdenados
+  : resultadosOrdenados.filter(
+      fila => Number(fila.final_score) >= puntuacionCorteTop10
+    );
+
 
 // Mejor resultado del mes actual
 const mesActualPerfil = hoy.slice(0, 7);
