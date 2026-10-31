@@ -11199,11 +11199,24 @@ function mostrarTop50(top50, rondasPorFecha, errorTop50) {
     return;
   }
 
-  const apariciones = {};
+   const apariciones = {};
 
   top50.forEach(fila => {
     apariciones[fila.jugador_id] =
       (apariciones[fila.jugador_id] || 0) + 1;
+  });
+
+  // Posiciones compartidas cuando hay empate
+  const posiciones = top50.map((fila, i) => {
+    if (
+      i > 0 &&
+      Number(fila.final_score) ===
+        Number(top50[i - 1].final_score)
+    ) {
+      return posiciones[i - 1];
+    }
+
+    return i + 1;
   });
 
   contenedor.innerHTML = top50
@@ -11318,7 +11331,7 @@ function mostrarTop50(top50, rondasPorFecha, errorTop50) {
                 display:inline-block;
                 width:16px;
               ">
-                ${i + 1}
+                ${posiciones[i]}
               </span>
 
               <strong style="
