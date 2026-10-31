@@ -8072,8 +8072,15 @@ async function cargarTop20General() {
 
   const inicioSiguienteTrimestre =
     `${anioFin}-${String(mesSiguienteTrimestre).padStart(2, "0")}-01`;
-  const { data: top20General, error: errorTop20 } =
-    await supabaseClient
+  
+  // Recuperar todas las partidas del trimestre por páginas
+  const top20General = [];
+  let errorTop20 = null;
+  const tamanoPagina = 1000;
+
+  for (let desde = 0; ; desde += tamanoPagina) {
+
+    const { data, error } = await supabaseClient
       .from("resultados")
       .select(`
         fecha,
@@ -8091,7 +8098,19 @@ async function cargarTop20General() {
       .lt("fecha", inicioSiguienteTrimestre)
       .order("final_score", { ascending: false })
       .order("created_at", { ascending: true })
-      .limit(1000);
+      .order("jugador_id", { ascending: true })
+      .range(desde, desde + tamanoPagina - 1);
+
+    if (error) {
+      errorTop20 = error;
+      break;
+    }
+
+    top20General.push(...(data || []));
+
+    if (!data || data.length < tamanoPagina) break;
+  }
+
 
   const { data: rondasPorFecha } =
     await supabaseClient
