@@ -12502,8 +12502,23 @@ if (!data) {
 
   avisoActualId = data.id;
   
-  document.getElementById("textoAvisoGeneral").textContent =
-    data.mensaje;
+  
+  const textoAviso = document.getElementById("textoAvisoGeneral");
+  
+  // Escapar HTML para evitar que se ejecute código introducido en el aviso
+  const mensajeSeguro = String(data.mensaje || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+  
+  // Convertir **texto** en negrita
+  textoAviso.innerHTML = mensajeSeguro.replace(
+    /\*\*(.+?)\*\*/g,
+    "<strong>$1</strong>"
+  );
+
   
   const indicadorAvisoNuevo =
     document.getElementById("indicadorAvisoNuevo");
