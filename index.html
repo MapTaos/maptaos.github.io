@@ -8143,8 +8143,15 @@ async function cargarTop20General() {
 
 async function cargarTop50Historico() {
 
-  const { data: top50Historico, error: errorTop50 } =
-    await supabaseClient
+  
+  // Recuperar todas las partidas históricas por páginas
+  const top50Historico = [];
+  let errorTop50 = null;
+  const tamanoPagina = 1000;
+
+  for (let desde = 0; ; desde += tamanoPagina) {
+
+    const { data, error } = await supabaseClient
       .from("resultados")
       .select(`
         fecha,
@@ -8158,10 +8165,22 @@ async function cargarTop50Historico() {
         ronda_5,
         jugadores(nombre, alias)
       `)
-        .order("final_score", { ascending: false })
-        .order("fecha", { ascending: true })
-        .order("created_at", { ascending: true })
-        .limit(1000);
+      .order("final_score", { ascending: false })
+      .order("fecha", { ascending: true })
+      .order("created_at", { ascending: true })
+      .order("jugador_id", { ascending: true })
+      .range(desde, desde + tamanoPagina - 1);
+
+    if (error) {
+      errorTop50 = error;
+      break;
+    }
+
+    top50Historico.push(...(data || []));
+
+    if (!data || data.length < tamanoPagina) break;
+  }
+
 
   const { data: rondasPorFecha } =
     await supabaseClient
