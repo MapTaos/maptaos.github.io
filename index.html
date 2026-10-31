@@ -11440,6 +11440,35 @@ contenedor.innerHTML = `
   const canvas =
     document.getElementById("evolutionChart");
 
+
+  
+const n = puntuaciones.length;
+
+let tendencia = [];
+
+if (n >= 2) {
+  const valores = puntuaciones.map(Number);
+
+  const mediaX = (n - 1) / 2;
+  const mediaY = valores.reduce((a, b) => a + b, 0) / n;
+
+  let numerador = 0;
+  let denominador = 0;
+
+  valores.forEach((valor, i) => {
+    numerador += (i - mediaX) * (valor - mediaY);
+    denominador += (i - mediaX) ** 2;
+  });
+
+  const pendiente = numerador / denominador;
+
+  tendencia = valores.map((_, i) =>
+    mediaY + pendiente * (i - mediaX)
+  );
+}
+
+
+  
   new Chart(canvas, {
     type: "line",
 
@@ -11463,7 +11492,21 @@ datasets: [
     pointRadius: 0,
     pointHoverRadius: 0,
     tension: 0
+  },
+  
+  {
+    label: "Tendencia",
+    data: tendencia,
+    borderColor: "#1d4ed8",
+    borderWidth: 1.5,
+    borderDash: [5, 5],
+    pointRadius: 0,
+    pointHoverRadius: 0,
+    pointHitRadius: 0,
+    tension: 0,
+    hoverBorderWidth: 1.5
   }
+
 ]
     },
 
@@ -11484,6 +11527,9 @@ datasets: [
 },
   
   tooltip: {
+    filter: function(item) {
+      return item.dataset.label !== "Tendencia";
+    },
     callbacks: {
       title: function(context) {
         return context[0].label;
