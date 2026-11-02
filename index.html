@@ -11298,13 +11298,35 @@ function mostrarTop10(top10, rondasPorFecha) {
       `${partidasMes.length} partidas · Media ${media} · Mejor ${mejor}` +
       (puestoMes != null ? ` · Puesto ${puestoMes}º/${totalJugadoresMes}` : "");
 
-    const { data: ranking, error } = await supabaseClient
-      .from("ranking_diario")
-      .select("fecha, jugador_id, posicion")
-      .gte("fecha", inicio)
-      .lt("fecha", fin)
-      .order("fecha", { ascending: false })
-      .limit(10000);
+   
+    const ranking = [];
+    let error = null;
+    let desde = 0;
+    const tamanoPagina = 1000;
+
+    while (true) {
+      const { data, error: errorPagina } = await supabaseClient
+        .from("ranking_diario")
+        .select("fecha, jugador_id, posicion")
+        .gte("fecha", inicio)
+        .lt("fecha", fin)
+        .order("fecha", { ascending: false })
+        .order("jugador_id", { ascending: true })
+        .range(desde, desde + tamanoPagina - 1);
+
+      if (errorPagina) {
+        error = errorPagina;
+        break;
+      }
+
+      ranking.push(...(data || []));
+
+      if (!data || data.length < tamanoPagina) {
+        break;
+      }
+
+      desde += tamanoPagina;
+    }
 
     // Evitar mostrar resultados de un mes anterior
     // si el usuario ha navegado mientras se cargaban.
