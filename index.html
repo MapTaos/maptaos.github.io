@@ -4035,19 +4035,39 @@ if (btnDiaSiguiente) {
         ascending: true
       });
 
-  const {
-  data: historialAnterior,
-  error: errorHistorial
-} =
-  await supabaseClient
+  
+const historialAnterior = [];
+let errorHistorial = null;
+
+const tamanoPagina = 1000;
+let desde = 0;
+
+while (true) {
+  const { data: pagina, error } = await supabaseClient
     .from("ranking_diario")
     .select(
       "fecha, jugador_id, nombre, final_score, posicion, alias"
     )
     .lt("fecha", hoy)
-    .order("fecha", {
-      ascending: false
-    });
+    .order("fecha", { ascending: false })
+    .order("jugador_id", { ascending: true })
+    .range(desde, desde + tamanoPagina - 1);
+
+  if (error) {
+    errorHistorial = error;
+    console.error("Error cargando historial anterior:", error);
+    break;
+  }
+
+  historialAnterior.push(...pagina);
+
+  if (pagina.length < tamanoPagina) {
+    break;
+  }
+
+  desde += tamanoPagina;
+}
+
 
  const {
   data: jugadoresHistoricos,
