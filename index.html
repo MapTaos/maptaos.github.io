@@ -12922,7 +12922,16 @@ async function cargarAdminJugadores() {
         <td style="padding:8px 5px;text-align:center;">
           ${jugador.password_configurada === true ? "Sí" : jugador.password_configurada === false ? "No" : "—"}
         </td>
-
+        <td style="padding:8px 5px;text-align:center;">
+          ${jugador.activo === true && jugador.password_configurada === false
+            ? `<button type="button"
+                 class="btnReenviarInvitacion"
+                 data-jugador-id="${jugador.id}"
+                 style="font-size:11px;padding:5px 8px;white-space:nowrap;">
+                 Reenviar invitación
+               </button>`
+            : "—"}
+        </td>
       </tr>
     `;
   }).join("");
@@ -12939,6 +12948,7 @@ async function cargarAdminJugadores() {
             <th style="padding:8px 5px;">Estado</th>
             <th style="padding:8px 5px;text-align:center;">Último aviso visto</th>
             <th style="padding:8px 5px;text-align:center;">Password configurada</th>
+            <th style="padding:8px 5px;text-align:center;">Invitación</th>
           </tr>
         </thead>
         <tbody>${filas}</tbody>
