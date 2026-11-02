@@ -7052,7 +7052,16 @@ contenedor.innerHTML =
 
   contenedor.innerHTML = "Cargando medallero...";
 
-  const { data, error } =
+  
+const data = [];
+let error = null;
+
+const tamanoPagina = 1000;
+let desde = 0;
+
+while (true) {
+
+  const { data: pagina, error: errorPagina } =
     await supabaseClient
       .from("ranking_continentes")
       .select(
@@ -7062,7 +7071,24 @@ contenedor.innerHTML =
       .in("posicion", [1, 2, 3])
       .order("inicio_mes", { ascending: false })
       .order("continente", { ascending: true })
-      .order("posicion", { ascending: true });
+      .order("posicion", { ascending: true })
+      .order("jugador_id", { ascending: true })
+      .range(desde, desde + tamanoPagina - 1);
+
+  if (errorPagina) {
+    error = errorPagina;
+    break;
+  }
+
+  data.push(...pagina);
+
+  if (pagina.length < tamanoPagina) {
+    break;
+  }
+
+  desde += tamanoPagina;
+}
+
 
   if (error) {
     console.error(
