@@ -5167,22 +5167,44 @@ async function cargarRankingRachas() {
 
   contenedor.textContent = "Cargando clasificación...";
 
-  const [
-    { data: jugadores, error: errorJugadores },
-    { data: resultados, error: errorResultados }
-  ] = await Promise.all([
-    supabaseClient
-      .from("jugadores")
-      .select("id, nombre, alias")
-      .eq("activo", true),
+  
+const { data: jugadores, error: errorJugadores } =
+  await supabaseClient
+    .from("jugadores")
+    .select("id, nombre, alias")
+    .eq("activo", true);
 
-    supabaseClient
+const resultados = [];
+let errorResultados = null;
+
+const tamanoPagina = 1000;
+let desde = 0;
+
+while (true) {
+
+  const { data: pagina, error: errorPagina } =
+    await supabaseClient
       .from("resultados")
       .select("jugador_id, fecha, final_score")
       .gte("fecha", "2026-10-01")
       .order("fecha", { ascending: false })
-      .limit(10000)
-  ]);
+      .order("jugador_id", { ascending: true })
+      .range(desde, desde + tamanoPagina - 1);
+
+  if (errorPagina) {
+    errorResultados = errorPagina;
+    break;
+  }
+
+  resultados.push(...pagina);
+
+  if (pagina.length < tamanoPagina) {
+    break;
+  }
+
+  desde += tamanoPagina;
+}
+
 
   if (errorJugadores || errorResultados) {
     console.error(
