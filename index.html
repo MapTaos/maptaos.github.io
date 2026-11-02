@@ -12955,6 +12955,69 @@ async function cargarAdminJugadores() {
       </table>
     </div>
   `;
+  
+  // Reenviar invitación a un jugador existente
+  contenedor.querySelectorAll(".btnReenviarInvitacion")
+    .forEach(boton => {
+
+      boton.addEventListener("click", async () => {
+
+        const jugadorId = Number(boton.dataset.jugadorId);
+
+        const confirmado = confirm(
+          "¿Quieres reenviar la invitación a este jugador?"
+        );
+
+        if (!confirmado) return;
+
+        boton.disabled = true;
+        boton.textContent = "Enviando...";
+
+        try {
+          const { data, error } =
+            await supabaseClient.functions.invoke(
+              "reenviar-invitacion",
+              {
+                body: { jugador_id: jugadorId }
+              }
+            );
+
+          if (error) {
+            let detalle = error.message;
+
+            if (error.context) {
+              try {
+                const respuesta = await error.context.json();
+                detalle = respuesta.error || detalle;
+              } catch {
+                // Mantener el mensaje original
+              }
+            }
+
+            throw new Error(detalle);
+          }
+
+          if (!data?.ok) {
+            throw new Error(
+              data?.error || "No se pudo reenviar la invitación."
+            );
+          }
+
+          alert("✅ Solicitud de recuperación enviada.");
+
+        } catch (error) {
+          console.error("Error reenviando invitación:", error);
+          alert("❌ " + error.message);
+
+        } finally {
+          boton.disabled = false;
+          boton.textContent = "Reenviar invitación";
+        }
+
+      });
+
+    });
+
 }
 
   
