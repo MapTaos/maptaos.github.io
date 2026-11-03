@@ -7858,12 +7858,43 @@ async function cargarMejoresMarcas() {
     return;
   }
 
-  const { data: rondasPorFecha } =
+  
+const rondasPorFecha = [];
+let desdeRondas = 0;
+const tamanoPaginaRondas = 1000;
+let errorRondas = null;
+
+while (true) {
+  const { data: pagina, error: errorPagina } =
     await supabaseClient
       .from("rondas_dia")
-      .select(
-        "fecha, pais_1, pais_2, pais_3, pais_4, pais_5"
+      .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5")
+      .order("fecha", { ascending: true })
+      .range(
+        desdeRondas,
+        desdeRondas + tamanoPaginaRondas - 1
       );
+
+  if (errorPagina) {
+    errorRondas = errorPagina;
+    break;
+  }
+
+  rondasPorFecha.push(...(pagina || []));
+
+  if (!pagina || pagina.length < tamanoPaginaRondas) {
+    break;
+  }
+
+  desdeRondas += tamanoPaginaRondas;
+}
+
+if (errorRondas) {
+  console.error("Error cargando rondas_dia:", errorRondas);
+  contenedor.textContent = "No se pudieron cargar los países.";
+  return;
+}
+
   const porJugador = {};
 
 resultados.forEach(fila => {
