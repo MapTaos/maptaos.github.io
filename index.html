@@ -8440,10 +8440,7 @@ async function cargarTop20General() {
   }
 
 
-  const { data: rondasPorFecha } =
-    await supabaseClient
-      .from("rondas_dia")
-      .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5");
+
 
   
   // Conservar las 20 mejores partidas y todos
@@ -8459,6 +8456,41 @@ async function cargarTop20General() {
       : top20General.filter(
           fila => Number(fila.final_score) >= puntuacionCorte
         );
+
+  const fechasTop20 = [
+    ...new Set(
+      (top20ConEmpates || []).map(fila => fila.fecha)
+    )
+  ];
+
+  let rondasPorFecha = [];
+  let errorRondas = null;
+
+  if (fechasTop20.length > 0) {
+    const tamanoLote = 100;
+
+    for (let i = 0; i < fechasTop20.length; i += tamanoLote) {
+      const lote = fechasTop20.slice(i, i + tamanoLote);
+
+      const { data, error } = await supabaseClient
+        .from("rondas_dia")
+        .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5")
+        .in("fecha", lote)
+        .order("fecha", { ascending: true });
+
+      if (error) {
+        errorRondas = error;
+        break;
+      }
+
+      rondasPorFecha.push(...(data || []));
+    }
+  }
+
+  if (errorRondas) {
+    console.error("Error cargando países del Top-20:", errorRondas);
+    rondasPorFecha = [];
+  }
 
   
     mostrarTop20(
