@@ -8718,12 +8718,39 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
   const contenedor = document.getElementById("profileMedallasContinentes");
   if (!contenedor) return;
 
-  const { data, error } = await supabaseClient
-    .from("ranking_continentes")
-    .select("inicio_mes, continente, posicion")
-    .eq("jugador_id", jugadorId)
-    .gte("inicio_mes", "2026-10-01")
-    .in("posicion", [1, 2, 3]);
+  
+  const data = [];
+  let error = null;
+  let desde = 0;
+  const tamanoPagina = 1000;
+
+  while (true) {
+    const { data: pagina, error: errorPagina } =
+      await supabaseClient
+        .from("ranking_continentes")
+        .select("inicio_mes, continente, posicion")
+        .eq("jugador_id", jugadorId)
+        .gte("inicio_mes", "2026-10-01")
+        .in("posicion", [1, 2, 3])
+        .order("inicio_mes", { ascending: true })
+        .order("continente", { ascending: true })
+        .order("posicion", { ascending: true })
+        .range(desde, desde + tamanoPagina - 1);
+
+    if (errorPagina) {
+      error = errorPagina;
+      break;
+    }
+
+    data.push(...(pagina || []));
+
+    if (!pagina || pagina.length < tamanoPagina) {
+      break;
+    }
+
+    desde += tamanoPagina;
+  }
+
 
   if (error) {
     console.error("Error medallas continentales del perfil:", error);
