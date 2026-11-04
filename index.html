@@ -12935,12 +12935,31 @@ btnConsultarRondasAdmin.addEventListener("click", async () => {
 
     resultado.replaceChildren();
 
-const { data: catalogoPaises, error: errorCatalogo } =
-  await supabaseClient
-    .from("paises_continentes")
-    .select("codigo, pais, continente")
-    .order("pais", { ascending: true })
-    .limit(500);
+
+const catalogoPaises = [];
+let errorCatalogo = null;
+const tamanoPagina = 1000;
+
+for (let desde = 0; ; desde += tamanoPagina) {
+
+  const { data: pagina, error: errorPagina } =
+    await supabaseClient
+      .from("paises_continentes")
+      .select("codigo, pais, continente")
+      .order("pais", { ascending: true })
+      .order("codigo", { ascending: true })
+      .range(desde, desde + tamanoPagina - 1);
+
+  if (errorPagina) {
+    errorCatalogo = errorPagina;
+    break;
+  }
+
+  catalogoPaises.push(...(pagina || []));
+
+  if (!pagina || pagina.length < tamanoPagina) break;
+}
+
 
 if (errorCatalogo) {
   console.error("Error cargando catálogo:", errorCatalogo);
