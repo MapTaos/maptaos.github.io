@@ -4069,13 +4069,30 @@ while (true) {
 }
 
 
- const {
-  data: jugadoresHistoricos,
-  error: errorJugadoresHistoricos
-} =
-  await supabaseClient
-    .from("jugadores")
-    .select("id, fecha_alta, fecha_baja");
+ 
+const jugadoresHistoricos = [];
+let errorJugadoresHistoricos = null;
+const tamanoPaginaJugadores = 1000;
+
+for (let desde = 0; ; desde += tamanoPaginaJugadores) {
+
+  const { data: pagina, error: errorPagina } =
+    await supabaseClient
+      .from("jugadores")
+      .select("id, fecha_alta, fecha_baja")
+      .order("id", { ascending: true })
+      .range(desde, desde + tamanoPaginaJugadores - 1);
+
+  if (errorPagina) {
+    errorJugadoresHistoricos = errorPagina;
+    break;
+  }
+
+  jugadoresHistoricos.push(...(pagina || []));
+
+  if (!pagina || pagina.length < tamanoPaginaJugadores) break;
+}
+
 
 console.log("FECHA CONSULTADA:", hoy);  
 console.log("JUGADORES HISTÓRICOS:", jugadoresHistoricos);
