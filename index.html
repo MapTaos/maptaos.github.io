@@ -13304,10 +13304,31 @@ async function cargarAdminJugadores() {
   contenedor.textContent = "Cargando jugadores...";
 
   
-  const { data: jugadores, error } = await supabaseClient
-    .from("jugadores")
-    .select("id, nombre, alias, created_at, activo, ultimo_aviso_visto, password_configurada")
-    .order("id", { ascending: true });
+  
+  // Recuperar todos los jugadores por páginas
+  const jugadores = [];
+  let error = null;
+  const tamanoPagina = 1000;
+
+  for (let desde = 0; ; desde += tamanoPagina) {
+
+    const { data: pagina, error: errorPagina } =
+      await supabaseClient
+        .from("jugadores")
+        .select("id, nombre, alias, created_at, activo, ultimo_aviso_visto, password_configurada")
+        .order("id", { ascending: true })
+        .range(desde, desde + tamanoPagina - 1);
+
+    if (errorPagina) {
+      error = errorPagina;
+      break;
+    }
+
+    jugadores.push(...(pagina || []));
+
+    if (!pagina || pagina.length < tamanoPagina) break;
+  }
+
 
 
   if (error) {
