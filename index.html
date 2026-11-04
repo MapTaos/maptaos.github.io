@@ -5615,6 +5615,7 @@ async function cargarMedalleroDiario() {
         .gte("fecha", fechaInicioMedalleroDiario)
         .order("fecha", { ascending: true })
         .order("created_at", { ascending: true })
+        .order("jugador_id", { ascending: true })
         .range(desde, desde + tamanoPagina - 1);
 
     if (error) {
