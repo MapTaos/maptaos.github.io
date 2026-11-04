@@ -12753,11 +12753,32 @@ btnAdminPaisesCatalogo.addEventListener("click", async () => {
 
   lista.textContent = "Cargando países...";
 
-  const { data, error } = await supabaseClient
-    .from("paises_continentes")
-    .select("codigo, pais, continente")
-    .order("pais", { ascending: true })
-    .limit(500);
+  
+  // Recuperar el catálogo completo por páginas
+  const data = [];
+  let error = null;
+  const tamanoPagina = 1000;
+
+  for (let desde = 0; ; desde += tamanoPagina) {
+
+    const { data: pagina, error: errorPagina } =
+      await supabaseClient
+        .from("paises_continentes")
+        .select("codigo, pais, continente")
+        .order("pais", { ascending: true })
+        .order("codigo", { ascending: true })
+        .range(desde, desde + tamanoPagina - 1);
+
+    if (errorPagina) {
+      error = errorPagina;
+      break;
+    }
+
+    data.push(...(pagina || []));
+
+    if (!pagina || pagina.length < tamanoPagina) break;
+  }
+
 
   if (error) {
     console.error("Error cargando países:", error);
