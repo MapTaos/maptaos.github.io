@@ -8542,10 +8542,42 @@ async function cargarTop50Historico() {
   }
 
 
-  const { data: rondasPorFecha } =
-    await supabaseClient
+  
+  // Fechas de las 50 mejores partidas históricas
+  const fechasTop50 = [
+    ...new Set(
+      top50Historico
+        .slice(0, 50)
+        .map(fila => fila.fecha)
+    )
+  ];
+
+  const rondasPorFecha = [];
+  let errorRondas = null;
+  const tamanoLote = 100;
+
+  for (let i = 0; i < fechasTop50.length; i += tamanoLote) {
+
+    const lote = fechasTop50.slice(i, i + tamanoLote);
+
+    const { data, error } = await supabaseClient
       .from("rondas_dia")
-      .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5");
+      .select("fecha, pais_1, pais_2, pais_3, pais_4, pais_5")
+      .in("fecha", lote)
+      .order("fecha", { ascending: true });
+
+    if (error) {
+      errorRondas = error;
+      break;
+    }
+
+    rondasPorFecha.push(...(data || []));
+  }
+
+  if (errorRondas) {
+    console.error("Error cargando países del Top-50:", errorRondas);
+  }
+
 
   mostrarTop50(
     top50Historico,
