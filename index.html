@@ -8623,10 +8623,13 @@ async function cargarMedallasDiariasPerfil(jugadorId) {
     const { data, error } = await supabaseClient
       .from("resultados")
       .select("jugador_id, fecha, final_score, created_at")
+      
       .gte("fecha", fechaInicio)
       .order("fecha", { ascending: true })
       .order("created_at", { ascending: true })
+      .order("jugador_id", { ascending: true })
       .range(desde, desde + tamanoPagina - 1);
+
 
     if (error) {
       console.error("Error medallas diarias del perfil:", error);
