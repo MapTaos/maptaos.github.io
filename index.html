@@ -8178,13 +8178,33 @@ async function cargarMediaHistorica() {
   const contenedor =
     document.getElementById("rankingMediaHistorica");
 
-  const { data, error } =
-    await supabaseClient
-      .from("ranking_media_historica")
-      .select(
-        "posicion, jugador_id, nombre, alias, media, partidas"
-      )
-      .order("posicion", { ascending: true });
+  
+  // Recuperar todas las medias históricas por páginas
+  const data = [];
+  let error = null;
+  const tamanoPagina = 1000;
+
+  for (let desde = 0; ; desde += tamanoPagina) {
+
+    const { data: pagina, error: errorPagina } =
+      await supabaseClient
+        .from("ranking_media_historica")
+        .select(
+          "posicion, jugador_id, nombre, alias, media, partidas"
+        )
+        .order("posicion", { ascending: true })
+        .order("jugador_id", { ascending: true })
+        .range(desde, desde + tamanoPagina - 1);
+
+    if (errorPagina) {
+      error = errorPagina;
+      break;
+    }
+
+    data.push(...(pagina || []));
+
+    if (!pagina || pagina.length < tamanoPagina) break;
+  }
 
   if (error) {
     console.error(error);
