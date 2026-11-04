@@ -4975,17 +4975,66 @@ const fechaAnterior =
   }
 
 
-  if (!actual || actual.length === 0) {
+  
+  // Jugadores que estuvieron dados de alta durante el mes
+  const finMesActual =
+    new Date(anio, mes, 0)
+      .toLocaleDateString("en-CA");
 
+  const { data: jugadoresMes, error: errorJugadoresMes } =
+    await supabaseClient
+      .from("jugadores")
+      .select("id, nombre, alias, fecha_alta, fecha_baja")
+      .lte("fecha_alta", finMesActual)
+      .order("id", { ascending: true });
+
+  if (errorJugadoresMes) {
+    console.error("Error cargando jugadores del mes:", errorJugadoresMes);
     rankingMensual.innerHTML =
-      "Todavía no hay resultados este mes.";
-
+      "No se pudieron cargar los jugadores del mes.";
     return;
   }
 
+  const jugadoresElegibles =
+    (jugadoresMes || []).filter(jugador =>
+      !jugador.fecha_baja ||
+      jugador.fecha_baja >= inicioMesActual
+    );
+
+  const idsElegibles =
+    new Set(jugadoresElegibles.map(j => j.id));
+
+  const filasConResultados =
+    (actual || []).filter(fila =>
+      idsElegibles.has(fila.jugador_id)
+    );
+
+  const idsConResultados =
+    new Set(filasConResultados.map(f => f.jugador_id));
+
+  const posicionSinPartidas =
+    filasConResultados.length + 1;
+
+  const filasSinResultados =
+    jugadoresElegibles
+      .filter(j => !idsConResultados.has(j.id))
+      .map(j => ({
+        jugador_id: j.id,
+        nombre: j.nombre,
+        alias: j.alias,
+        puntos: 0,
+        dias_jugados: 0,
+        posicion: posicionSinPartidas
+      }));
+
+  const clasificacionCompleta = [
+    ...filasConResultados,
+    ...filasSinResultados
+  ];
+
 
   rankingMensual.innerHTML =
-    actual.map(fila => {
+    clasificacionCompleta.map(fila => {
 
       let medalla = "";
 
@@ -5025,11 +5074,9 @@ const fechaAnterior =
         }
       }
 
-    const mediaMes =
-      Math.round(
-        Number(fila.puntos) /
-        Number(fila.dias_jugados)
-      );
+    const mediaMes = Number(fila.dias_jugados) > 0
+  ? Math.round(Number(fila.puntos) / Number(fila.dias_jugados))
+  : 0;
     
     const resultadosJugador =
       (resultadosHistoricos || [])
