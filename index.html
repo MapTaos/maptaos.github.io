@@ -8543,14 +8543,28 @@ async function cargarTop50Historico() {
 
 
   
-  // Fechas de las 50 mejores partidas históricas
+
+  // Fechas del Top-50, incluyendo empates en el puesto 50
+  const puntuacionCorteTop50 =
+    top50Historico.length > 0
+      ? Number(
+          top50Historico[
+            Math.min(49, top50Historico.length - 1)
+          ].final_score
+        )
+      : null;
+
   const fechasTop50 = [
     ...new Set(
       top50Historico
-        .slice(0, 50)
+        .filter(fila =>
+          puntuacionCorteTop50 !== null &&
+          Number(fila.final_score) >= puntuacionCorteTop50
+        )
         .map(fila => fila.fecha)
     )
   ];
+
 
   const rondasPorFecha = [];
   let errorRondas = null;
