@@ -320,6 +320,24 @@
         color: #111 !important;
         box-shadow: none !important;
       }
+      
+      /* Panel de controles de Distribución */
+      #tarjetaDistribucion .panelControlesDistribucion {
+        background: #eef0f2;
+        border-radius: 14px;
+        padding: 10px 12px 12px;
+        margin-top: 10px;
+      }
+      
+      /* Selector dentro del panel */
+      #tarjetaDistribucion #selectorPeriodoDistribucion {
+        margin: 0 0 12px !important;
+      }
+      
+      /* Navegación mensual */
+      #tarjetaDistribucion #navegacionMesDistribucion {
+        margin-bottom: 0 !important;
+      }
 
 </style>
 </head>
@@ -2754,7 +2772,12 @@
 
 </div>
 
+  
+<!-- FONDO GRIS DE DISTRIBUCIÓN -->
+<div class="panelControlesDistribucion">
 
+<!-- PANEL GRIS DE DISTRIBUCIÓN -->
+<div class="panelControlesDistribucion">
   <div
     id="selectorPeriodoDistribucion"
     style="display:flex;gap:6px;margin:12px 0;"
@@ -2771,56 +2794,56 @@
   </div>
 
   
-<div
-  id="navegacionMesDistribucion"
-  class="hidden"
-  style="
-    display:none;
-    justify-content:center;
-    align-items:center;
-    gap:8px;
-    margin:0 0 10px;
-  "
->
-  <button
-    type="button"
-    id="btnDistribucionAnterior"
-    style="
-      width:auto;
-      padding:5px 10px;
-      font-size:12px;
-      border:1px solid #9ca3af;
-    "
-  >
-    ◀ Anterior
-  </button>
-
-  <button
-    type="button"
-    id="btnDistribucionActual"
-    style="
-      width:auto;
-      padding:5px 10px;
-      font-size:12px;
-      border:1px solid #9ca3af;
-    "
-  >
-    Actual
-  </button>
-
-  <button
-    type="button"
-    id="btnDistribucionSiguiente"
-    style="
-      width:auto;
-      padding:5px 10px;
-      font-size:12px;
-      border:1px solid #9ca3af;
-    "
-  >
-    Siguiente ▶
-  </button>
-</div>
+    <div
+      id="navegacionMesDistribucion"
+      class="hidden"
+      style="
+        display:none;
+        justify-content:center;
+        align-items:center;
+        gap:8px;
+        margin:0 0 10px;
+      "
+    >
+      <button
+        type="button"
+        id="btnDistribucionAnterior"
+        style="
+          width:auto;
+          padding:5px 10px;
+          font-size:12px;
+          border:1px solid #9ca3af;
+        "
+      >
+        ◀ Anterior
+      </button>
+    
+      <button
+        type="button"
+        id="btnDistribucionActual"
+        style="
+          width:auto;
+          padding:5px 10px;
+          font-size:12px;
+          border:1px solid #9ca3af;
+        "
+      >
+        Actual
+      </button>
+    
+      <button
+        type="button"
+        id="btnDistribucionSiguiente"
+        style="
+          width:auto;
+          padding:5px 10px;
+          font-size:12px;
+          border:1px solid #9ca3af;
+        "
+      >
+        Siguiente ▶
+      </button>
+    </div>
 
   <div
     id="graficaDistribucion"
@@ -2836,9 +2859,8 @@
     Por ejemplo, un 15 % entre 800 y 824 puntos significa
     que en el 15 % de las partidas obtuvo esa puntuación.
   </p>
-
 </div>
-<!-- FIN DISTRIBUCIÓN DE RESULTADOS -->
+<!-- FIN FONDO GRIS DE DISTRIBUCIÓN -->
 
   
 <div class="card">
