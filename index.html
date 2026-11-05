@@ -6900,7 +6900,8 @@ while (true) {
         </div>
 
         <div
-          onclick="abrirPerfilJugador(${jugador.jugador_id}, '${nombre.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}')"
+          data-jugador-id="${Number(jugador.jugador_id)}"
+          onclick="abrirPerfilJugador(Number(this.dataset.jugadorId), this.textContent.trim())"
           style="
             min-width:0;
             font-weight:600;
@@ -6911,7 +6912,13 @@ while (true) {
             cursor:pointer;
           "
         >
-          ${nombre}
+          ${String(nombre || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;")}
+
         </div>
 
         <div style="text-align:center;">
