@@ -12554,19 +12554,6 @@ function actualizarNavegacionEvolucion() {
 document.getElementById("chartPeriodSelector")
   .addEventListener("click", event => {
 
-    const boton = event.target.closest("button");
-    if (!boton) return;
-
-    document.querySelectorAll(
-      "#chartPeriodSelector button"
-    ).forEach(b => b.classList.remove("active"));
-
-    boton.classList.add("active");
-
-    desplazamientoMesEvolucion = 0;
-    actualizarNavegacionEvolucion();
-  });
-
 document.getElementById("btnEvolucionAnterior")
   .addEventListener("click", () => {
 
