@@ -5635,6 +5635,11 @@ const fechaAyer = new Date(
 }
 
 
+let periodoClub100 = "total";
+let desplazamientoMesClub100 = 0;
+
+  
+
 // CLUB DE LOS 100 — Desde el 1 de octubre de 2026
 async function cargarRankingClub100() {
 
@@ -5645,6 +5650,35 @@ async function cargarRankingClub100() {
 
   contenedor.textContent = "Cargando Club de los 100...";
 
+
+// PERÍODO CLUB DE LOS 100
+let fechaInicioClub100 = "2026-10-01";
+let fechaFinClub100 = null;
+
+if (periodoClub100 === "mensual") {
+  const hoy = fechaMadridISO();
+  const [anioActual, mesActual] = hoy.split("-").map(Number);
+
+  const indiceMes =
+    anioActual * 12 + mesActual - 1 + desplazamientoMesClub100;
+
+  const anio = Math.floor(indiceMes / 12);
+  const mes = ((indiceMes % 12) + 12) % 12 + 1;
+
+  fechaInicioClub100 =
+    `${anio}-${String(mes).padStart(2, "0")}-01`;
+
+  const indiceSiguiente = indiceMes + 1;
+  const anioSiguiente = Math.floor(indiceSiguiente / 12);
+  const mesSiguiente =
+    ((indiceSiguiente % 12) + 12) % 12 + 1;
+
+  fechaFinClub100 =
+    `${anioSiguiente}-${String(mesSiguiente).padStart(2, "0")}-01`;
+}
+// FIN PERÍODO CLUB DE LOS 100
+
+  
   
   const { data: jugadores, error: errorJugadores } =
     await supabaseClient
@@ -5652,33 +5686,41 @@ async function cargarRankingClub100() {
       .select("id, nombre, alias")
       .eq("activo", true);
 
-  const resultados = [];
-  let errorResultados = null;
-  const tamanoPagina = 1000;
-  let desde = 0;
+  
+const resultados = [];
+let errorResultados = null;
+const tamanoPagina = 1000;
+let desde = 0;
 
-  while (true) {
-    const { data, error } = await supabaseClient
-      .from("resultados")
-      .select("jugador_id, fecha, ronda_1, ronda_2, ronda_3, ronda_4, ronda_5")
-      .gte("fecha", "2026-10-01")
-      .order("fecha", { ascending: false })
-      .order("jugador_id", { ascending: true })
-      .range(desde, desde + tamanoPagina - 1);
+while (true) {
 
-    if (error) {
-      errorResultados = error;
-      break;
-    }
+  let consulta = supabaseClient
+    .from("resultados")
+    .select("jugador_id, fecha, ronda_1, ronda_2, ronda_3, ronda_4, ronda_5")
+    .gte("fecha", fechaInicioClub100);
 
-    resultados.push(...(data || []));
-
-    if (!data || data.length < tamanoPagina) {
-      break;
-    }
-
-    desde += tamanoPagina;
+  if (periodoClub100 === "mensual") {
+    consulta = consulta.lt("fecha", fechaFinClub100);
   }
+
+  const { data, error } = await consulta
+    .order("fecha", { ascending: false })
+    .order("jugador_id", { ascending: true })
+    .range(desde, desde + tamanoPagina - 1);
+
+  if (error) {
+    errorResultados = error;
+    break;
+  }
+
+  resultados.push(...(data || []));
+
+  if (!data || data.length < tamanoPagina) {
+    break;
+  }
+
+  desde += tamanoPagina;
+}
 
 
   if (errorJugadores || errorResultados) {
