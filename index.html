@@ -12255,6 +12255,10 @@ top50.forEach((fila, i) => {
     .join("");
 }
 
+
+  
+let desplazamientoMesEvolucion = 0;
+
   
 function mostrarEvolucion(resultados, periodo) {
 
@@ -12276,7 +12280,10 @@ function mostrarEvolucion(resultados, periodo) {
 // El periodo solo determina cuántos días se muestran.
 
 
-const rango = obtenerPeriodoDistribucion(periodo, 0);
+const rango = obtenerPeriodoDistribucion(
+  periodo,
+  periodo === "mes" ? desplazamientoMesEvolucion : 0
+);
 
 const resultadosPeriodo = rango.valido
   ? resultados
@@ -12505,9 +12512,90 @@ plugins: {
   });
 }
 
- document
-  .getElementById("chartPeriodSelector")
-  .addEventListener("click", (event) => {
+
+function actualizarNavegacionEvolucion() {
+
+  const botonActivo = document.querySelector(
+    "#chartPeriodSelector button.active"
+  );
+
+  const periodo = botonActivo?.dataset.periodo || "todo";
+
+  const navegacion = document.getElementById(
+    "navegacionMesEvolucion"
+  );
+
+  if (!navegacion) return;
+
+  navegacion.classList.toggle("hidden", periodo !== "mes");
+  navegacion.style.display = periodo === "mes" ? "flex" : "none";
+
+  if (periodo === "mes") {
+
+    const anterior = obtenerPeriodoDistribucion(
+      "mes",
+      desplazamientoMesEvolucion - 1
+    );
+
+    document.getElementById(
+      "btnEvolucionAnterior"
+    ).disabled = !anterior.valido;
+
+    document.getElementById(
+      "btnEvolucionSiguiente"
+    ).disabled = desplazamientoMesEvolucion >= 0;
+  }
+
+  if (window.resultadosPerfilActual) {
+    mostrarEvolucion(window.resultadosPerfilActual, periodo);
+  }
+}
+
+document.getElementById("chartPeriodSelector")
+  .addEventListener("click", event => {
+
+    const boton = event.target.closest("button");
+    if (!boton) return;
+
+    document.querySelectorAll(
+      "#chartPeriodSelector button"
+    ).forEach(b => b.classList.remove("active"));
+
+    boton.classList.add("active");
+
+    desplazamientoMesEvolucion = 0;
+    actualizarNavegacionEvolucion();
+  });
+
+document.getElementById("btnEvolucionAnterior")
+  .addEventListener("click", () => {
+
+    const anterior = obtenerPeriodoDistribucion(
+      "mes",
+      desplazamientoMesEvolucion - 1
+    );
+
+    if (anterior.valido) {
+      desplazamientoMesEvolucion--;
+      actualizarNavegacionEvolucion();
+    }
+  });
+
+document.getElementById("btnEvolucionActual")
+  .addEventListener("click", () => {
+    desplazamientoMesEvolucion = 0;
+    actualizarNavegacionEvolucion();
+  });
+
+document.getElementById("btnEvolucionSiguiente")
+  .addEventListener("click", () => {
+
+    if (desplazamientoMesEvolucion < 0) {
+      desplazamientoMesEvolucion++;
+      actualizarNavegacionEvolucion();
+    }
+  });
+
 
     const boton = event.target.closest("button");
     if (!boton) return;
