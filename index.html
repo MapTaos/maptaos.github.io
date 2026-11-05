@@ -5638,6 +5638,38 @@ const fechaAyer = new Date(
 let periodoClub100 = "total";
 let desplazamientoMesClub100 = 0;
 
+
+document.getElementById("selectorPeriodoClub100")
+  .addEventListener("click", event => {
+
+    const boton = event.target.closest(
+      "button[data-periodo-club100]"
+    );
+
+    if (!boton) return;
+
+    periodoClub100 = boton.dataset.periodoClub100;
+    desplazamientoMesClub100 = 0;
+
+    document.querySelectorAll(
+      "#selectorPeriodoClub100 button"
+    ).forEach(botonSelector => {
+
+      const activo =
+        botonSelector.dataset.periodoClub100 === periodoClub100;
+
+      botonSelector.style.background =
+        activo ? "#111" : "#e1e4e6";
+
+      botonSelector.style.color =
+        activo ? "#fff" : "#111";
+
+      botonSelector.style.borderColor =
+        activo ? "#111" : "#c5c9cc";
+    });
+
+    cargarRankingClub100();
+  });
   
 
 // CLUB DE LOS 100 — Desde el 1 de octubre de 2026
