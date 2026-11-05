@@ -2160,6 +2160,31 @@
     🏆 Top-50 histórico
   </h2>
 
+  <!-- INDICADORES TOP-50 HISTÓRICO -->
+  <div id="indicadoresTop50" style="
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+    margin:8px 0 10px;
+  ">
+    <div style="background:#f1f1f1;border-radius:8px;padding:6px 4px;text-align:center;">
+      <div style="font-size:11px;color:#777;">Top-1</div>
+      <div id="valorTop1Historico" style="font-size:15px;font-weight:600;">—</div>
+    </div>
+  
+    <div style="background:#f1f1f1;border-radius:8px;padding:6px 4px;text-align:center;">
+      <div style="font-size:11px;color:#777;">Top-50</div>
+      <div id="valorTop50Historico" style="font-size:15px;font-weight:600;">—</div>
+    </div>
+  
+    <div style="background:#e5e7eb;border-radius:8px;padding:6px 4px;text-align:center;">
+      <div style="font-size:11px;color:#666;">Diferencia</div>
+      <div id="valorDiferenciaTop50" style="font-size:15px;font-weight:600;">—</div>
+    </div>
+  </div>
+  <!-- FIN INDICADORES TOP-50 -->
+
+  
   <div id="rankingTop50" class="placeholder">
     Cargando mejores resultados históricos...
   </div>
@@ -8774,6 +8799,53 @@ async function cargarTop50Historico() {
         )
       : null;
 
+
+// INDICADORES TOP-50 HISTÓRICO
+
+const valorTop1Historico =
+  document.getElementById("valorTop1Historico");
+
+const valorTop50Historico =
+  document.getElementById("valorTop50Historico");
+
+const valorDiferenciaTop50 =
+  document.getElementById("valorDiferenciaTop50");
+
+const puntuacionPrimeroTop50 =
+  !errorTop50 && top50Historico.length > 0
+    ? Number(top50Historico[0].final_score)
+    : null;
+
+const puntuacionUltimoTop50 =
+  !errorTop50 && top50Historico.length >= 50
+    ? puntuacionCorteTop50
+    : null;
+
+if (valorTop1Historico) {
+  valorTop1Historico.textContent =
+    puntuacionPrimeroTop50 !== null
+      ? puntuacionPrimeroTop50
+      : "—";
+}
+
+if (valorTop50Historico) {
+  valorTop50Historico.textContent =
+    puntuacionUltimoTop50 !== null
+      ? puntuacionUltimoTop50
+      : "—";
+}
+
+if (valorDiferenciaTop50) {
+  valorDiferenciaTop50.textContent =
+    puntuacionPrimeroTop50 !== null &&
+    puntuacionUltimoTop50 !== null
+      ? puntuacionPrimeroTop50 - puntuacionUltimoTop50
+      : "—";
+}
+
+// FIN INDICADORES TOP-50
+
+  
   const fechasTop50 = [
     ...new Set(
       top50Historico
