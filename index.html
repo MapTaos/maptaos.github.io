@@ -2075,6 +2075,30 @@
   🔥 Top-20
 </h2>
 
+<!-- INDICADORES TOP-20 MENSUAL -->
+<div id="indicadoresTop20" style="
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:10px 0 14px;
+">
+  <div style="background:#f1f1f1;border-radius:10px;padding:10px 4px;text-align:center;">
+    <div style="font-size:12px;color:#666;">Top-1</div>
+    <div id="valorTop1Mes" style="font-size:21px;font-weight:700;">—</div>
+  </div>
+
+  <div style="background:#f1f1f1;border-radius:10px;padding:10px 4px;text-align:center;">
+    <div style="font-size:12px;color:#666;">Top-20</div>
+    <div id="valorTop20Mes" style="font-size:21px;font-weight:700;">—</div>
+  </div>
+
+  <div style="background:#e2e5e9;border-radius:10px;padding:10px 4px;text-align:center;">
+    <div style="font-size:12px;color:#555;">Diferencia</div>
+    <div id="valorDiferenciaTop20Mes" style="font-size:21px;font-weight:700;">—</div>
+  </div>
+</div>
+<!-- FIN INDICADORES TOP-20 -->
+
 <div style="
   display:flex;
   justify-content:center;
@@ -8607,25 +8631,51 @@ if (btnTrimestreAnterior) {
 
     if (!data || data.length < tamanoPagina) break;
   }
-
-
-
-
   
-  // Conservar las 20 mejores partidas y todos
-  // los empates en la última posición
-  const puntuacionCorte =
-    top20General && top20General.length >= 20
-      ? Number(top20General[19].final_score)
+    // Conservar las 20 mejores partidas y todos
+    // los empates en la última posición
+    const puntuacionCorte =
+      top20General && top20General.length >= 20
+        ? Number(top20General[19].final_score)
+        : null;
+
+ // INDICADORES TOP-20 MENSUAL
+  const valorTop1Mes = document.getElementById("valorTop1Mes");
+  const valorTop20Mes = document.getElementById("valorTop20Mes");
+  const valorDiferenciaTop20Mes =
+    document.getElementById("valorDiferenciaTop20Mes");
+  
+  const puntuacionPrimero =
+    top20General && top20General.length > 0
+      ? Number(top20General[0].final_score)
       : null;
-
-  const top20ConEmpates =
-    puntuacionCorte === null
-      ? top20General
-      : top20General.filter(
-          fila => Number(fila.final_score) >= puntuacionCorte
-        );
-
+  
+  if (valorTop1Mes) {
+    valorTop1Mes.textContent =
+      puntuacionPrimero !== null ? puntuacionPrimero : "—";
+  }
+  
+  if (valorTop20Mes) {
+    valorTop20Mes.textContent =
+      puntuacionCorte !== null ? puntuacionCorte : "—";
+  }
+  
+  if (valorDiferenciaTop20Mes) {
+    valorDiferenciaTop20Mes.textContent =
+      puntuacionPrimero !== null && puntuacionCorte !== null
+        ? puntuacionPrimero - puntuacionCorte
+        : "—";
+  }
+  // FIN INDICADORES TOP-20
+  
+    const top20ConEmpates =
+      puntuacionCorte === null
+        ? top20General
+        : top20General.filter(
+            fila => Number(fila.final_score) >= puntuacionCorte
+          );
+  
+ 
   const fechasTop20 = [
     ...new Set(
       (top20ConEmpates || []).map(fila => fila.fecha)
