@@ -1993,6 +1993,56 @@
     Desde el 1 de octubre de 2026.
   </div>
 
+
+<!-- SELECTOR MENSUAL / TOTAL CLUB DE LOS 100 -->
+<div
+  id="selectorPeriodoClub100"
+  style="
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+    margin-bottom:10px;
+  "
+>
+  <button
+    type="button"
+    data-periodo-club100="mensual"
+    style="
+      min-width:0;
+      padding:5px 4px;
+      border:1px solid #c5c9cc;
+      border-radius:5px;
+      background:#e1e4e6;
+      color:#111;
+      font-size:11px;
+      font-weight:600;
+      cursor:pointer;
+    "
+  >
+    Mensual
+  </button>
+
+  <button
+    type="button"
+    data-periodo-club100="total"
+    style="
+      min-width:0;
+      padding:5px 4px;
+      border:1px solid #111;
+      border-radius:5px;
+      background:#111;
+      color:#fff;
+      font-size:11px;
+      font-weight:600;
+      cursor:pointer;
+    "
+  >
+    Total
+  </button>
+</div>
+<!-- FIN SELECTOR CLUB DE LOS 100 -->
+
+  
   <div id="rankingClub100" class="placeholder">
      Cargando Club de los 100...
   </div>
