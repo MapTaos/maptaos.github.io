@@ -7158,7 +7158,9 @@ while (true) {
         </div>
 
         <div
-          onclick="abrirPerfilJugador(${jugador.jugador_id}, '${nombre.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}')"
+          data-jugador-id="${Number(jugador.jugador_id)}"
+          onclick="abrirPerfilJugador(Number(this.dataset.jugadorId), this.textContent.trim())"
+
           style="
             min-width:0;
             font-weight:600;
@@ -7169,7 +7171,12 @@ while (true) {
             cursor:pointer;
           "
         >
-          ${nombre}
+        ${String(nombre || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;")}
         </div>
 
         <div style="text-align:center;">
@@ -7432,7 +7439,8 @@ async function cargarMedalleroPorContinente() {
           </div>
           
           <div
-            onclick="abrirPerfilJugador(${jugador.id}, '${nombreParaClick}')"
+            data-jugador-id="${Number(jugador.id)}"
+            onclick="abrirPerfilJugador(Number(this.dataset.jugadorId), this.textContent.trim())"
             style="
               min-width:0;
               font-weight:600;
@@ -7443,7 +7451,12 @@ async function cargarMedalleroPorContinente() {
               cursor:pointer;
             "
           >
-            ${nombre}
+          ${String(nombre || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;")}
           </div>
 
           <div style="text-align:center;">
@@ -7635,17 +7648,26 @@ contenedor.innerHTML =
                 text-align:center;
                 font-weight:400;
                 color:#666666;
-              ">${medalla || fila.posicion}</span>
-        
-              <strong
-                onclick="abrirPerfilJugador(${fila.jugador_id}, '${nombre}')"
-                style="
-                  cursor:pointer;
-                  color:#666666;
-                "
-              >
-                ${nombre}
-              </strong>
+              ">${medalla || fila.posicion}</span> 
+            <strong
+              data-jugador-id="${Number(fila.jugador_id)}"
+              onclick="abrirPerfilJugador(
+                Number(this.dataset.jugadorId),
+                this.textContent.trim()
+              )"
+              style="
+                cursor:pointer;
+                color:#666666;
+              "
+            >
+              ${String(nombre || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;")}
+            </strong>
+
             </span>
         
             <div style="
@@ -7964,8 +7986,9 @@ medallas.forEach((medalla, indiceMedalla) => {
       .replace(/'/g, "\\'");
 
     return `
-      <div
-        onclick="abrirPerfilJugador(${jugador.jugador_id}, '${nombreParaClick}')"
+      <div>
+        data-jugador-id="${Number(jugador.jugador_id)}"
+        onclick="abrirPerfilJugador(Number(this.dataset.jugadorId), this.textContent.trim())"
         style="
           font-weight:600;
           font-size:12px;
@@ -7974,8 +7997,13 @@ medallas.forEach((medalla, indiceMedalla) => {
           overflow-wrap:anywhere;
           cursor:pointer;
         "
-      >
-        ${nombre}
+      >        
+        ${String(nombre || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;")}
       </div>
     `;
   }).join("");
@@ -8711,9 +8739,13 @@ contenedor.innerHTML = ranking
             ">
               ${fila.mejor}
             </strong>
-
+        
             <strong
-              onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.nombre}')"
+              data-jugador-id="${Number(fila.jugador_id)}"
+              onclick="abrirPerfilJugador(
+                Number(this.dataset.jugadorId),
+                this.textContent.trim()
+              )"
               style="
                 cursor:pointer;
                 color:#666666;
@@ -8721,9 +8753,13 @@ contenedor.innerHTML = ranking
                 margin-left:-10px;
               "
             >
-              ${fila.nombre}
+              ${String(fila.nombre || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;")}
             </strong>
-
           </div>
 
           <span style="
