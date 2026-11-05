@@ -5671,6 +5671,97 @@ const fechaAyer = new Date(
 let periodoClub100 = "total";
 let desplazamientoMesClub100 = 0;
 
+  
+function actualizarNavegacionClub100() {
+
+  const navegacion =
+    document.getElementById("navegacionClub100");
+
+  const titulo =
+    document.getElementById("tituloMesClub100");
+
+  const botonAnterior =
+    document.getElementById("btnClub100Anterior");
+
+  const botonSiguiente =
+    document.getElementById("btnClub100Siguiente");
+
+  if (!navegacion || !titulo ||
+      !botonAnterior || !botonSiguiente) return;
+
+  if (periodoClub100 !== "mensual") {
+    navegacion.classList.add("hidden");
+    return;
+  }
+
+  navegacion.classList.remove("hidden");
+
+  const [anioActual, mesActual] =
+    fechaMadridISO().split("-").map(Number);
+
+  const indiceActual = anioActual * 12 + mesActual - 1;
+  const indiceSeleccionado =
+    indiceActual + desplazamientoMesClub100;
+
+  const fecha = new Date(
+    Math.floor(indiceSeleccionado / 12),
+    ((indiceSeleccionado % 12) + 12) % 12,
+    1
+  );
+
+  const nombreMes = fecha.toLocaleDateString("es-ES", {
+    month: "long",
+    year: "numeric"
+  });
+
+  titulo.textContent =
+    "Clasificación · " +
+    nombreMes.charAt(0).toUpperCase() +
+    nombreMes.slice(1);
+
+  const indiceMinimo = 2026 * 12 + 9; // Octubre 2026
+
+  botonAnterior.disabled =
+    indiceSeleccionado <= indiceMinimo;
+
+  botonSiguiente.disabled =
+    desplazamientoMesClub100 >= 0;
+
+  [botonAnterior, botonSiguiente].forEach(boton => {
+    boton.style.opacity = boton.disabled ? "0.35" : "1";
+    boton.style.cursor =
+      boton.disabled ? "default" : "pointer";
+  });
+}
+
+
+  
+document.getElementById("btnClub100Anterior")
+  .addEventListener("click", () => {
+    if (desplazamientoMesClub100 <=
+        (2026 * 12 + 9) -
+        (() => {
+          const [a, m] = fechaMadridISO().split("-").map(Number);
+          return a * 12 + m - 1;
+        })()) return;
+
+    desplazamientoMesClub100--;
+    cargarRankingClub100();
+  });
+
+document.getElementById("btnClub100Actual")
+  .addEventListener("click", () => {
+    desplazamientoMesClub100 = 0;
+    cargarRankingClub100();
+  });
+
+document.getElementById("btnClub100Siguiente")
+  .addEventListener("click", () => {
+    if (desplazamientoMesClub100 >= 0) return;
+    desplazamientoMesClub100++;
+    cargarRankingClub100();
+  });
+
 
 document.getElementById("selectorPeriodoClub100")
   .addEventListener("click", event => {
@@ -5712,7 +5803,7 @@ async function cargarRankingClub100() {
     document.getElementById("rankingClub100");
 
   if (!contenedor) return;
-
+  actualizarNavegacionClub100();
   contenedor.textContent = "Cargando Club de los 100...";
 
 
