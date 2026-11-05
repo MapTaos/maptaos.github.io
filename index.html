@@ -11359,55 +11359,48 @@ profileContent.innerHTML = `
 
 
 
+
 <!-- RONDAS DE 100 DEL MES ACTUAL -->
 <div style="
   background:#f8f9fa;
   border:1px solid #d1d5db;
   border-radius:10px;
   padding:10px 12px;
-  text-align:center;
   margin-bottom:12px;
 ">
 
   <div class="titulo-estadistica">
-    💯 Rondas de 100 · ${nombreMes100}
+    💯 Rondas de 100 en este mes
   </div>
 
   <div style="
     display:grid;
     grid-template-columns:repeat(6,minmax(0,1fr));
-    gap:4px;
+    text-align:center;
+    font-size:12px;
     margin-top:10px;
   ">
 
+    ${[1, 2, 3, 4, 5, "Total"].map(n => `
+      <div style="padding:5px 0;">
+        ${n}
+      </div>
+    `).join("")}
+
     ${[1, 2, 3, 4, 5].map(n => `
       <div style="
-        background:#e9ecef;
-        border-radius:6px;
-        padding:7px 2px;
-        min-width:0;
+        border-top:1px solid #d1d5db;
+        padding:9px 0;
       ">
-        <div style="font-size:11px;color:#666;">
-          ${n}
-        </div>
-        <div style="font-size:17px;font-weight:700;">
-          ${dias100Mes[n]}
-        </div>
+        ${dias100Mes[n] || ""}
       </div>
     `).join("")}
 
     <div style="
-      background:#e1e4e6;
-      border-radius:6px;
-      padding:7px 2px;
-      min-width:0;
+      border-top:1px solid #d1d5db;
+      padding:9px 0;
     ">
-      <div style="font-size:11px;color:#555;">
-        Total
-      </div>
-      <div style="font-size:17px;font-weight:700;">
-        ${total100Mes}
-      </div>
+      ${total100Mes || ""}
     </div>
 
   </div>
@@ -11415,13 +11408,15 @@ profileContent.innerHTML = `
   <div style="
     font-size:10px;
     color:#777;
-    margin-top:8px;
+    margin-top:4px;
   ">
-    Días con 1, 2, 3, 4 o 5 rondas perfectas
+    1..5: días con esa cantidad de rondas de 100 puntos.
+    Total: rondas de 100 acumuladas en el mes actual.
   </div>
 
 </div>
 <!-- FIN RONDAS DE 100 DEL MES ACTUAL -->
+
 
  
     <!-- ESTADÍSTICAS GENERALES -->
