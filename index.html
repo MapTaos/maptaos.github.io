@@ -10987,6 +10987,40 @@ for (let desde = 0; ; desde += tamanoPagina) {
 
 const hoy = fechaMadridISO();
 
+  
+ // RONDAS DE 100 DEL MES ACTUAL
+const mesActualClub100 = hoy.slice(0, 7);
+
+const dias100Mes = [0, 0, 0, 0, 0, 0];
+let total100Mes = 0;
+
+resultados.forEach(partida => {
+
+  if (partida.fecha.slice(0, 7) !== mesActualClub100) {
+    return;
+  }
+
+  const cantidad100 = [1, 2, 3, 4, 5]
+    .filter(i => Number(partida[`ronda_${i}`]) === 100)
+    .length;
+
+  if (cantidad100 > 0) {
+    dias100Mes[cantidad100]++;
+    total100Mes += cantidad100;
+  }
+
+});
+
+const nombreMes100 = new Date(
+  Number(hoy.slice(0, 4)),
+  Number(hoy.slice(5, 7)) - 1,
+  1
+).toLocaleDateString("es-ES", {
+  month: "long",
+  year: "numeric"
+});
+// FIN RONDAS DE 100 DEL MES ACTUAL
+
 // Recuperar todas las fechas y países
 const rondasPorFecha = [];
 
