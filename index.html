@@ -5081,11 +5081,21 @@ lunesAnterior.setUTCDate(
               ${fila.posicion}
             </span>
             
+           
             <strong
-              onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.alias || fila.nombre}')"
               style="cursor:pointer;"
+              data-jugador-id="${Number(fila.jugador_id)}"
+              onclick="abrirPerfilJugador(
+                Number(this.dataset.jugadorId),
+                this.textContent.trim()
+              )"
             >
-              ${fila.alias || fila.nombre}
+              ${String(fila.alias || fila.nombre || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;")}
             </strong>
 
               <span style="
@@ -5454,12 +5464,23 @@ const fechaAnterior =
               text-align:center;
             ">${medalla || fila.posicion}</span>
         
-        <strong
-          onclick="abrirPerfilJugador(${fila.jugador_id}, '${fila.alias || fila.nombre}')"
-          style="cursor:pointer;"
-        >
-          ${fila.alias || fila.nombre}
-        </strong>
+        
+          <strong
+            style="cursor:pointer;"
+            data-jugador-id="${Number(fila.jugador_id)}"
+            onclick="abrirPerfilJugador(
+              Number(this.dataset.jugadorId),
+              this.textContent.trim()
+            )"
+          >
+            ${String(fila.alias || fila.nombre || "")
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#39;")}
+          </strong>
+
 
               <span style="
                 margin-left:6px;
