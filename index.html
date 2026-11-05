@@ -5839,7 +5839,9 @@ async function cargarRankingClub100() {
 
   if (!contenedor) return;
   actualizarNavegacionClub100();
-  contenedor.textContent = "Cargando Club de los 100...";
+  if (!contenedor.innerHTML.trim()) {
+    contenedor.textContent = "Cargando Club de los 100...";
+  }
 
 
 // PERÍODO CLUB DE LOS 100
