@@ -6651,18 +6651,29 @@ async function cargarMedalleroMensual() {
                   ? "border-top:1px solid #d5d8da; padding-top:5px;"
                   : ""}
               ">
-                <div
-                  onclick="abrirPerfilJugador(${jugador.jugador_id}, '${nombreParaClick}')"
-                  style="
-                    font-weight:600;
-                    font-size:12px;
-                    line-height:1.15;
-                    overflow-wrap:anywhere;
-                    cursor:pointer;
-                  "
-                >
-                  ${nombre}
-                </div>
+                
+              <div
+                data-jugador-id="${Number(jugador.jugador_id)}"
+                onclick="abrirPerfilJugador(
+                  Number(this.dataset.jugadorId),
+                  this.textContent.trim()
+                )"
+                style="
+                  font-weight:600;
+                  font-size:12px;
+                  line-height:1.15;
+                  overflow-wrap:anywhere;
+                  cursor:pointer;
+                "
+              >
+                ${String(nombre || "")
+                  .replace(/&/g, "&amp;")
+                  .replace(/</g, "&lt;")
+                  .replace(/>/g, "&gt;")
+                  .replace(/"/g, "&quot;")
+                  .replace(/'/g, "&#39;")}
+              </div>
+
 
                 <div style="
                   margin-top:4px;
