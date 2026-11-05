@@ -12280,6 +12280,16 @@ function mostrarEvolucion(resultados, periodo) {
 // El periodo solo determina cuántos días se muestran.
 
 
+const navegacionEvolucion = document.getElementById(
+  "navegacionMesEvolucion"
+);
+
+if (navegacionEvolucion) {
+  navegacionEvolucion.classList.toggle("hidden", periodo !== "mes");
+  navegacionEvolucion.style.display = periodo === "mes" ? "flex" : "none";
+}
+
+  
 const rango = obtenerPeriodoDistribucion(
   periodo,
   periodo === "mes" ? desplazamientoMesEvolucion : 0
