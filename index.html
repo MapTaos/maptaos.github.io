@@ -2651,12 +2651,14 @@
 <!-- FONDO GRIS DE EVOLUCIÓN -->
 <div class="placeholder" style="padding-bottom:8px;">
 
+  
   <div id="chartPeriodSelector">
-    <button type="button" data-periodo="30d" class="active">30 días</button>
-    <button type="button" data-periodo="3m">3 meses</button>
+    <button type="button" data-periodo="mes">Mes</button>
+    <button type="button" data-periodo="6m">6 meses</button>
     <button type="button" data-periodo="1a">1 año</button>
-    <button type="button" data-periodo="todo">Todo</button>
+    <button type="button" data-periodo="todo" class="active">Todo</button>
   </div>
+
 
   <div id="profileChart">
     Cargando evolución...
@@ -11326,7 +11328,7 @@ profileContent.innerHTML = `
   cargarMedallasDiariasPerfil(jugadorId);
   cargarMedallasGeneralesPerfil(jugadorId);
   cargarMedallasContinentesPerfil(jugadorId);
-  mostrarEvolucion(resultados, "30d");
+  mostrarEvolucion(resultados, "todo");
   mostrarTop10(top10, rondasPorFecha);
   cargarPaisesPerfil(resultados, rondasPorFecha);
   mostrarHistorialPartidas(jugadorId, resultados, rondasPorFecha);
@@ -12235,48 +12237,20 @@ function mostrarEvolucion(resultados, periodo) {
  // Todos los periodos muestran puntuaciones DIARIAS.
 // El periodo solo determina cuántos días se muestran.
 
-const fechaHoy = fechaMadridISO();
-const hoy = new Date(fechaHoy + "T00:00:00");
 
-let diasAMostrar = null;
+const rango = obtenerPeriodoDistribucion(periodo, 0);
 
-if (periodo === "30d") {
-  diasAMostrar = 30;
-} else if (periodo === "3m") {
-  diasAMostrar = 90;
-} else if (periodo === "1a") {
-  diasAMostrar = 365;
-}
+const resultadosPeriodo = rango.valido
+  ? resultados
+      .filter(fila =>
+        fila.fecha >= rango.fechaInicio &&
+        fila.fecha <= rango.fechaFin
+      )
+      .sort((a, b) =>
+        a.fecha.localeCompare(b.fecha)
+      )
+  : [];
 
-let resultadosPeriodo;
-
-if (periodo === "todo") {
-
-  resultadosPeriodo = resultados
-    .filter(fila => {
-      const fecha = new Date(fila.fecha + "T00:00:00");
-      return fecha <= hoy;
-    })
-    .sort((a, b) =>
-      new Date(a.fecha + "T00:00:00") -
-      new Date(b.fecha + "T00:00:00")
-    );
-
-} else {
-
-  const fechaLimite = new Date(hoy);
-  fechaLimite.setDate(hoy.getDate() - (diasAMostrar - 1));
-
-  resultadosPeriodo = resultados
-    .filter(fila => {
-      const fecha = new Date(fila.fecha + "T00:00:00");
-      return fecha >= fechaLimite && fecha <= hoy;
-    })
-    .sort((a, b) =>
-      new Date(a.fecha + "T00:00:00") -
-      new Date(b.fecha + "T00:00:00")
-    );
-}
 etiquetas = resultadosPeriodo.map(fila => {
   const fecha = new Date(fila.fecha + "T00:00:00");
 
