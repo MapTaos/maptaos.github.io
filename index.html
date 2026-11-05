@@ -1848,7 +1848,7 @@
     >
 
     <button type="button" id="btnTop20">
-      🏆 Top-20 · 3M
+      🏆 Top-20 · Mes
     </button>
 
     <button type="button" id="btnMejoresMarcas">
@@ -8509,73 +8509,60 @@ async function cargarMediaHistorica() {
 
   
   
-let desplazamientoTrimestreTop20 = 0;
+let desplazamientoMesTop20 = 0;
 
   
 async function cargarTop20General() {
-  const hoy = fechaMadridISO();
+  
+const hoy = fechaMadridISO();
 
-  const [anioActual, mesActual] =
-    hoy.split("-").map(Number);
-  
-  const indiceTrimestreActual =
-    Math.floor((mesActual - 1) / 3);
-  
-  const indiceTotal =
-    anioActual * 4 +
-    indiceTrimestreActual +
-    desplazamientoTrimestreTop20;
-  
-  const anio =
-    Math.floor(indiceTotal / 4);
-  
-  const indiceTrimestre =
-    ((indiceTotal % 4) + 4) % 4;
-  
-  const mesInicioTrimestre =
-    indiceTrimestre * 3 + 1;
-  
-  const inicioTrimestre =
-    `${anio}-${String(mesInicioTrimestre).padStart(2, "0")}-01`;
+const [anioActual, mesActual] =
+  hoy.split("-").map(Number);
 
-  const nombresMeses = [
-    "Ene", "Feb", "Mar", "Abr",
-    "May", "Jun", "Jul", "Ago",
-    "Sep", "Oct", "Nov", "Dic"
-  ];
-  
-  const mesFinTrimestre =
-    mesInicioTrimestre + 2;
-  
-  const tituloTop20 =
-    document.getElementById("tituloTop20");
-  
-   if (tituloTop20) {
-    tituloTop20.textContent =
-      `🔥 Top-20 · ${nombresMeses[mesInicioTrimestre - 1]}–${nombresMeses[mesFinTrimestre - 1]} ${anio}`;
-  }
+const indiceTotal =
+  anioActual * 12 +
+  (mesActual - 1) +
+  desplazamientoMesTop20;
 
-  const btnTrimestreSiguiente =
-    document.getElementById("btnTrimestreSiguiente");
+const anio = Math.floor(indiceTotal / 12);
+const indiceMes = ((indiceTotal % 12) + 12) % 12;
+const mes = indiceMes + 1;
 
-  if (btnTrimestreSiguiente) {
-    btnTrimestreSiguiente.disabled =
-      desplazamientoTrimestreTop20 === 0;
-  }
+const inicioMes =
+  `${anio}-${String(mes).padStart(2, "0")}-01`;
+
+const indiceSiguiente = indiceTotal + 1;
+const anioSiguiente = Math.floor(indiceSiguiente / 12);
+const mesSiguiente =
+  ((indiceSiguiente % 12) + 12) % 12 + 1;
+
+const inicioSiguienteMes =
+  `${anioSiguiente}-${String(mesSiguiente).padStart(2, "0")}-01`;
+
+const nombresMeses = [
+  "Enero", "Febrero", "Marzo", "Abril",
+  "Mayo", "Junio", "Julio", "Agosto",
+  "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+const tituloTop20 =
+  document.getElementById("tituloTop20");
+
+if (tituloTop20) {
+  tituloTop20.textContent =
+    `🔥 Top-20 · ${nombresMeses[indiceMes]} ${anio}`;
+}
+
+const btnTrimestreSiguiente =
+  document.getElementById("btnTrimestreSiguiente");
+
+if (btnTrimestreSiguiente) {
+  btnTrimestreSiguiente.disabled =
+    desplazamientoMesTop20 >= 0;
+}
+
   
-  let anioFin = anio;
-  let mesSiguienteTrimestre =
-    mesInicioTrimestre + 3;
-
-  if (mesSiguienteTrimestre > 12) {
-    mesSiguienteTrimestre = 1;
-    anioFin++;
-  }
-
-  const inicioSiguienteTrimestre =
-    `${anioFin}-${String(mesSiguienteTrimestre).padStart(2, "0")}-01`;
-  
-  // Recuperar todas las partidas del trimestre por páginas
+  // Recuperar todas las partidas del mes por páginas
   const top20General = [];
   let errorTop20 = null;
   const tamanoPagina = 1000;
@@ -8596,8 +8583,8 @@ async function cargarTop20General() {
         ronda_5,
         jugadores(nombre, alias)
       `)
-      .gte("fecha", inicioTrimestre)
-      .lt("fecha", inicioSiguienteTrimestre)
+      .gte("fecha", inicioMes)
+      .lt("fecha", inicioSiguienteMes)
       .order("final_score", { ascending: false })
       .order("created_at", { ascending: true })
       .order("jugador_id", { ascending: true })
@@ -13841,10 +13828,12 @@ function mostrarSeccionInicio(seccion) {
     cargarRankingContinentes();
   }
 
+  
   if (seccion === "top20") {
-    desplazamientoTrimestreTop20 = 0;
+    desplazamientoMesTop20 = 0;
     cargarTop20General();
   }
+
 
 }
 
@@ -14198,29 +14187,30 @@ vistasMedalleros.forEach(vista => {
 
 });
   
+
 document
   .getElementById("btnTrimestreAnterior")
   .addEventListener("click", async () => {
-    desplazamientoTrimestreTop20--;
+    desplazamientoMesTop20--;
     await cargarTop20General();
   });
 
 document
   .getElementById("btnTrimestreActual")
   .addEventListener("click", async () => {
-    desplazamientoTrimestreTop20 = 0;
+    desplazamientoMesTop20 = 0;
     await cargarTop20General();
   });
 
 document
   .getElementById("btnTrimestreSiguiente")
   .addEventListener("click", async () => {
-
-    if (desplazamientoTrimestreTop20 < 0) {
-      desplazamientoTrimestreTop20++;
+    if (desplazamientoMesTop20 < 0) {
+      desplazamientoMesTop20++;
       await cargarTop20General();
     }
   });
+
   
 document
   .getElementById("btnTop50")
