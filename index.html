@@ -8561,6 +8561,14 @@ if (btnTrimestreSiguiente) {
     desplazamientoMesTop20 >= 0;
 }
 
+const btnTrimestreAnterior =
+  document.getElementById("btnTrimestreAnterior");
+
+if (btnTrimestreAnterior) {
+  btnTrimestreAnterior.disabled =
+    inicioMes <= "2026-09-01";
+}
+
   
   // Recuperar todas las partidas del mes por páginas
   const top20General = [];
@@ -14187,13 +14195,24 @@ vistasMedalleros.forEach(vista => {
 
 });
   
-
 document
   .getElementById("btnTrimestreAnterior")
   .addEventListener("click", async () => {
+
+    const hoy = fechaMadridISO();
+    const [anio, mes] = hoy.split("-").map(Number);
+
+    const indiceActual = anio * 12 + mes - 1;
+    const indiceMinimo = 2026 * 12 + 8; // Septiembre 2026
+
+    if (indiceActual + desplazamientoMesTop20 <= indiceMinimo) {
+      return;
+    }
+
     desplazamientoMesTop20--;
     await cargarTop20General();
   });
+
 
 document
   .getElementById("btnTrimestreActual")
