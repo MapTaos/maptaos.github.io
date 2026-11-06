@@ -14995,12 +14995,23 @@ document
     }
   });
   
+
 document
   .getElementById("btnMesAnterior")
   .addEventListener("click", async () => {
+
+    const hoy = new Date();
+    const mesActual = hoy.getFullYear() * 12 + hoy.getMonth();
+    const mesMinimo = 2026 * 12 + 9; // Octubre 2026
+
+    if (mesActual + desplazamientoMes <= mesMinimo) {
+      return;
+    }
+
     desplazamientoMes--;
     await cargarRankingMensual();
   });
+
 
 document
   .getElementById("btnMesActual")
