@@ -11330,8 +11330,7 @@ if (fechaAltaPerfil) {
     fechaInicioParticipacion + "T12:00:00Z"
   );
 
-
-  const fin = new Date(hoy + "T12:00:00Z");
+const fin = new Date(fechaMadridISO() + "T12:00:00Z");
 
   diasPosiblesPerfil =
     Math.max(0, Math.round((fin - inicio) / 86400000) + 1);
