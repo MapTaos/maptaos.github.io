@@ -11319,10 +11319,17 @@ const partidas = resultados.length;
 let diasPosiblesPerfil = 0;
 let porcentajeParticipacionPerfil = 0;
 
+
 if (fechaAltaPerfil) {
+  const fechaInicioParticipacion =
+    fechaAltaPerfil.slice(0, 10) > "2026-10-01"
+      ? fechaAltaPerfil.slice(0, 10)
+      : "2026-10-01";
+
   const inicio = new Date(
-    fechaAltaPerfil.slice(0, 10) + "T12:00:00Z"
+    fechaInicioParticipacion + "T12:00:00Z"
   );
+
 
   const fin = new Date(hoy + "T12:00:00Z");
 
