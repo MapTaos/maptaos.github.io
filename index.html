@@ -9003,10 +9003,20 @@ const hoy = fechaMadridISO();
 const [anioActual, mesActual] =
   hoy.split("-").map(Number);
 
+
+const indiceMinimoTop20 = 2026 * 12 + 9;
+
+const indiceActualTop20 =
+  anioActual * 12 + (mesActual - 1);
+
+desplazamientoMesTop20 = Math.max(
+  desplazamientoMesTop20,
+  indiceMinimoTop20 - indiceActualTop20
+);
+
 const indiceTotal =
-  anioActual * 12 +
-  (mesActual - 1) +
-  desplazamientoMesTop20;
+  indiceActualTop20 + desplazamientoMesTop20;
+
 
 const anio = Math.floor(indiceTotal / 12);
 const indiceMes = ((indiceTotal % 12) + 12) % 12;
