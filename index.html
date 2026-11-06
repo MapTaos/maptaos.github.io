@@ -11111,27 +11111,7 @@ if (errorAlta) {
 const fechaAltaPerfil = datosAlta?.fecha_alta || null;
 
   
- // PARTICIPACIÓN DESDE LA FECHA DE ALTA
-let diasPosiblesPerfil = 0;
-let porcentajeParticipacionPerfil = 0;
-
-if (fechaAltaPerfil) {
-  const inicio = new Date(
-    fechaAltaPerfil.slice(0, 10) + "T12:00:00Z"
-  );
-
-  const fin = new Date(hoy + "T12:00:00Z");
-
-  diasPosiblesPerfil =
-    Math.floor((fin - inicio) / 86400000) + 1;
-
-  if (diasPosiblesPerfil > 0) {
-    porcentajeParticipacionPerfil = Math.round(
-      (partidas / diasPosiblesPerfil) * 100
-    );
-  }
-}
-// FIN PARTICIPACIÓN
+ 
 
 
   
