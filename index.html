@@ -7438,27 +7438,26 @@ async function cargarMedalleroPorContinente() {
               : jugador.posicion}
           </div>
           
-          <div
-            data-jugador-id="${Number(jugador.id)}"
-            onclick="abrirPerfilJugador(Number(this.dataset.jugadorId), this.textContent.trim())"
-            style="
-              min-width:0;
-              font-weight:600;
-              font-size:12px;
-              white-space:nowrap;
-              overflow:hidden;
-              text-overflow:ellipsis;
-              cursor:pointer;
-            "
-          >
-          ${String(nombre || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#39;")}
+          <div style="
+            min-width:0;
+            font-weight:600;
+            font-size:12px;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+          ">
+            <span
+              data-jugador-id="${Number(jugador.id)}"
+              onclick="abrirPerfilJugador(Number(this.dataset.jugadorId), this.textContent.trim())"
+              style="cursor:pointer;"
+            >${String(nombre || "")
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#39;")}</span>
           </div>
-
+          
           <div style="text-align:center;">
             ${mostrarMedallas(jugador.oros, jugador.orosProv)}
           </div>
