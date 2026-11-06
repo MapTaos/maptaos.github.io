@@ -11715,8 +11715,11 @@ profileContent.innerHTML = `
          style="white-space:nowrap;">
       🎮 Partidas
     </div>
-    <div style="font-size:21px;font-weight:700;">
-      ${partidas}
+    <div style="font-size:21px;font-weight:700;"> 
+      ${partidas}${diasPosiblesPerfil > 0
+        ? `/${diasPosiblesPerfil} · ${porcentajeParticipacionPerfil}%`
+        : ""}
+
     </div>
   </div>
 
