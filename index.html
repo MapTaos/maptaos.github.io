@@ -7985,7 +7985,7 @@ medallas.forEach((medalla, indiceMedalla) => {
       .replace(/'/g, "\\'");
 
     return `
-      <div>
+      <div
         data-jugador-id="${Number(jugador.jugador_id)}"
         onclick="abrirPerfilJugador(Number(this.dataset.jugadorId), this.textContent.trim())"
         style="
