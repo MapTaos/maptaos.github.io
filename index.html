@@ -11098,6 +11098,20 @@ for (let desde = 0; ; desde += tamanoPagina) {
 const hoy = fechaMadridISO();
 
   
+const { data: datosAlta, error: errorAlta } = await supabaseClient
+  .from("jugadores")
+  .select("fecha_alta")
+  .eq("id", jugadorId)
+  .single();
+
+if (errorAlta) {
+  console.error("Error al consultar fecha de alta:", errorAlta);
+}
+
+const fechaAltaPerfil = datosAlta?.fecha_alta || null;
+
+
+  
  // RONDAS DE 100 DEL MES ACTUAL
 const mesActualClub100 = hoy.slice(0, 7);
 
