@@ -6447,22 +6447,31 @@ clasificacion.forEach((jugador, indice) => {
   `;
 
   
-  celdaNombre.style.transition = "background-color 0.12s ease";
+    
   
-  celdaNombre.addEventListener("pointerdown", () => {
-    celdaNombre.style.backgroundColor = "#d1d5db";
-  });
-  
-  ["pointerup", "pointerleave", "pointercancel"].forEach(evento => {
-    celdaNombre.addEventListener(evento, () => {
-      celdaNombre.style.backgroundColor = "";
-    });
-  });
+celdaNombre.addEventListener("click", async () => {
+  if (celdaNombre.dataset.abriendo === "1") return;
 
-  
-  celdaNombre.addEventListener("click", () => {
-    abrirPerfilJugador(Number(jugador.id), nombre);
-  });
+  celdaNombre.dataset.abriendo = "1";
+
+  // Resaltar el nombre durante la carga
+  celdaNombre.style.backgroundColor = "#d1d5db";
+  celdaNombre.style.color = "#111827";
+  celdaNombre.style.borderRadius = "5px";
+  celdaNombre.style.cursor = "progress";
+
+  try {
+    await abrirPerfilJugador(Number(jugador.id), nombre);
+  } finally {
+    // Recuperar el aspecto original
+    celdaNombre.style.backgroundColor = "";
+    celdaNombre.style.color = "";
+    celdaNombre.style.borderRadius = "";
+    celdaNombre.style.cursor = "";
+    delete celdaNombre.dataset.abriendo;
+  }
+});
+
 
 
 
