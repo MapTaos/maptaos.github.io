@@ -5187,12 +5187,25 @@ const fechaAnterior =
   }
   
   const btnMesSiguiente =
-    document.getElementById("btnMesSiguiente");
-  
-  if (btnMesSiguiente) {
-    btnMesSiguiente.disabled =
-      desplazamientoMes === 0;
-  }
+  document.getElementById("btnMesSiguiente");
+
+if (btnMesSiguiente) {
+  btnMesSiguiente.disabled =
+    desplazamientoMes === 0;
+}
+
+// Deshabilitar Anterior al llegar a octubre de 2026
+const btnMesAnterior =
+  document.getElementById("btnMesAnterior");
+
+if (btnMesAnterior) {
+  const hoy = new Date();
+  const mesActual = hoy.getFullYear() * 12 + hoy.getMonth();
+  const mesMinimo = 2026 * 12 + 9; // Octubre de 2026
+
+  btnMesAnterior.disabled =
+    mesActual + desplazamientoMes <= mesMinimo;
+}
     
   const {
     data: actual,
