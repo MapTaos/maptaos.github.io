@@ -11108,11 +11108,7 @@ async function abrirPerfilJugador(jugadorId, nombre) {
   profileContent.innerHTML =
     "Cargando estadísticas...";
 
-  // Mostrar inmediatamente el perfil mientras se cargan los datos
-  appView.classList.add("hidden");
-  profileView.classList.remove("hidden");
-  window.scrollTo(0, 0);
-
+  
 jugadorDistribucionActual = jugadorId;
 nombreJugadorDistribucionActual = nombre;
   
