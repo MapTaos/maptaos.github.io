@@ -4617,14 +4617,34 @@ if (filaAnterior) {
   text-align:center;
 ">${medalla || fila.posicion}</span>
 
+
 <strong
- 
   data-jugador-id="${Number(fila.jugador_id)}"
-  onclick="abrirPerfilJugador(
-    Number(this.dataset.jugadorId),
-    this.textContent.trim()
-  )"
+  style="cursor:pointer; border-radius:4px;"
+  onclick="
+    if (this.dataset.abriendo === '1') return;
+    this.dataset.abriendo = '1';
+
+    const nombre = this.textContent.trim();
+
+    this.style.backgroundColor = '#bfdbfe';
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(async () => {
+        try {
+          await abrirPerfilJugador(
+            Number(this.dataset.jugadorId),
+            nombre
+          );
+        } finally {
+          this.style.backgroundColor = '';
+          delete this.dataset.abriendo;
+        }
+      });
+    });
+  "
 >
+
   ${String(fila.alias || fila.nombre || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
