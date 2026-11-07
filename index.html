@@ -6447,28 +6447,23 @@ clasificacion.forEach((jugador, indice) => {
   `;
 
   
-  celdaNombre.addEventListener("click", async () => {
-    // Evitar pulsaciones repetidas
-    if (celdaNombre.dataset.abriendo === "1") return;
+  celdaNombre.style.transition = "background-color 0.12s ease";
   
-    celdaNombre.dataset.abriendo = "1";
-  
-    // Indicar visualmente que se ha pulsado
-    const contenidoOriginal = celdaNombre.innerHTML;
-    celdaNombre.style.opacity = "0.5";
-    celdaNombre.style.cursor = "wait";
-    celdaNombre.innerHTML = contenidoOriginal + " ⏳";
-  
-    try {
-      await abrirPerfilJugador(Number(jugador.id), nombre);
-    } finally {
-      // Restaurar el aspecto original
-      celdaNombre.innerHTML = contenidoOriginal;
-      celdaNombre.style.opacity = "";
-      celdaNombre.style.cursor = "";
-      delete celdaNombre.dataset.abriendo;
-    }
+  celdaNombre.addEventListener("pointerdown", () => {
+    celdaNombre.style.backgroundColor = "#d1d5db";
   });
+  
+  ["pointerup", "pointerleave", "pointercancel"].forEach(evento => {
+    celdaNombre.addEventListener(evento, () => {
+      celdaNombre.style.backgroundColor = "";
+    });
+  });
+
+  
+  celdaNombre.addEventListener("click", () => {
+    abrirPerfilJugador(Number(jugador.id), nombre);
+  });
+
 
 
   fila.appendChild(celdaNombre);
