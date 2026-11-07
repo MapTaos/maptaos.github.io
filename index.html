@@ -6449,28 +6449,39 @@ clasificacion.forEach((jugador, indice) => {
   
     
   
+
 celdaNombre.addEventListener("click", async () => {
   if (celdaNombre.dataset.abriendo === "1") return;
 
   celdaNombre.dataset.abriendo = "1";
 
-  // Resaltar el nombre durante la carga
-  celdaNombre.style.backgroundColor = "#d1d5db";
-  celdaNombre.style.color = "#111827";
-  celdaNombre.style.borderRadius = "5px";
-  celdaNombre.style.cursor = "progress";
+  const contenidoOriginal = celdaNombre.innerHTML;
+
+  // Mostrar claramente que se está abriendo el perfil
+  celdaNombre.textContent = "⏳ Abriendo perfil...";
+  celdaNombre.style.fontWeight = "700";
+  celdaNombre.style.color = "#2563eb";
+  celdaNombre.style.cursor = "wait";
 
   try {
+    // Permitir que el navegador dibuje el indicador
+    await new Promise(resolve =>
+      requestAnimationFrame(() =>
+        requestAnimationFrame(resolve)
+      )
+    );
+
     await abrirPerfilJugador(Number(jugador.id), nombre);
+
   } finally {
-    // Recuperar el aspecto original
-    celdaNombre.style.backgroundColor = "";
+    celdaNombre.innerHTML = contenidoOriginal;
+    celdaNombre.style.fontWeight = "";
     celdaNombre.style.color = "";
-    celdaNombre.style.borderRadius = "";
     celdaNombre.style.cursor = "";
     delete celdaNombre.dataset.abriendo;
   }
 });
+
 
 
 
