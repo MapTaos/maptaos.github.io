@@ -6446,9 +6446,30 @@ clasificacion.forEach((jugador, indice) => {
     cursor:pointer;
   `;
 
-  celdaNombre.addEventListener("click", () => {
-    abrirPerfilJugador(Number(jugador.id), nombre);
+  
+  celdaNombre.addEventListener("click", async () => {
+    // Evitar pulsaciones repetidas
+    if (celdaNombre.dataset.abriendo === "1") return;
+  
+    celdaNombre.dataset.abriendo = "1";
+  
+    // Indicar visualmente que se ha pulsado
+    const contenidoOriginal = celdaNombre.innerHTML;
+    celdaNombre.style.opacity = "0.5";
+    celdaNombre.style.cursor = "wait";
+    celdaNombre.innerHTML = contenidoOriginal + " ⏳";
+  
+    try {
+      await abrirPerfilJugador(Number(jugador.id), nombre);
+    } finally {
+      // Restaurar el aspecto original
+      celdaNombre.innerHTML = contenidoOriginal;
+      celdaNombre.style.opacity = "";
+      celdaNombre.style.cursor = "";
+      delete celdaNombre.dataset.abriendo;
+    }
   });
+
 
   fila.appendChild(celdaNombre);
 
