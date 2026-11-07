@@ -12135,6 +12135,20 @@ profileContent.innerHTML = `
   
   appView.classList.add("hidden");
   profileView.classList.remove("hidden");
+  
+  // Activar "Todo" al entrar en el perfil
+  document.querySelectorAll(
+    "#chartPeriodSelector button"
+  ).forEach(boton => {
+    boton.classList.toggle(
+      "active",
+      boton.dataset.periodo === "todo"
+    );
+  });
+  
+  desplazamientoMesEvolucion = 0;
+  actualizarNavegacionEvolucion();
+  
   window.scrollTo(0, 0);
   cargarMedallasDiariasPerfil(jugadorId);
   cargarMedallasGeneralesPerfil(jugadorId);
