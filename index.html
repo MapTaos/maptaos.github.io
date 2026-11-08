@@ -13690,6 +13690,16 @@ const rango = obtenerPeriodoDistribucion(
   periodo === "mes" ? desplazamientoMesEvolucion : 0
 );
 
+
+const tituloMesEvolucion = periodo === "mes" && rango.valido
+  ? new Date(rango.fechaInicio + "T00:00:00")
+      .toLocaleDateString("es-ES", {
+        month: "long",
+        year: "numeric"
+      })
+  : "";
+
+  
 const resultadosPeriodo = rango.valido
   ? resultados
       .filter(fila =>
@@ -13722,10 +13732,26 @@ const mediaPeriodo =
       )
     : 0;
   
+
 contenedor.innerHTML = `
+
+  ${tituloMesEvolucion ? `
+    <div style="
+      text-align:center;
+      margin-top:12px;
+      margin-bottom:6px;
+      font-size:15px;
+      font-weight:bold;
+      text-transform:capitalize;
+    ">
+      ${tituloMesEvolucion}
+    </div>
+  ` : ""}
+
   <div style="text-align:center; margin-bottom:10px;">
     <strong>Media del período: ${mediaPeriodo} puntos</strong>
   </div>
+
   
 <div style="position:relative;height:170px;width:100%;">
   <canvas id="evolutionChart"></canvas>
