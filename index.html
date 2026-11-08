@@ -14753,7 +14753,8 @@ function mostrarSeccionInicio(seccion) {
     club100: "seccionClub100",
     medallero: "seccionMedallero",
     top50: "seccionTop50",
-    dificultadPaises: "seccionDificultadPaises"
+    dificultadPaises: "seccionDificultadPaises",
+    estadisticasGrupo: "seccionEstadisticasGrupo"
   };
 
 const botones = {
@@ -14768,8 +14769,9 @@ const botones = {
   club100: "btnClub100",
   medallero: "btnMedallero",
   top50: "btnTop50",
-  dificultadPaises: "btnDificultadPaises"
-};
+  dificultadPaises: "btnDificultadPaises",
+  estadisticasGrupo: "btnEstadisticasGrupo"
+  };
 
  
 Object.values(botones).forEach(id => {
@@ -14801,7 +14803,8 @@ if (
   seccion === "club100" ||
   seccion === "medallero" ||
   seccion === "top50" ||
-  seccion === "dificultadPaises"
+  seccion === "dificultadPaises" ||
+  seccion === "estadisticasGrupo"
 ) {
   btnMasRankings.style.background = "#111";
   btnMasRankings.style.color = "#fff";
@@ -15134,6 +15137,12 @@ document
   .addEventListener("click", async () => {
     mostrarSeccionInicio("dificultadPaises");
     await cargarDificultadPaises();
+  });
+
+document
+  .getElementById("btnEstadisticasGrupo")
+  .addEventListener("click", () => {
+    mostrarSeccionInicio("estadisticasGrupo");
   });
 
 document
