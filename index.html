@@ -4707,9 +4707,13 @@ const mostrarMediasRondas =
 
   
 
+
 const contenedorMedias = document.getElementById("mediasRondasHoy");
 
 if (contenedorMedias) {
+  contenedorMedias.innerHTML = "";
+  contenedorMedias.classList.add("hidden");
+
   const valores = mediasRondas.filter(valor => valor !== null);
 
   
