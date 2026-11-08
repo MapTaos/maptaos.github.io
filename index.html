@@ -11463,7 +11463,7 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
       flex-wrap:wrap;
       gap:6px;
       margin-top:8px;
-      font-size:10px;
+      font-size:12px;
       color:#666;
     ">
       
@@ -11482,7 +11482,7 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
         width:16px;
         border-top:3px dashed #ec4899;
       "></span>
-      Media del período
+      Media
     </span>
     
     <span style="display:inline-flex;align-items:center;gap:5px;">
@@ -11495,6 +11495,18 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
     </span>
 
     </div>
+    
+    <div style="
+      margin-top:12px;
+      font-size:11px;
+      color:#777;
+      text-align:center;
+      line-height:1.4;
+    ">
+      Cada punto representa la media de todas las
+      partidas jugadas por el grupo ese día.
+    </div>
+
   `;
 
   const canvas =
