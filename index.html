@@ -13940,6 +13940,37 @@ document.getElementById("btnEvolucionSiguiente")
   });
 
 
+    
+    document.getElementById("btnEvolucionGrupoAnterior")
+      .addEventListener("click", () => {
+    
+        const anterior = obtenerPeriodoDistribucion(
+          "mes",
+          desplazamientoMesEvolucionGrupo - 1
+        );
+    
+        if (anterior.valido) {
+          desplazamientoMesEvolucionGrupo--;
+          mostrarEvolucionGrupo(resultadosGrupoActuales, "mes");
+        }
+      });
+    
+    document.getElementById("btnEvolucionGrupoActual")
+      .addEventListener("click", () => {
+        desplazamientoMesEvolucionGrupo = 0;
+        mostrarEvolucionGrupo(resultadosGrupoActuales, "mes");
+      });
+    
+    document.getElementById("btnEvolucionGrupoSiguiente")
+      .addEventListener("click", () => {
+    
+        if (desplazamientoMesEvolucionGrupo < 0) {
+          desplazamientoMesEvolucionGrupo++;
+          mostrarEvolucionGrupo(resultadosGrupoActuales, "mes");
+        }
+      });
+
+
     const boton = event.target.closest("button");
     if (!boton) return;
 
