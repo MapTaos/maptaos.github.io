@@ -11443,9 +11443,15 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
   }
 
   contenedor.innerHTML = `
-    <div style="text-align:center;margin-bottom:10px;">
+    
+    <div style="
+      text-align:center;
+      margin-top:14px;
+      margin-bottom:10px;
+    ">
       <strong>Media del período: ${mediaPeriodo} puntos</strong>
     </div>
+
 
     <div style="position:relative;height:170px;width:100%;">
       <canvas id="evolutionChartGrupo"></canvas>
@@ -11455,16 +11461,16 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
       display:flex;
       justify-content:center;
       flex-wrap:wrap;
-      gap:14px;
+      gap:6px;
       margin-top:8px;
-      font-size:12px;
+      font-size:10px;
       color:#666;
     ">
       
     <span style="display:inline-flex;align-items:center;gap:5px;">
       <span style="
         display:inline-block;
-        width:25px;
+        width:16px;
         border-top:3px solid #6495ed;
       "></span>
       Media diaria
@@ -11473,7 +11479,7 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
     <span style="display:inline-flex;align-items:center;gap:5px;">
       <span style="
         display:inline-block;
-        width:25px;
+        width:16px;
         border-top:3px dashed #ec4899;
       "></span>
       Media del período
@@ -11482,7 +11488,7 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
     <span style="display:inline-flex;align-items:center;gap:5px;">
       <span style="
         display:inline-block;
-        width:25px;
+        width:16px;
         border-top:2px dashed #1d4ed8;
       "></span>
       Tendencia
