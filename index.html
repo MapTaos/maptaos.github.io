@@ -2120,6 +2120,16 @@
 
   </div>
 
+  <div id="mediasRondasHoy" class="hidden" style="
+    margin-left:35px;
+    width:calc(100% - 55px);
+    margin-bottom:8px;
+    font-size:13px;
+    font-weight:600;
+    box-sizing:border-box;
+  ">
+  </div>
+  
   <div id="rankingHoy" class="placeholder">
     Cargando clasificación...
   </div>
@@ -4657,6 +4667,62 @@ const {
     )
     .eq("fecha", hoy)
     .maybeSingle();
+
+
+const mediasRondas = [1, 2, 3, 4, 5].map(numero => {
+  const puntuaciones = (parciales || [])
+    .map(fila => Number(fila[`ronda_${numero}`]))
+    .filter((valor, indice) =>
+      parciales[indice][`ronda_${numero}`] !== null &&
+      Number.isFinite(valor)
+    );
+
+  return puntuaciones.length
+    ? Math.round(
+        puntuaciones.reduce((suma, valor) => suma + valor, 0)
+        / puntuaciones.length
+      )
+    : null;
+});
+
+
+const contenedorMedias = document.getElementById("mediasRondasHoy");
+
+if (contenedorMedias) {
+  const valores = mediasRondas.filter(valor => valor !== null);
+
+  if (valores.length > 0) {
+    const mejor = Math.max(...valores);
+    const peor = Math.min(...valores);
+
+    contenedorMedias.innerHTML = mediasRondas.map(valor => {
+      const color = mejor === peor
+        ? "#555"
+        : valor === mejor
+          ? "#16a34a"
+          : valor === peor
+            ? "#dc2626"
+            : "#555";
+
+      return `
+        <span style="
+          display:inline-flex;
+          align-items:center;
+          width:20%;
+          padding-left:21px;
+          box-sizing:border-box;
+          color:${color};
+        ">${valor ?? "–"}</span>
+      `;
+    }).join("");
+
+    contenedorMedias.classList.remove("hidden");
+  } else {
+    contenedorMedias.classList.add("hidden");
+  }
+}
+
+  
   
   rankingHoy.innerHTML =
     data.map(fila => {
