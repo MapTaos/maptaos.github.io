@@ -13964,6 +13964,12 @@ function actualizarNavegacionEvolucion() {
   navegacion.classList.toggle("hidden", periodo !== "mes");
   navegacion.style.display = periodo === "mes" ? "flex" : "none";
 
+
+  if (periodo !== "mes") {
+    document.getElementById("btnEvolucionSiguiente").disabled = true;
+  }
+
+  
   if (periodo === "mes") {
 
     const anterior = obtenerPeriodoDistribucion(
