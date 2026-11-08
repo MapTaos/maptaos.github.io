@@ -4641,13 +4641,23 @@ const totalJugadores =
     return;
   }
 
-  if (!data || data.length === 0) {
+ 
+if (!data || data.length === 0) {
 
-    rankingHoy.innerHTML =
-      "Todavía no hay resultados hoy.";
+  rankingHoy.innerHTML =
+    "Todavía no hay resultados hoy.";
 
-    return;
+  const contenedorMedias =
+    document.getElementById("mediasRondasHoy");
+
+  if (contenedorMedias) {
+    contenedorMedias.innerHTML = "";
+    contenedorMedias.classList.add("hidden");
   }
+
+  return;
+}
+
 const {
   data: parciales,
   error: errorParciales
