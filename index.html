@@ -15484,11 +15484,45 @@ document
     await cargarDificultadPaises();
   });
 
+
+let resultadosGrupoActuales = null;
+
 document
   .getElementById("btnEstadisticasGrupo")
-  .addEventListener("click", () => {
+  .addEventListener("click", async () => {
+
     mostrarSeccionInicio("estadisticasGrupo");
+
+    const contenedor =
+      document.getElementById("graficaEvolucionGrupo");
+
+    try {
+      if (!resultadosGrupoActuales) {
+        contenedor.textContent = "Cargando evolución...";
+        resultadosGrupoActuales = await obtenerResultadosGrupo();
+      }
+
+      desplazamientoMesEvolucionGrupo = 0;
+
+      document
+        .querySelectorAll("#selectorEvolucionGrupo button")
+        .forEach(boton => {
+          boton.classList.toggle(
+            "active",
+            boton.dataset.periodo === "todo"
+          );
+        });
+
+      mostrarEvolucionGrupo(resultadosGrupoActuales, "todo");
+
+    } catch (error) {
+      console.error("Error al cargar evolución del grupo:", error);
+      contenedor.textContent =
+        "No se han podido cargar los resultados.";
+    }
+
   });
+
 
 document
   .getElementById("btnDiaAnterior")
