@@ -11356,6 +11356,189 @@ function calcularMediasDiariasGrupo(resultados) {
 
 }
 
+
+
+let desplazamientoMesEvolucionGrupo = 0;
+let graficaEvolucionGrupoActual = null;
+
+function mostrarEvolucionGrupo(resultados, periodo = "todo") {
+
+  const contenedor =
+    document.getElementById("graficaEvolucionGrupo");
+
+  if (!contenedor) return;
+
+  if (graficaEvolucionGrupoActual) {
+    graficaEvolucionGrupoActual.destroy();
+    graficaEvolucionGrupoActual = null;
+  }
+
+  const navegacion =
+    document.getElementById("navegacionMesEvolucionGrupo");
+
+  if (navegacion) {
+    navegacion.classList.toggle("hidden", periodo !== "mes");
+    navegacion.style.display =
+      periodo === "mes" ? "flex" : "none";
+  }
+
+  const rango = obtenerPeriodoDistribucion(
+    periodo,
+    periodo === "mes" ? desplazamientoMesEvolucionGrupo : 0
+  );
+
+  const resultadosPeriodo = rango.valido
+    ? resultados.filter(fila =>
+        fila.fecha >= rango.fechaInicio &&
+        fila.fecha <= rango.fechaFin
+      )
+    : [];
+
+  const mediasDiarias =
+    calcularMediasDiariasGrupo(resultadosPeriodo);
+
+  if (mediasDiarias.length === 0) {
+    contenedor.textContent = "No hay datos para mostrar.";
+    return;
+  }
+
+  const etiquetas = mediasDiarias.map(fila =>
+    new Date(fila.fecha + "T00:00:00")
+      .toLocaleDateString("es-ES", {
+        day: "numeric",
+        month: "numeric"
+      })
+  );
+
+  const puntuaciones = mediasDiarias.map(fila => fila.media);
+
+  // Media ponderada por número de partidas, no por días
+  const mediaPeriodo = Math.round(
+    resultadosPeriodo.reduce(
+      (suma, fila) => suma + Number(fila.final_score), 0
+    ) / resultadosPeriodo.length
+  );
+
+  const n = puntuaciones.length;
+  let tendencia = [];
+
+  if (n >= 2) {
+    const mediaX = (n - 1) / 2;
+    const mediaY =
+      puntuaciones.reduce((a, b) => a + b, 0) / n;
+
+    let numerador = 0;
+    let denominador = 0;
+
+    puntuaciones.forEach((valor, i) => {
+      numerador += (i - mediaX) * (valor - mediaY);
+      denominador += (i - mediaX) ** 2;
+    });
+
+    const pendiente = numerador / denominador;
+
+    tendencia = puntuaciones.map((_, i) =>
+      mediaY + pendiente * (i - mediaX)
+    );
+  }
+
+  contenedor.innerHTML = `
+    <div style="text-align:center;margin-bottom:10px;">
+      <strong>Media del período: ${mediaPeriodo} puntos</strong>
+    </div>
+
+    <div style="position:relative;height:170px;width:100%;">
+      <canvas id="evolutionChartGrupo"></canvas>
+    </div>
+
+    <div style="
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:8px;
+      font-size:12px;
+      color:#666;
+    ">
+      <span>🔵 Media diaria</span>
+      <span>🩷 Media del período</span>
+      <span>🔹 Tendencia</span>
+    </div>
+  `;
+
+  const canvas =
+    document.getElementById("evolutionChartGrupo");
+
+  graficaEvolucionGrupoActual = new Chart(canvas, {
+    type: "line",
+    data: {
+      labels: etiquetas,
+      datasets: [
+        {
+          label: "Media diaria",
+          data: puntuaciones,
+          borderColor: "#6495ed",
+          backgroundColor: "#6495ed",
+          tension: 0.40,
+          cubicInterpolationMode: "monotone",
+          pointRadius: 2,
+          pointHitRadius: 18,
+          pointHoverRadius: 4
+        },
+        {
+          label: "Media del período",
+          data: puntuaciones.map(() => mediaPeriodo),
+          borderColor: "#ec4899",
+          borderDash: [6, 6],
+          pointRadius: 0,
+          tension: 0
+        },
+        {
+          label: "Tendencia",
+          data: tendencia,
+          borderColor: "#1d4ed8",
+          borderWidth: 1.5,
+          borderDash: [5, 5],
+          pointRadius: 0,
+          tension: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          filter: item =>
+            item.dataset.label !== "Tendencia",
+          callbacks: {
+            label: context =>
+              `${context.dataset.label}: ${Math.round(context.parsed.y)} puntos`
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 6,
+            maxRotation: 0,
+            minRotation: 0,
+            font: { size: 10 }
+          },
+          grid: { display: false }
+        },
+        y: {
+          beginAtZero: false,
+          ticks: { padding: 0 },
+          border: { display: false }
+        }
+      }
+    }
+  });
+}
+
   
   
 async function abrirPerfilJugador(jugadorId, nombre) {
