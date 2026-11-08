@@ -63,6 +63,20 @@
       border-radius: 8px;
     }
     
+    #selectorDistribucionGrupo button {
+      background: #e1e4e6;
+      color: #111;
+      border: 1px solid #c5c9cc;
+      border-radius: 8px;
+    }
+    
+    #selectorDistribucionGrupo button.active {
+      background: #222;
+      color: white;
+      border: 1px solid #222;
+      font-weight: bold;
+    }
+
     #selectorEvolucionGrupo button.active {
       background: #222;
       color: white;
@@ -2456,8 +2470,14 @@
 
 
   <!-- DISTRIBUCIÓN -->
-  <div class="card">
-    <h3>📊 Distribución del grupo</h3>
+ 
+<div class="card">
+  <h2 class="home-section-title">
+    📊 Distribución del grupo
+  </h2>
+
+  <!-- FONDO GRIS DE DISTRIBUCIÓN DEL GRUPO -->
+  <div class="placeholder" style="padding-bottom:8px;">
 
     <div id="selectorDistribucionGrupo">
       <button type="button" data-periodo="mes">Mes</button>
@@ -2472,10 +2492,13 @@
       <button type="button" id="btnDistribucionGrupoSiguiente">Siguiente ▶</button>
     </div>
 
-    <div id="graficaDistribucionGrupo" class="placeholder">
+    <div id="graficaDistribucionGrupo">
       Pendiente de cargar distribución...
     </div>
-  </div>
+
+  </div> <!-- Fin del fondo gris -->
+</div> <!-- Fin de la tarjeta Distribución -->
+
 
 </div>
 
