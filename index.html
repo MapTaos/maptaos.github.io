@@ -1919,9 +1919,13 @@
       🌍 Dificultad de países
     </button>
       
-  </div>
-
+    <button type="button" id="btnEstadisticasGrupo">
+      📈 Grupo
+    </button>
+  </div> 
 </div>
+
+
     
 <div class="card" id="seccionHoy">
 
@@ -2370,6 +2374,63 @@
   </div>
   
 </div>
+
+
+
+<!-- ESTADÍSTICAS DEL GRUPO -->
+<div class="card hidden" id="seccionEstadisticasGrupo">
+
+  <h2 class="home-section-title">
+    📈 Estadísticas del grupo
+  </h2>
+
+  <!-- EVOLUCIÓN -->
+  <div class="card">
+    <h3>📈 Evolución del grupo</h3>
+
+    <div id="selectorEvolucionGrupo">
+      <button type="button" data-periodo="mes">Mes</button>
+      <button type="button" data-periodo="6m">6 meses</button>
+      <button type="button" data-periodo="1a">1 año</button>
+      <button type="button" data-periodo="todo" class="active">Todo</button>
+    </div>
+
+    <div id="navegacionMesEvolucionGrupo" class="hidden">
+      <button type="button" id="btnEvolucionGrupoAnterior">◀ Anterior</button>
+      <button type="button" id="btnEvolucionGrupoActual">Actual</button>
+      <button type="button" id="btnEvolucionGrupoSiguiente">Siguiente</button>
+    </div>
+
+    <div id="graficaEvolucionGrupo" class="placeholder">
+      Pendiente de cargar evolución...
+    </div>
+  </div>
+
+  <!-- DISTRIBUCIÓN -->
+  <div class="card">
+    <h3>📊 Distribución del grupo</h3>
+
+    <div id="selectorDistribucionGrupo">
+      <button type="button" data-periodo="mes">Mes</button>
+      <button type="button" data-periodo="6m">6 meses</button>
+      <button type="button" data-periodo="1a">1 año</button>
+      <button type="button" data-periodo="todo" class="active">Todo</button>
+    </div>
+
+    <div id="navegacionMesDistribucionGrupo" class="hidden">
+      <button type="button" id="btnDistribucionGrupoAnterior">◀ Anterior</button>
+      <button type="button" id="btnDistribucionGrupoActual">Actual</button>
+      <button type="button" id="btnDistribucionGrupoSiguiente">Siguiente ▶</button>
+    </div>
+
+    <div id="graficaDistribucionGrupo" class="placeholder">
+      Pendiente de cargar distribución...
+    </div>
+  </div>
+
+</div>
+
+    
     
 <div class="card hidden" id="seccionContinentes">
 
