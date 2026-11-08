@@ -45,18 +45,32 @@
   margin-bottom: 18px;
 }
 
-#chartPeriodSelector button,
-#homeRankingSelector button {
-  width: auto;
-  flex: 1;
-  padding: 10px 6px;
-  font-size: 15px;
-}
-    #chartPeriodSelector button.active {
-    background: #222;
-    color: white;
-    font-weight: bold;
-}
+
+    #chartPeriodSelector button,
+    #homeRankingSelector button,
+    #selectorEvolucionGrupo button,
+    #selectorDistribucionGrupo button {
+      width: auto;
+      flex: 1;
+      padding: 10px 6px;
+      font-size: 15px;
+    }
+    
+    #chartPeriodSelector button.active,
+    #selectorEvolucionGrupo button.active,
+    #selectorDistribucionGrupo button.active {
+      background: #222;
+      color: white;
+      font-weight: bold;
+    }
+    
+    #selectorEvolucionGrupo,
+    #selectorDistribucionGrupo {
+      display: flex;
+      width: 100%;
+      gap: 4px;
+    }
+    
  #profileChart {
     position: relative;
    
