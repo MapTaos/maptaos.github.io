@@ -4695,7 +4695,8 @@ if (contenedorMedias) {
     const mejor = Math.max(...valores);
     const peor = Math.min(...valores);
 
-    contenedorMedias.innerHTML = mediasRondas.map(valor => {
+    contenedorMedias.innerHTML = `<div style="display:flex;width:100%;">` +
+      mediasRondas.map(valor => {
       const color = mejor === peor
         ? "#555"
         : valor === mejor
@@ -4714,7 +4715,7 @@ if (contenedorMedias) {
           color:${color};
         ">${valor ?? "–"}</span>
       `;
-    }).join("");
+    }).join("") + `</div>`;
 
     contenedorMedias.classList.remove("hidden");
   } else {
