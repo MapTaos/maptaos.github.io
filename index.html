@@ -4688,12 +4688,32 @@ const mediasRondas = [1, 2, 3, 4, 5].map(numero => {
 });
 
 
+  
+const fechaActualGalicia = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Europe/Madrid",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit"
+}).format(new Date());
+
+const jugadorHaJugadoHoy = (parciales || []).some(
+  fila => Number(fila.jugador_id) === Number(jugadorActual?.id)
+);
+
+const mostrarMediasRondas =
+  hoy < fechaActualGalicia ||
+  (hoy === fechaActualGalicia && jugadorHaJugadoHoy);
+
+
+  
+
 const contenedorMedias = document.getElementById("mediasRondasHoy");
 
 if (contenedorMedias) {
   const valores = mediasRondas.filter(valor => valor !== null);
 
-  if (valores.length > 0) {
+  
+if (mostrarMediasRondas && valores.length > 0) {
     const mejor = Math.max(...valores);
     const peor = Math.min(...valores);
 
