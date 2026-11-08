@@ -15548,7 +15548,48 @@ document
 
   });
 
+    } catch (error) {
+      console.error("Error al cargar evolución del grupo:", error);
+      contenedor.textContent =
+        "No se han podido cargar los resultados.";
+    }
 
+  });
+
+// AQUÍ AÑADIMOS LOS FILTROS TEMPORALES
+
+document
+  .querySelectorAll("#selectorEvolucionGrupo button")
+  .forEach(boton => {
+
+    boton.addEventListener("click", () => {
+
+      if (!resultadosGrupoActuales) return;
+
+      const periodo = boton.dataset.periodo;
+
+      document
+        .querySelectorAll("#selectorEvolucionGrupo button")
+        .forEach(opcion => {
+          opcion.classList.toggle(
+            "active",
+            opcion === boton
+          );
+        });
+
+      if (periodo === "mes") {
+        desplazamientoMesEvolucionGrupo = 0;
+      }
+
+      mostrarEvolucionGrupo(
+        resultadosGrupoActuales,
+        periodo
+      );
+
+    });
+
+  });
+  
 document
   .getElementById("btnDiaAnterior")
   .addEventListener("click", async () => {
