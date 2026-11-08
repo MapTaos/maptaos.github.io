@@ -4583,9 +4583,6 @@ for (let desde = 0; ; desde += tamanoPaginaJugadores) {
 }
 
 
-console.log("FECHA CONSULTADA:", hoy);  
-console.log("JUGADORES HISTÓRICOS:", jugadoresHistoricos);
-console.log("ERROR JUGADORES:", errorJugadoresHistoricos);
   
 const totalJugadores =
   (jugadoresHistoricos || [])
@@ -4633,13 +4630,23 @@ const totalJugadores =
   }
 
   
-  if (error) {
+  
+if (error) {
 
-    rankingHoy.innerHTML =
-      "No se pudo cargar la clasificación.";
+  rankingHoy.innerHTML =
+    "No se pudo cargar la clasificación.";
 
-    return;
+  const contenedorMedias =
+    document.getElementById("mediasRondasHoy");
+
+  if (contenedorMedias) {
+    contenedorMedias.innerHTML = "";
+    contenedorMedias.classList.add("hidden");
   }
+
+  return;
+}
+
 
  
 if (!data || data.length === 0) {
@@ -4714,14 +4721,7 @@ const mostrarMediasRondas =
   hoy < fechaActualGalicia ||
   (hoy === fechaActualGalicia && jugadorHaJugadoHoy);
 
-console.log("MEDIAS HOY", {
-  fechaSeleccionada: hoy,
-  fechaActualGalicia,
-  jugadorHaJugadoHoy,
-  mostrarMediasRondas,
-  mediasRondas
-});
-  
+ 
 
 
 const contenedorMedias = document.getElementById("mediasRondasHoy");
