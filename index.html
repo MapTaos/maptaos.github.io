@@ -11428,6 +11428,14 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
     periodo === "mes" ? desplazamientoMesEvolucionGrupo : 0
   );
 
+  const tituloMesGrupo = periodo === "mes" && rango.valido
+    ? new Date(rango.fechaInicio + "T00:00:00")
+        .toLocaleDateString("es-ES", {
+          month: "long",
+          year: "numeric"
+        })
+    : "";
+
   const resultadosPeriodo = rango.valido
     ? resultados.filter(fila =>
         fila.fecha >= rango.fechaInicio &&
@@ -11483,15 +11491,30 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
     );
   }
 
-  contenedor.innerHTML = `
+  
+    contenedor.innerHTML = `
     
-    <div style="
-      text-align:center;
-      margin-top:14px;
-      margin-bottom:10px;
-    ">
-      <strong>Media del período: ${mediaPeriodo} puntos</strong>
-    </div>
+      ${tituloMesGrupo ? `
+        <div style="
+          text-align:center;
+          margin-top:12px;
+          margin-bottom:6px;
+          font-size:15px;
+          font-weight:bold;
+          text-transform:capitalize;
+        ">
+          ${tituloMesGrupo}
+        </div>
+      ` : ""}
+    
+      <div style="
+        text-align:center;
+        margin-top:14px;
+        margin-bottom:10px;
+      ">
+        <strong>Media del período: ${mediaPeriodo} puntos</strong>
+      </div>
+
 
 
     <div style="position:relative;height:170px;width:100%;">
