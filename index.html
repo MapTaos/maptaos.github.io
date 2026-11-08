@@ -56,6 +56,11 @@
       font-size: 15px;
     }
     
+    #selectorEvolucionGrupo button,
+    #selectorDistribucionGrupo button {
+      font-size: 12px;
+    }
+    
     #selectorEvolucionGrupo button {
       background: #e1e4e6;
       color: #111;
@@ -11507,7 +11512,7 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
           font-size:15px;
           font-weight:bold;
       ">
-          ${tituloMesGrupo}
+          ${tituloMesGrupo.charAt(0).toUpperCase() + tituloMesGrupo.slice(1)}
         </div>
       ` : ""}
     
@@ -13742,7 +13747,7 @@ contenedor.innerHTML = `
       font-size:15px;
       font-weight:bold;
     ">
-      ${tituloMesEvolucion}
+      ${tituloMesEvolucion.charAt(0).toUpperCase() + tituloMesEvolucion.slice(1)}
     </div>
   ` : ""}
 
