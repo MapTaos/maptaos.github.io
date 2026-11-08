@@ -117,11 +117,6 @@
   /* Tarjetas interiores de Estadísticas del grupo */
   
 
-#seccionEstadisticasGrupo > .card {
-  margin-top: 18px;
-  padding: 12px;
-}
-
 #profileView .card {
   padding: 12px 8px;
 }
@@ -331,6 +326,15 @@
         padding-bottom: 10px;
       }
 
+      /* Ajustes específicos de las gráficas del grupo */
+      #seccionEstadisticasGrupo > .card {
+        padding: 8px;
+      }
+      
+      #seccionEstadisticasGrupo > .card > .placeholder {
+        padding: 8px;
+      }
+
     #profileView #chartPeriodSelector {
       display: flex;
       gap: 6px;
@@ -400,14 +404,15 @@
         cursor: default !important;
       }
 
-      /* Ajuste de las tarjetas de Grupo */
+      
+      /* Ajustes específicos de las gráficas del grupo */
       #seccionEstadisticasGrupo > .card {
-        padding: 12px;
+        margin-top: 18px;
+        padding: 8px;
       }
       
-      /* Paneles grises */
       #seccionEstadisticasGrupo > .card > .placeholder {
-        padding: 12px 8px 8px;
+        padding: 8px;
       }
       
       /* Botones temporales */
@@ -425,6 +430,7 @@
         font-size: 14px;
         white-space: nowrap;
       }
+
 
       
 </style>
