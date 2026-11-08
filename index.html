@@ -2503,7 +2503,7 @@
     <div id="navegacionMesEvolucionGrupo" class="hidden">
       <button type="button" id="btnEvolucionGrupoAnterior">◀ Anterior</button>
       <button type="button" id="btnEvolucionGrupoActual">Actual</button>
-      <button type="button" id="btnEvolucionGrupoSiguiente">Siguiente</button>
+      <button type="button" id="btnEvolucionGrupoSiguiente">Siguiente ▶</button>
     </div>
     <div id="graficaEvolucionGrupo">
       Pendiente de cargar evolución...
@@ -11381,6 +11381,23 @@ function calcularMediasDiariasGrupo(resultados) {
 let desplazamientoMesEvolucionGrupo = 0;
 let graficaEvolucionGrupoActual = null;
 
+function actualizarBotonesEvolucionGrupo() {
+  const anterior = obtenerPeriodoDistribucion(
+    "mes",
+    desplazamientoMesEvolucionGrupo - 1
+  );
+
+  document.getElementById(
+    "btnEvolucionGrupoAnterior"
+  ).disabled = !anterior.valido;
+
+  document.getElementById(
+    "btnEvolucionGrupoSiguiente"
+  ).disabled = desplazamientoMesEvolucionGrupo >= 0;
+}
+  
+
+  
 function mostrarEvolucionGrupo(resultados, periodo = "todo") {
 
   const contenedor =
@@ -11400,6 +11417,10 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
     navegacion.classList.toggle("hidden", periodo !== "mes");
     navegacion.style.display =
       periodo === "mes" ? "flex" : "none";
+      if (periodo === "mes") {
+        actualizarBotonesEvolucionGrupo();
+      }
+
   }
 
   const rango = obtenerPeriodoDistribucion(
