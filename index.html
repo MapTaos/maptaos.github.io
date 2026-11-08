@@ -11289,6 +11289,38 @@ function inicializarSelectorDistribucion() {
   actualizarSelectorDistribucion();
 }
 
+
+
+async function obtenerResultadosGrupo() {
+
+  const resultados = [];
+  const tamanoPagina = 1000;
+
+  for (let desde = 0; ; desde += tamanoPagina) {
+
+    const { data, error } = await supabaseClient
+      .from("resultados")
+      .select("fecha, final_score")
+      .gte("fecha", "2026-10-01")
+      .order("fecha", { ascending: true })
+      .order("jugador_id", { ascending: true })
+      .range(desde, desde + tamanoPagina - 1);
+
+    if (error) {
+      console.error("Error al cargar resultados del grupo:", error);
+      throw error;
+    }
+
+    resultados.push(...(data || []));
+
+    if (!data || data.length < tamanoPagina) {
+      break;
+    }
+  }
+
+  return resultados;
+}
+
   
   
   
