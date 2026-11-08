@@ -12758,8 +12758,14 @@ profileContent.innerHTML = `
     );
   });
   
+  
   desplazamientoMesEvolucion = 0;
+  
+  document.getElementById("btnEvolucionAnterior").disabled = false;
+  document.getElementById("btnEvolucionSiguiente").disabled = true;
+  
   actualizarNavegacionEvolucion();
+
   
   window.scrollTo(0, 0);
   cargarMedallasDiariasPerfil(jugadorId);
