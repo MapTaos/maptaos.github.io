@@ -11321,7 +11321,41 @@ async function obtenerResultadosGrupo() {
   return resultados;
 }
 
+
   
+function calcularMediasDiariasGrupo(resultados) {
+
+  const dias = new Map();
+
+  resultados.forEach(resultado => {
+
+    const fecha = resultado.fecha;
+    const puntos = Number(resultado.final_score);
+
+    if (!fecha || !Number.isFinite(puntos)) return;
+
+    if (!dias.has(fecha)) {
+      dias.set(fecha, {
+        suma: 0,
+        jugadores: 0
+      });
+    }
+
+    const dia = dias.get(fecha);
+
+    dia.suma += puntos;
+    dia.jugadores++;
+
+  });
+
+  return Array.from(dias, ([fecha, datos]) => ({
+    fecha,
+    media: datos.suma / datos.jugadores,
+    jugadores: datos.jugadores
+  })).sort((a, b) => a.fecha.localeCompare(b.fecha));
+
+}
+
   
   
 async function abrirPerfilJugador(jugadorId, nombre) {
