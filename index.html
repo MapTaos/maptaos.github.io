@@ -6401,9 +6401,25 @@ while (true) {
     </div>
   `;
 
-  const filas = clasificacion.map((jugador, indice) => {
+  
+    let posicionAnterior = 0;
+    
+    const filas = clasificacion.map((jugador, indice) => {
+    
+      const anterior = clasificacion[indice - 1];
+    
+      const mismoResultado = anterior &&
+        jugador.total === anterior.total &&
+        [1, 2, 3, 4, 5].every(
+          n => jugador.dias[n] === anterior.dias[n]
+        );
+    
+      const posicion = mismoResultado
+        ? posicionAnterior
+        : indice + 1;
+    
+      posicionAnterior = posicion;
 
-    const posicion = indice + 1;
 
     const medalla =
       posicion === 1 ? "🥇" :
