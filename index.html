@@ -11003,7 +11003,9 @@ async function cargarEstadisticasDistribucion(jugadorId) {
     return;
   }
 
-  contenedor.textContent = "Cargando estadísticas...";
+  if (!contenedor.innerHTML.trim()) {
+    contenedor.textContent = "Cargando estadísticas...";
+  }
 
   try {
 
