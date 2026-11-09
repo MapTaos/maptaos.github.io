@@ -48,16 +48,14 @@
 
     #chartPeriodSelector button,
     #homeRankingSelector button,
-    #selectorEvolucionGrupo button,
-    #selectorDistribucionGrupo button {
+    #selectorEvolucionGrupo button {
       width: auto;
       flex: 1;
       padding: 10px 6px;
       font-size: 15px;
     }
     
-    #selectorEvolucionGrupo button,
-    #selectorDistribucionGrupo button {
+    #selectorEvolucionGrupo button {
       font-size: 12px;
     }
     
@@ -68,20 +66,6 @@
       border-radius: 8px;
     }
     
-    #selectorDistribucionGrupo button {
-      background: #e1e4e6;
-      color: #111;
-      border: 1px solid #c5c9cc;
-      border-radius: 8px;
-    }
-    
-    #selectorDistribucionGrupo button.active {
-      background: #222;
-      color: white;
-      border: 1px solid #222;
-      font-weight: bold;
-    }
-
     #selectorEvolucionGrupo button.active {
       background: #222;
       color: white;
@@ -90,15 +74,13 @@
     }
 
     #chartPeriodSelector button.active,
-    #selectorEvolucionGrupo button.active,
-    #selectorDistribucionGrupo button.active {
+    #selectorEvolucionGrupo button.active {
       background: #222;
       color: white;
       font-weight: bold;
     }
     
-    #selectorEvolucionGrupo,
-    #selectorDistribucionGrupo {
+    #selectorEvolucionGrupo {
       display: flex;
       width: 100%;
       gap: 4px;
@@ -421,16 +403,13 @@
       }
       
       /* Botones temporales */
-      #selectorEvolucionGrupo,
-      #selectorDistribucionGrupo {
+      #selectorEvolucionGrupo {
         display: flex;
         width: 100%;
         gap: 4px;
       }
       
-      
-      #selectorEvolucionGrupo button,
-      #selectorDistribucionGrupo button {
+      #selectorEvolucionGrupo button {
         min-width: 0;
         white-space: nowrap;
       }
