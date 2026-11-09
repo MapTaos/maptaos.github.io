@@ -2126,8 +2126,12 @@
     width:calc(100% - 71px);
     margin-bottom:8px;
     font-size:13px;
-    font-weight:600;
+    font-weight:500;
     box-sizing:border-box;
+    border-top:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+    padding-top:3px;
+    padding-bottom:3px;
   ">
   </div>
 
@@ -4736,15 +4740,29 @@ if (mostrarMediasRondas && valores.length > 0) {
     const mejor = Math.max(...valores);
     const peor = Math.min(...valores);
 
-    contenedorMedias.innerHTML = `<div style="display:flex;width:100%;">` +
+    
+    contenedorMedias.innerHTML = `
+      <div style="position:relative;display:flex;width:100%;">
+        <span style="
+          position:absolute;
+          right:100%;
+          top:50%;
+          transform:translateY(-50%);
+          margin-right:5px;
+          font-size:11px;
+          font-weight:400;
+          color:#888;
+          white-space:nowrap;
+        ">Media de rondas</span>
+    ` +
       mediasRondas.map(valor => {
       const color = mejor === peor
-        ? "#555"
+        ? "#777777"
         : valor === mejor
-          ? "#16a34a"
+          ? "#65a783"
           : valor === peor
-            ? "#dc2626"
-            : "#555";
+            ? "#cf8585"
+            : "#777777";
 
       return `
         <span style="
