@@ -2128,10 +2128,11 @@
     font-size:13px;
     font-weight:500;
     box-sizing:border-box;
-    border-top:1px solid #ddd;
-    border-bottom:1px solid #ddd;
+    border-top:1px solid transparent;
+    border-bottom:1px solid transparent;
     padding-top:3px;
     padding-bottom:3px;
+    position:relative;
   ">
   </div>
 
@@ -4761,7 +4762,7 @@ if (mostrarMediasRondas && valores.length > 0) {
         : valor === mejor
           ? "#65a783"
           : valor === peor
-            ? "#cf8585"
+            ? "#c44e52"
             : "#777777";
 
       return `
