@@ -286,7 +286,6 @@
       }
     
       #rankingHoy,
-      #rankingSemanal,
       #rankingMensual,
       #profileTop20,
       #rankingTop50 {
@@ -296,7 +295,6 @@
 
     
       #seccionHoy,
-      #seccionSemana,
       #seccionMes,
       #seccionTop20,
       #seccionTop50,
@@ -1970,10 +1968,6 @@
       Hoy
     </button>
 
-    <button type="button" id="btnSemana" class="hidden">
-      Semana
-    </button>
-
     <button type="button" id="btnMes">
       Mes
     </button>
@@ -2279,15 +2273,6 @@
 
 </div>
     
-<div class="card hidden" id="seccionSemana">
-  <h2 class="home-section-title">
-    Clasificación semanal
-  </h2>
-
-  <div id="rankingSemanal" class="placeholder">
-    Cargando clasificación semanal...
-  </div>
-</div>
 
 <div class="card hidden" id="seccionMes">
 
@@ -15165,7 +15150,6 @@ function mostrarSeccionInicio(seccion) {
   
   const secciones = {
     hoy: "seccionHoy",
-    semana: "seccionSemana",
     mes: "seccionMes",
     top20: "seccionTop20",
     continentes: "seccionContinentes",
@@ -15181,7 +15165,6 @@ function mostrarSeccionInicio(seccion) {
 
 const botones = {
   hoy: "btnHoy",
-  semana: "btnSemana",
   mes: "btnMes",
   top20: "btnTop20",
   continentes: "btnContinentes",
@@ -15292,10 +15275,6 @@ btnMasRankings.addEventListener("click", () => {
 document
   .getElementById("btnHoy")
   .addEventListener("click", () => mostrarSeccionInicio("hoy"));
-  
-document
-  .getElementById("btnSemana")
-  .addEventListener("click", () => mostrarSeccionInicio("semana"));
 
 document
   .getElementById("btnMes")
