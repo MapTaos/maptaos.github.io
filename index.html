@@ -15297,7 +15297,10 @@ document
 
 document
   .getElementById("btnMediaHistorica")
-  .addEventListener("click", () => mostrarSeccionInicio("mediaHistorica"));
+  .addEventListener("click", async () => {
+    mostrarSeccionInicio("mediaHistorica");
+    await cargarMediaHistorica();
+  });
 
 document
   .getElementById("btnRachas")
@@ -15739,7 +15742,6 @@ async function iniciarApp() {
   await cargarRankingRachas();
   await cargarTop20General();
   await cargarRankingContinentes();
-  await cargarMediaHistorica();
   await cargarMedalleroMensual();
   await cargarMedalleroGlobal();
   await cargarMedalleroContinentesMensual();
