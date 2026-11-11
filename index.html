@@ -1009,13 +1009,37 @@
     border-radius:12px;
   "
 >
+  <div style="
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:12px;
+">
   <h3 style="
     color:#92400e;
-    margin-top:0;
+    margin:0;
   ">
     🌍 Gestionar países y continentes
   </h3>
 
+  <button
+    type="button"
+    id="btnCerrarAdminPaisesSuperior"
+    style="
+      padding:6px 10px;
+      background:#fff;
+      color:#444;
+      border:1px solid #aaa;
+      border-radius:7px;
+      font-size:13px;
+      cursor:pointer;
+      flex-shrink:0;
+    "
+  >
+    Cerrar
+  </button>
+</div>
   <p style="
     font-size:13px;
     color:#57534e;
@@ -14100,7 +14124,12 @@ btnMenuAdminPaises.addEventListener("click", () => {
 btnCerrarAdminPaises.addEventListener("click", () => {
   adminPaises.classList.add("hidden");
 });
-
+  
+document
+  .getElementById("btnCerrarAdminPaisesSuperior")
+  .addEventListener("click", () => {
+    btnCerrarAdminPaises.click();
+  });
 const btnMenuAdminJugadores =
   document.getElementById("btnMenuAdminJugadores");
 
