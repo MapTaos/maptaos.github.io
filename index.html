@@ -4307,7 +4307,6 @@ if (Number(resultadoPendiente.score) === 1000) {
 }
     
     await cargarRankingHoy();
-    await cargarRankingSemanal();
     await cargarRankingMensual();
     await cargarRankingRachas();
     await cargarTop20General();
@@ -14277,7 +14276,6 @@ document.getElementById("profileName").textContent =
   "Perfil de " + aliasLimpio;
 
   await cargarRankingHoy();
-  await cargarRankingSemanal();
   await cargarRankingMensual();
   await cargarRankingRachas();
   await cargarTop20General();
@@ -15970,7 +15968,6 @@ async function iniciarApp() {
   await cargarAvisoGeneral();
   mostrarSeccionInicio("hoy");
   await cargarRankingHoy();
-  await cargarRankingSemanal();
   await cargarRankingMensual();
   await cargarRankingRachas();
   await cargarTop20General();
