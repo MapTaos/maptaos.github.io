@@ -15531,7 +15531,10 @@ document
   
 document
   .getElementById("btnTop50")
-  .addEventListener("click", () => mostrarSeccionInicio("top50"));
+  .addEventListener("click", async () => {
+    mostrarSeccionInicio("top50");
+    await cargarTop50Historico();
+  });
 
 document
   .getElementById("btnDificultadPaises")
