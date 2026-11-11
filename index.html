@@ -15290,7 +15290,10 @@ document
 
 document
   .getElementById("btnMejoresMarcas")
-  .addEventListener("click", () => mostrarSeccionInicio("mejoresMarcas"));
+  .addEventListener("click", async () => {
+    mostrarSeccionInicio("mejoresMarcas");
+    await cargarMejoresMarcas();
+  });
 
 document
   .getElementById("btnMediaHistorica")
