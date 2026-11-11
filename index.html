@@ -15318,7 +15318,11 @@ document
   
 document
   .getElementById("btnMedallero")
-  .addEventListener("click", () => mostrarSeccionInicio("medallero"));
+  .addEventListener("click", async () => {
+    mostrarSeccionInicio("medallero");
+    await cargarMedalleroMensual();
+    await cargarMedalleroGlobal();
+  });
 
 // SELECTOR MENSUAL / TOTAL DEL MEDALLERO GENERAL
 
