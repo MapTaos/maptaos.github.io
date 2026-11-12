@@ -5687,7 +5687,7 @@ const { data: jugadores, error: errorJugadores } =
   await supabaseClient
     .from("jugadores")
     .select("id, nombre, alias")
-    .eq("activo", true);
+    
 
 const resultados = [];
 let errorResultados = null;
@@ -6092,7 +6092,7 @@ if (periodoClub100 === "mensual") {
     await supabaseClient
       .from("jugadores")
       .select("id, nombre, alias")
-      .eq("activo", true);
+    
 
   
 const resultados = [];
@@ -14954,6 +14954,26 @@ async function cargarAdminJugadores() {
         <td style="padding:8px 5px;text-align:center;">
           ${jugador.password_configurada === true ? "Sí" : jugador.password_configurada === false ? "No" : "—"}
         </td>
+          <td style="padding:8px 5px;text-align:center;">
+          <button
+            type="button"
+            class="btnCambiarEstadoJugador"
+            data-jugador-id="${jugador.id}"
+            data-nuevo-estado="${jugador.activo === true ? "false" : "true"}"
+            style="
+              font-size:11px;
+              padding:5px 8px;
+              white-space:nowrap;
+              border:1px solid #999;
+              border-radius:5px;
+              background:#fff;
+              color:#222;
+              cursor:pointer;
+            "
+          >
+            ${jugador.activo === true ? "Dar de baja" : "Reactivar"}
+          </button>
+        </td>
         <td style="padding:8px 5px;text-align:center;">
           ${jugador.activo === true && jugador.password_configurada === false
             ? `<button type="button"
@@ -14981,6 +15001,7 @@ async function cargarAdminJugadores() {
             <th style="padding:8px 5px;text-align:center;">Último aviso visto</th>
             <th style="padding:8px 5px;text-align:center;">Password configurada</th>
             <th style="padding:8px 5px;text-align:center;">Invitación</th>
+            <th style="padding:8px 5px;text-align:center;">Acciones</th>
           </tr>
         </thead>
         <tbody>${filas}</tbody>
@@ -15049,7 +15070,61 @@ async function cargarAdminJugadores() {
       });
 
     });
+  // Dar de baja o reactivar jugadores
+contenedor.querySelectorAll(".btnCambiarEstadoJugador")
+  .forEach(boton => {
 
+    boton.addEventListener("click", async () => {
+
+      const jugadorId = Number(boton.dataset.jugadorId);
+      const nuevoEstado = boton.dataset.nuevoEstado === "true";
+
+      if (!Number.isSafeInteger(jugadorId)) return;
+
+      if (jugadorId === jugadorActual.id && !nuevoEstado) {
+        alert("No puedes darte de baja a ti mismo.");
+        return;
+      }
+
+      const confirmado = confirm(
+        nuevoEstado
+          ? "¿Quieres reactivar a este jugador?"
+          : "¿Quieres dar de baja a este jugador? Sus resultados históricos se conservarán."
+      );
+
+      if (!confirmado) return;
+
+      boton.disabled = true;
+      boton.textContent = "Procesando...";
+
+      try {
+        const { error } = await supabaseClient.rpc(
+          "gestionar_estado_jugador",
+          {
+            p_jugador_id: jugadorId,
+            p_activo: nuevoEstado
+          }
+        );
+
+        if (error) throw error;
+
+        alert(
+          nuevoEstado
+            ? "✅ Jugador reactivado correctamente."
+            : "✅ Jugador dado de baja correctamente."
+        );
+
+        await cargarAdminJugadores();
+
+      } catch (error) {
+        console.error("Error cambiando estado del jugador:", error);
+        alert("❌ " + error.message);
+
+        boton.disabled = false;
+        boton.textContent = nuevoEstado ? "Reactivar" : "Dar de baja";
+      }
+    });
+  });
 }
 
   
