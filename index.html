@@ -3595,6 +3595,18 @@ jugadorActual.password_configurada = true;
   });
 
 
+function obtenerNombrePais(codigo) {
+  try {
+    const nombres = new Intl.DisplayNames(["es"], {
+      type: "region"
+    });
+
+    return nombres.of(codigo);
+  } catch (error) {
+    return codigo;
+  }
+}
+  
   
 async function cargarPaisesNoReconocidos() {
   const contenido = document.getElementById("contenidoAdminNoReconocidos");
@@ -3694,7 +3706,11 @@ while (true) {
   for (const item of pendientes) {
     const fila = document.createElement("tr");
 
-    for (const valor of [item.fecha, item.ronda, item.pais]) {
+    for (const valor of [
+      item.fecha,
+      item.ronda,
+      `${item.pais} — ${obtenerNombrePais(item.pais)}`
+    ]) {
       const celda = document.createElement("td");
       celda.textContent = valor;
       celda.style.cssText = "padding:7px 4px;border-bottom:1px solid #f3d7a4;";
