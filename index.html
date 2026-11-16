@@ -6550,6 +6550,26 @@ const mostrarMedallasDiarias = (definitivas, provisionales, esTotal = false) => 
 // Filas de jugadores
 clasificacion.forEach((jugador, indice) => {
 
+  let posicionRanking = indice + 1;
+
+  if (indice > 0) {
+    const anterior = clasificacion[indice - 1];
+
+    const mismasMedallas =
+      jugador.oro + jugador.provisional[0] ===
+        anterior.oro + anterior.provisional[0] &&
+      jugador.plata + jugador.provisional[1] ===
+        anterior.plata + anterior.provisional[1] &&
+      jugador.bronce + jugador.provisional[2] ===
+        anterior.bronce + anterior.provisional[2];
+
+    if (mismasMedallas) {
+      posicionRanking = anterior.posicionRanking;
+    }
+  }
+
+  jugador.posicionRanking = posicionRanking;
+
   const fila = document.createElement("div");
 
   fila.style.cssText = `
@@ -6572,7 +6592,7 @@ clasificacion.forEach((jugador, indice) => {
 
   // Posición
   const posicion = document.createElement("div");
-  posicion.textContent = String(indice + 1);
+  posicion.textContent = String(jugador.posicionRanking);
   posicion.style.cssText = `
     text-align:center;
     color:#666;
