@@ -14049,10 +14049,16 @@ function volverDesdePerfil() {
 }
   
   
- // Botón Volver de MapTaos
+// Botón Volver de MapTaos
 document
   .getElementById("backFromProfile")
   .addEventListener("click", () => {
+
+    console.log("ANTES DE VOLVER", {
+      estado: history.state,
+      longitud: history.length
+    });
+
     if (history.state?.maptaosVista === "perfil") {
       history.back();
     } else {
