@@ -12689,8 +12689,16 @@ profileContent.innerHTML = `
   </div>
 `;
   
-  appView.classList.add("hidden");
-  profileView.classList.remove("hidden");
+ // Registrar el perfil en el historial del navegador
+history.pushState(
+  { maptaosVista: "perfil" },
+    "",
+    window.location.href
+  );
+
+// Mostrar el perfil
+appView.classList.add("hidden");
+profileView.classList.remove("hidden");
   
   // Activar "Todo" al entrar en el perfil
   document.querySelectorAll(
@@ -14041,9 +14049,25 @@ function volverDesdePerfil() {
 }
   
   
-  document
-    .getElementById("backFromProfile")
-    .addEventListener("click", volverDesdePerfil);
+  // Botón Volver de MapTaos
+document
+  .getElementById("backFromProfile")
+  .addEventListener("click", () => {
+    if (history.state?.maptaosVista === "perfil") {
+      history.back();
+    } else {
+      volverDesdePerfil();
+    }
+  });
+
+// Botón Atrás del móvil o navegador
+window.addEventListener("popstate", () => {
+  const profileView = document.getElementById("profileView");
+
+  if (!profileView.classList.contains("hidden")) {
+    volverDesdePerfil();
+  }
+});
   
 
 async function editarAlias() {
