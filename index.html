@@ -14061,11 +14061,14 @@ document
   });
 
 // Botón Atrás del móvil o navegador
-window.addEventListener("popstate", () => {
+window.addEventListener("popstate", (event) => {
   const profileView = document.getElementById("profileView");
 
-  if (!profileView.classList.contains("hidden")) {
-    volverDesdePerfil();
+  // Si regresamos a la pantalla principal, cerrar el perfil
+  if (event.state?.maptaosVista !== "perfil") {
+    if (!profileView.classList.contains("hidden")) {
+      volverDesdePerfil();
+    }
   }
 });
   
