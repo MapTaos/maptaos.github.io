@@ -14059,7 +14059,18 @@ document
       volverDesdePerfil();
     }
   });
-  
+
+  // Botón Atrás de Android o del navegador
+window.addEventListener("popstate", (event) => {
+  const profileView = document.getElementById("profileView");
+
+  if (
+    event.state?.maptaosVista !== "perfil" &&
+    !profileView.classList.contains("hidden")
+  ) {
+    volverDesdePerfil();
+  }
+});
 
 async function editarAlias() {
 
