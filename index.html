@@ -11539,16 +11539,18 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
           data: puntuaciones,
           borderColor: "#6495ed",
           backgroundColor: "#6495ed",
+          borderWidth: 2,
           tension: 0.40,
           cubicInterpolationMode: "monotone",
-          pointRadius: 2,
+          pointRadius: 1,
           pointHitRadius: 18,
-          pointHoverRadius: 4
+          pointHoverRadius: 3
         },
         {
           label: "Media del período",
           data: puntuaciones.map(() => mediaPeriodo),
           borderColor: "#ec4899",
+          borderWidth: 1.5,
           borderDash: [6, 6],
           pointRadius: 0,
           tension: 0
@@ -13807,9 +13809,9 @@ datasets: [
     borderWidth: 2,
     tension: 0.40,
     cubicInterpolationMode: "monotone",
-    pointRadius: 2,
+    pointRadius: 1,
     pointHitRadius: 18,
-    pointHoverRadius: 4,
+    pointHoverRadius: 3,
   },
   {
     label: "Media",
