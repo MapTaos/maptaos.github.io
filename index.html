@@ -12226,8 +12226,9 @@ profileContent.innerHTML = `
     font-size:10px;
     color:#777;
     margin-top:4px;
+    white-space:pre-line;
   ">
-    1..5: días con esa cantidad de rondas de 100 puntos.
+    1..5: días con esa cantidad de rondas de 100 puntos.\n
     Total: rondas de 100 acumuladas en el mes actual.
   </div>
 
@@ -12819,9 +12820,11 @@ function actualizarPerfil100() {
     .textContent = total;
 
   document.getElementById("perfil100Info")
-    .textContent = mensual
-      ? "1..5: días con esa cantidad de rondas de 100 puntos. Total: rondas de 100 acumuladas en el mes seleccionado."
-      : "1..5: días con esa cantidad de rondas de 100 puntos. Total: rondas de 100 acumuladas desde el 1-10-2026.";
+  .textContent =
+    "1..5: días con esa cantidad de rondas de 100 puntos.\nTotal: rondas de 100 acumuladas " +
+    (mensual
+      ? "en el mes seleccionado."
+      : "desde el 1-10-2026.");
 
 }
 
