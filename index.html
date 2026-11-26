@@ -12955,6 +12955,32 @@ function mostrarTop10(top10, rondasPorFecha) {
 
   if (!contenedor) return;
 
+// CALCULAR INDICADORES TOP-10 PERSONAL
+
+const valorTop1 = top10?.length > 0
+  ? Number(top10[0].final_score)
+  : null;
+
+const valorTop10 = top10?.length >= 10
+  ? Number(top10[9].final_score)
+  : null;
+
+const diferenciaTop10 =
+  valorTop1 !== null && valorTop10 !== null
+    ? valorTop1 - valorTop10
+    : null;
+
+document.getElementById("valorTop1Personal")
+  .textContent = valorTop1 ?? "—";
+
+document.getElementById("valorTop10Personal")
+  .textContent = valorTop10 ?? "—";
+
+document.getElementById("valorDiferenciaTop10Personal")
+  .textContent = diferenciaTop10 ?? "—";
+
+// FIN INDICADORES TOP-10 PERSONAL
+  
   if (!top10 || top10.length === 0) {
     contenedor.innerHTML =
       "No hay resultados para mostrar.";
