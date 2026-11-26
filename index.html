@@ -12132,24 +12132,21 @@ profileContent.innerHTML = `
 <div id="navegacionPerfil100"
      style="margin-bottom:10px;text-align:center;">
 
-  <div id="tituloMesPerfil100"
-       style="font-size:12px;font-weight:600;margin-bottom:8px;">
-    ${nombreMes100.charAt(0).toUpperCase() + nombreMes100.slice(1)}
-  </div>
-
   <div style="
     display:flex;
     justify-content:center;
     align-items:center;
-    gap:6px;
+    gap:8px;
+    margin:18px 0 12px;
   ">
 
     <button type="button" id="btnPerfil100Anterior"
       style="
+        width:auto;
         font-size:12px;
         padding:5px 10px;
         border:1px solid #bbb;
-        border-radius:8px;
+        border-radius:20px;
         background:#f5f5f5;
         color:#111;
         cursor:pointer;
@@ -12159,10 +12156,11 @@ profileContent.innerHTML = `
 
     <button type="button" id="btnPerfil100Actual"
       style="
+        width:auto;
         font-size:12px;
         padding:5px 10px;
         border:1px solid #bbb;
-        border-radius:8px;
+        border-radius:20px;
         background:#f5f5f5;
         color:#111;
         cursor:pointer;
@@ -12172,10 +12170,11 @@ profileContent.innerHTML = `
 
     <button type="button" id="btnPerfil100Siguiente"
       style="
+        width:auto;
         font-size:12px;
         padding:5px 10px;
         border:1px solid #bbb;
-        border-radius:8px;
+        border-radius:20px;
         background:#f5f5f5;
         color:#111;
         cursor:pointer;
@@ -12184,6 +12183,11 @@ profileContent.innerHTML = `
     </button>
 
   </div>
+
+  <div id="tituloMesPerfil100"
+       style="font-size:14px;font-weight:600;margin-bottom:8px;">
+  </div>
+
 </div>
 <!-- FIN NAVEGACIÓN MENSUAL PERFIL 100 -->
 
