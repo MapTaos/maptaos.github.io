@@ -12143,6 +12143,65 @@ profileContent.innerHTML = `
     </button>
   </div>
 
+  <!-- NAVEGACIÓN MENSUAL PERFIL 100 -->
+<div id="navegacionPerfil100"
+     style="margin-bottom:10px;text-align:center;">
+
+  <div id="tituloMesPerfil100"
+       style="font-size:12px;font-weight:600;margin-bottom:8px;">
+    ${nombreMes100.charAt(0).toUpperCase() + nombreMes100.slice(1)}
+  </div>
+
+  <div style="
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+  ">
+
+    <button type="button" id="btnPerfil100Anterior"
+      style="
+        font-size:12px;
+        padding:5px 10px;
+        border:1px solid #bbb;
+        border-radius:8px;
+        background:#f5f5f5;
+        color:#111;
+        cursor:pointer;
+      ">
+      ◀ Anterior
+    </button>
+
+    <button type="button" id="btnPerfil100Actual"
+      style="
+        font-size:12px;
+        padding:5px 10px;
+        border:1px solid #bbb;
+        border-radius:8px;
+        background:#f5f5f5;
+        color:#111;
+        cursor:pointer;
+      ">
+      Actual
+    </button>
+
+    <button type="button" id="btnPerfil100Siguiente"
+      style="
+        font-size:12px;
+        padding:5px 10px;
+        border:1px solid #bbb;
+        border-radius:8px;
+        background:#f5f5f5;
+        color:#111;
+        cursor:pointer;
+      ">
+      Siguiente ▶
+    </button>
+
+  </div>
+</div>
+<!-- FIN NAVEGACIÓN MENSUAL PERFIL 100 -->
+
   <div style="
     display:grid;
     grid-template-columns:repeat(6,minmax(0,1fr));
