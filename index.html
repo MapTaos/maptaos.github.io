@@ -12217,7 +12217,7 @@ profileContent.innerHTML = `
     `).join("")}
 
     ${[1, 2, 3, 4, 5].map(n => `
-      <div style="
+      <div id="perfil100Dias${n}" style="
         border-top:1px solid #d1d5db;
         padding:9px 0;
       ">
@@ -12226,14 +12226,14 @@ profileContent.innerHTML = `
     `).join("")}
 
     
-      <div style="border-top:1px solid #d1d5db;padding:9px 0;font-weight:700;">
+      <div id="perfil100Total" style="border-top:1px solid #d1d5db;padding:9px 0;font-weight:700;">
         ${total100Mes || ""}
       </div>
 
 
   </div>
 
-  <div style="
+  <div id="perfil100Info" style="
     font-size:10px;
     color:#777;
     margin-top:4px;
