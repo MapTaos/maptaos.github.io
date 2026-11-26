@@ -12746,6 +12746,95 @@ profileContent.innerHTML = `
 // SELECTOR MENSUAL / TOTAL RONDAS DE 100 DEL PERFIL
 
 let periodoPerfil100 = "mensual";
+let desplazamientoMesPerfil100 = 0;
+
+function actualizarPerfil100() {
+
+  const mensual = periodoPerfil100 === "mensual";
+
+  const [anioActual, mesActual] =
+    fechaMadridISO().split("-").map(Number);
+
+  const indiceActual = anioActual * 12 + mesActual - 1;
+  const indiceMinimo = 2026 * 12 + 9;
+
+  const indiceSeleccionado =
+    indiceActual + desplazamientoMesPerfil100;
+
+  const anio = Math.floor(indiceSeleccionado / 12);
+  const mes = indiceSeleccionado % 12 + 1;
+
+  const mesSeleccionado =
+    `${anio}-${String(mes).padStart(2, "0")}`;
+
+  const nombreMes = new Date(anio, mes - 1, 1)
+    .toLocaleDateString("es-ES", {
+      month: "long",
+      year: "numeric"
+    });
+
+  document.getElementById("tituloMesPerfil100")
+    .textContent =
+      nombreMes.charAt(0).toUpperCase() +
+      nombreMes.slice(1);
+
+  document.getElementById("navegacionPerfil100")
+    .classList.toggle("hidden", !mensual);
+
+  const botonAnterior =
+    document.getElementById("btnPerfil100Anterior");
+
+  const botonSiguiente =
+    document.getElementById("btnPerfil100Siguiente");
+
+  botonAnterior.disabled =
+    indiceSeleccionado <= indiceMinimo;
+
+  botonSiguiente.disabled =
+    desplazamientoMesPerfil100 >= 0;
+
+  [botonAnterior, botonSiguiente].forEach(boton => {
+    boton.style.opacity = boton.disabled ? "0.35" : "1";
+    boton.style.cursor = boton.disabled ? "default" : "pointer";
+  });
+
+  const dias = [0, 0, 0, 0, 0, 0];
+  let total = 0;
+
+  resultados.forEach(partida => {
+
+    if (partida.fecha < "2026-10-01") return;
+
+    if (mensual &&
+        partida.fecha.slice(0, 7) !== mesSeleccionado) {
+      return;
+    }
+
+    const cantidad100 = [1, 2, 3, 4, 5]
+      .filter(n => Number(partida[`ronda_${n}`]) === 100)
+      .length;
+
+    if (cantidad100 > 0) {
+      dias[cantidad100]++;
+      total += cantidad100;
+    }
+
+  });
+
+  for (let n = 1; n <= 5; n++) {
+    document.getElementById(`perfil100Dias${n}`)
+      .textContent = dias[n] || "";
+  }
+
+  document.getElementById("perfil100Total")
+    .textContent = total;
+
+  document.getElementById("perfil100Info")
+    .textContent = mensual
+      ? "1..5: días con esa cantidad de rondas de 100 puntos. Total: rondas de 100 acumuladas en el mes seleccionado."
+      : "1..5: días con esa cantidad de rondas de 100 puntos. Total: rondas de 100 acumuladas desde el 1-10-2026.";
+
+}
 
 document.getElementById("selectorPeriodoPerfil100")
   .addEventListener("click", event => {
@@ -12755,6 +12844,7 @@ document.getElementById("selectorPeriodoPerfil100")
     if (!boton) return;
 
     periodoPerfil100 = boton.dataset.periodo;
+    desplazamientoMesPerfil100 = 0;
 
     document.querySelectorAll(
       "#selectorPeriodoPerfil100 button"
@@ -12771,30 +12861,32 @@ document.getElementById("selectorPeriodoPerfil100")
 
       botonSelector.style.borderColor =
         activo ? "#111" : "#c5c9cc";
+
     });
 
-    const mensual = periodoPerfil100 === "mensual";
-
-    document.getElementById("navegacionPerfil100")
-      .classList.toggle("hidden", !mensual);
-
-    const dias = mensual ? dias100Mes : diasCon100;
-    const total = mensual ? total100Mes : totalRondas100;
-
-    for (let n = 1; n <= 5; n++) {
-      document.getElementById(`perfil100Dias${n}`)
-        .textContent = dias[n] || "";
-    }
-
-    document.getElementById("perfil100Total")
-      .textContent = total;
-
-    document.getElementById("perfil100Info")
-      .textContent = mensual
-        ? "1..5: días con esa cantidad de rondas de 100 puntos. Total: rondas de 100 acumuladas en el mes actual."
-        : "1..5: días con esa cantidad de rondas de 100 puntos. Total: rondas de 100 acumuladas desde el 1-10-2026.";
+    actualizarPerfil100();
 
   });
+
+document.getElementById("btnPerfil100Anterior")
+  .addEventListener("click", () => {
+    desplazamientoMesPerfil100--;
+    actualizarPerfil100();
+  });
+
+document.getElementById("btnPerfil100Actual")
+  .addEventListener("click", () => {
+    desplazamientoMesPerfil100 = 0;
+    actualizarPerfil100();
+  });
+
+document.getElementById("btnPerfil100Siguiente")
+  .addEventListener("click", () => {
+    desplazamientoMesPerfil100++;
+    actualizarPerfil100();
+  });
+
+actualizarPerfil100();
 
 // FIN SELECTOR MENSUAL / TOTAL RONDAS DE 100 DEL PERFIL
   
