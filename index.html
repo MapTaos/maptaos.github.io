@@ -13636,7 +13636,7 @@ document.getElementById("valorDiferenciaTop10Personal")
       }
     });
 
-    listado.innerHTML = partidasMes.map(partida => {
+    listado.innerHTML = partidasMes.map((partida, indice) => {
 
       const fecha = partida.fecha.slice(8, 10) + "/" +
                     partida.fecha.slice(5, 7);
@@ -13694,6 +13694,7 @@ document.getElementById("valorDiferenciaTop10Personal")
       return `
         <div style="
           padding:8px 0;
+          ${indice === 0 ? "border-top:1px solid var(--divider);" : ""}
           border-bottom:1px solid var(--divider);
         ">
       
