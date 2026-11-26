@@ -11848,22 +11848,7 @@ const puestoMesPerfil = filaMesJugador?.posicion ?? null;
 
 const totalJugadoresMes = rankingMesPerfil?.length ?? 0;
 
-// CLUB DE LOS 100 - PERFIL
-const diasCon100 = [0, 0, 0, 0, 0, 0];
-let totalRondas100 = 0;
 
-resultados
-  .filter(fila => fila.fecha >= "2026-10-01")
-  .forEach(fila => {
-    const cantidad100 = [1, 2, 3, 4, 5]
-      .filter(n => Number(fila[`ronda_${n}`]) === 100)
-      .length;
-
-    if (cantidad100 > 0) {
-      diasCon100[cantidad100]++;
-      totalRondas100 += cantidad100;
-    }
-  });
 
 // PARTIDAS PERFECTAS DEL JUGADOR
 const partidasPerfectas = resultados
