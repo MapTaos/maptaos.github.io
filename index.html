@@ -5,7 +5,300 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MapTaos</title>
   
+  <script>
+    // Leer la preferencia antes de que el navegador pinte la página.
+    try {
+      if (localStorage.getItem("maptaos-tema") === "oscuro") {
+        document.documentElement.dataset.tema = "oscuro";
+      }
+    } catch {
+      // Si el navegador bloquea el almacenamiento, empezar en modo claro.
+    }
+  </script>
+
   <style>
+:root {
+  color-scheme: light;
+  --page: #f4f6f8;
+  --surface: white;
+  --surface-short: #fff;
+  --surface-full: #ffffff;
+  --panel: #eef1f3;
+  --panel-controls: #eef0f2;
+  --surface-subtle: #f8f9fa;
+  --surface-soft: #f5f5f5;
+  --surface-inset: #f1f1f1;
+  --surface-disabled: #f3f4f6;
+  --tile: #e5e7eb;
+  --profile-chip: #e9ecef;
+  --table-heading: #d5dde2;
+  --button-idle: #e1e4e6;
+  --button-secondary: #e7ebee;
+  --button-neutral: #d1d5db;
+  --button-selected: #111;
+  --button-selected-text: #fff;
+  --button-active: #222;
+  --button-primary: #1f7a5c;
+  --success-surface: #e8f7ef;
+  --error-surface: #fdecec;
+  --danger-surface: #fee2e2;
+  --notice-surface: #fff3cd;
+  --gold-surface: #fffaf0;
+  --gold-surface-strong: #fff6e5;
+  --highlight: #dbeafe;
+  --highlight-pressed: #bfdbfe;
+  --distribution-player: #15803d;
+  --distribution-group: #ea580c;
+  --text-strong: #111;
+  --text-body: #222;
+  --text-soft: #333;
+  --text-detail: #444;
+  --text-warm: #292524;
+  --text-warm-muted: #57534e;
+  --text-muted: #666;
+  --text-muted-full: #666666;
+  --text-secondary: #777;
+  --text-steady: #777777;
+  --text-subtle: #888;
+  --text-quiet: #999;
+  --text-disabled: #b0b5bd;
+  --text-amber: #92400e;
+  --text-positive: #15803d;
+  --text-orange: #ea580c;
+  --text-negative: #c44e52;
+  --text-link: #2563eb;
+  --selected-border: #111;
+  --active-border: #222;
+  --medal-divider: #fff;
+  --divider-soft: #e1e4e6;
+  --divider-faint: #e5e7eb;
+  --divider: #ddd;
+  --divider-subtle: #eee;
+  --divider-table: #d5d8da;
+  --divider-strong: #d1d5db;
+  --button-border: #c5c9cc;
+  --control-border: #b8bec5;
+  --line-neutral: #bbb;
+  --field-border: #ccc;
+  --line-medium: #aaa;
+  --line-strong: #999;
+  --line-slate: #9ca3af;
+  --line-cool: #cbd5e1;
+  --highlight-border: #93c5fd;
+  --notice-border: #e6c75a;
+  --danger-border: #fca5a5;
+  --gold-divider: #f3d7a4;
+  --chart-trend: #1d4ed8;
+  --chart-score: #6495ed;
+  --chart-mean: #ec4899;
+  --distribution-player-bar: #16a34a;
+  --chart-axis-text: #666;
+  --chart-grid: rgba(0,0,0,0.1);
+  --theme-control: transparent;
+  --theme-focus: #2563eb;
+}
+
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --page: #101320;
+  --surface: #191e2e;
+  --surface-short: #191e2e;
+  --surface-full: #191e2e;
+  --panel: #20283a;
+  --panel-controls: #20283a;
+  --surface-subtle: #212a3b;
+  --surface-soft: #29313a;
+  --surface-inset: #29313a;
+  --surface-disabled: #222830;
+  --tile: #303842;
+  --profile-chip: #303842;
+  --table-heading: #343e49;
+  --button-idle: #1b2534;
+  --button-secondary: #1b2534;
+  --button-neutral: #253245;
+  --button-selected: #a2f3f8;
+  --button-selected-text: #102331;
+  --button-active: #a2f3f8;
+  --button-primary: #206b53;
+  --success-surface: #1d3b32;
+  --error-surface: #492a30;
+  --danger-surface: #492a30;
+  --notice-surface: #42351e;
+  --gold-surface: #332b20;
+  --gold-surface-strong: #40321e;
+  --highlight: #213952;
+  --highlight-pressed: #2b4a6b;
+  --distribution-player: #69cf94;
+  --distribution-group: #ff9d63;
+  --text-strong: #f5faff;
+  --text-body: #edf5ff;
+  --text-soft: #dce4ed;
+  --text-detail: #dce4ed;
+  --text-warm: #f3e6d6;
+  --text-warm-muted: #c8bbab;
+  --text-muted: #b9ceeb;
+  --text-muted-full: #b9ceeb;
+  --text-secondary: #b3bfcb;
+  --text-steady: #b3bfcb;
+  --text-subtle: #aab7c4;
+  --text-quiet: #aab7c4;
+  --text-disabled: #a9b3bf;
+  --text-amber: #ffda79;
+  --text-positive: #82f4a0;
+  --text-orange: #ffac7b;
+  --text-negative: #ff93a9;
+  --text-link: #90e4ff;
+  --selected-border: #b8faff;
+  --active-border: #b8faff;
+  --medal-divider: #515a65;
+  --divider-soft: #3f4955;
+  --divider-faint: #39434e;
+  --divider: #46515e;
+  --divider-subtle: #38424d;
+  --divider-table: #434e5a;
+  --divider-strong: #4d5967;
+  --button-border: #416278;
+  --control-border: #657486;
+  --line-neutral: #5a6776;
+  --field-border: #627183;
+  --line-medium: #667485;
+  --line-strong: #728196;
+  --line-slate: #697789;
+  --line-cool: #526174;
+  --highlight-border: #4f80b5;
+  --notice-border: #a38244;
+  --danger-border: #ad646c;
+  --gold-divider: #735c39;
+  --chart-trend: #8bb8ff;
+  --chart-score: #64e4fa;
+  --chart-mean: #ff8bd9;
+  --distribution-player-bar: #69cf94;
+  --chart-axis-text: #c6d0db;
+  --chart-grid: #475463;
+  --theme-control: #29313a;
+  --theme-focus: #76e8ff;
+  --heading-accent: #84efff;
+  --score-accent: #9deeff;
+  --ranking-row: #283448;
+  --ranking-row-line: #3b4c63;
+  --ranking-leader: #343044;
+  --ranking-gold: #ffd06c;
+  --ranking-silver: #9bddff;
+  --ranking-bronze: #ffaf81;
+  --card-outline: #40546f;
+}
+
+html {
+  background: var(--page);
+}
+
+[data-tema="oscuro"] :is(h1, .home-section-title) {
+  color: var(--heading-accent);
+}
+
+[data-tema="oscuro"] .btn-result,
+[data-tema="oscuro"] #chartPeriodSelector button.active,
+[data-tema="oscuro"] #selectorPeriodoDistribucion button.active {
+  box-shadow: inset 0 0 0 1px var(--selected-border);
+}
+
+[data-tema="oscuro"] .card {
+  outline: 1px solid var(--card-outline);
+  outline-offset: -1px;
+}
+
+[data-tema="oscuro"] :is(.puntuacion-ranking, .detected-score) {
+  color: var(--score-accent);
+}
+
+[data-tema="oscuro"] .fila-ranking {
+  background: var(--ranking-row);
+  border-radius: 4px;
+}
+
+[data-tema="oscuro"] .fila-ranking[data-podio] {
+  background: var(--ranking-leader);
+  box-shadow: -3px 0 var(--color-podio);
+}
+
+[data-tema="oscuro"] .fila-ranking[data-podio="1"] {
+  --color-podio: var(--ranking-gold);
+}
+
+[data-tema="oscuro"] .fila-ranking[data-podio="2"] {
+  --color-podio: var(--ranking-silver);
+}
+
+[data-tema="oscuro"] .fila-ranking[data-podio="3"] {
+  --color-podio: var(--ranking-bronze);
+}
+
+[data-tema="oscuro"] :is(input, textarea, select) {
+  background-color: var(--surface-inset);
+  color: var(--text-body);
+}
+
+[data-tema="oscuro"] :is(input, textarea)::placeholder {
+  color: var(--text-muted);
+}
+
+[data-tema="oscuro"] button:not([class]):not([style]) {
+  color: var(--text-body);
+}
+
+[data-tema="oscuro"] a {
+  color: var(--text-link);
+}
+
+[data-tema="oscuro"] .barra-distribucion {
+  opacity: 0.72;
+}
+
+button.selector-tema {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--theme-control);
+  color: var(--text-body);
+  border: 1px solid var(--button-border);
+  border-radius: 50%;
+  line-height: 1;
+}
+
+.selector-tema:focus-visible {
+  outline: 2px solid var(--theme-focus);
+  outline-offset: 2px;
+}
+
+#selectorTemaPrincipal {
+  z-index: 1;
+  position: absolute;
+  top: 29px;
+  left: max(20px, calc(50% - 220px));
+}
+
+body:has(#profileView:not(.hidden)) #selectorTemaPrincipal {
+  display: none;
+}
+
+.selector-tema [data-icono-tema="claro"],
+[data-tema="oscuro"] .selector-tema [data-icono-tema="oscuro"] {
+  display: none;
+}
+
+[data-tema="oscuro"] .selector-tema [data-icono-tema="claro"] {
+  display: inline;
+}
+
+.controles-cabecera-perfil {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
     * {
       box-sizing: border-box;
     }
@@ -13,8 +306,8 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #222;
+      background: var(--page);
+      color: var(--text-body);
     }
 
     .app {
@@ -32,7 +325,7 @@
   left: 0;
   right: 0;
   box-sizing: border-box;
-  background: #f4f6f8;
+  background: var(--page);
 }
     
 #chartPeriodSelector {
@@ -60,23 +353,23 @@
     }
     
     #selectorEvolucionGrupo button {
-      background: #e1e4e6;
-      color: #111;
-      border: 1px solid #c5c9cc;
+      background: var(--button-idle);
+      color: var(--text-strong);
+      border: 1px solid var(--button-border);
       border-radius: 8px;
     }
     
     #selectorEvolucionGrupo button.active {
-      background: #222;
-      color: white;
-      border: 1px solid #222;
+      background: var(--button-active);
+      color: var(--button-selected-text);
+      border: 1px solid var(--active-border);
       font-weight: bold;
     }
 
     #chartPeriodSelector button.active,
     #selectorEvolucionGrupo button.active {
-      background: #222;
-      color: white;
+      background: var(--button-active);
+      color: var(--button-selected-text);
       font-weight: bold;
     }
     
@@ -94,7 +387,7 @@
     margin-top: 15px;
  }
     .card {
-      background: white;
+      background: var(--surface);
       border-radius: 18px;
       padding: 22px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.08);
@@ -115,7 +408,7 @@
 
     .subtitle {
       text-align: center;
-      color: #666;
+      color: var(--text-muted);
       margin-bottom: 16px;
     }
 
@@ -124,7 +417,7 @@
       width: 100%;
       padding: 14px;
       margin-bottom: 12px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--field-border);
       border-radius: 12px;
       font-size: 16px;
       font-family: inherit;
@@ -148,26 +441,26 @@
   width: auto;
   padding: 10px 16px;
   margin-bottom: 12px;
-  border:1px solid #b8bec5;
+  border:1px solid var(--control-border);
 }
     
     .btn-primary {
-      background: #1f7a5c;
+      background: var(--button-primary);
       color: white;
       font-weight: bold;
     }
 
     .btn-result {
-      background: #111;
-      color: white;
+      background: var(--button-selected);
+      color: var(--button-selected-text);
       font-size: 21px;
       font-weight: bold;
       margin-bottom: 8px;
     }
 
     .btn-secondary {
-      background: #e7ebee;
-      color: #222;
+      background: var(--button-secondary);
+      color: var(--text-body);
       margin-top: 10px;
     }
 
@@ -188,8 +481,8 @@
   width: 190px;
   gap: 4px;
   padding: 6px;
-  background: white;
-  border: 1px solid #c5c9cc;
+  background: var(--surface);
+  border: 1px solid var(--button-border);
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   z-index: 100;
@@ -208,7 +501,7 @@
     
     .small {
       font-size: 14px;
-      color: #666;
+      color: var(--text-muted);
       text-align: center;
       margin-top: 14px;
     }
@@ -229,12 +522,12 @@
 
     .detected-date {
       text-align: center;
-      color: #666;
+      color: var(--text-muted);
       margin-bottom: 20px;
     }
 
     .success {
-      background: #e8f7ef;
+      background: var(--success-surface);
       padding: 14px;
       border-radius: 12px;
       text-align: center;
@@ -242,7 +535,7 @@
     }
 
     .error {
-      background: #fdecec;
+      background: var(--error-surface);
       padding: 14px;
       border-radius: 12px;
       text-align: center;
@@ -260,10 +553,10 @@
       margin-bottom: 0;
     }
     .placeholder {
-      background: #eef1f3;
+      background: var(--panel);
       border-radius: 12px;
       padding: 16px;
-      color: #666;
+      color: var(--text-muted);
       text-align: center;
     }
 
@@ -332,7 +625,7 @@
       width: auto;
       padding: 8px 2px;
       font-size: 12px;
-      border: 1px solid #b8bec5;
+      border: 1px solid var(--control-border);
       border-radius: 9px;
     }
       /* Botones de Distribución de resultados */
@@ -342,7 +635,7 @@
         width: auto;
         padding: 8px 2px;
         font-size: 12px;
-        border: 1px solid #b8bec5;
+        border: 1px solid var(--control-border);
         border-radius: 9px;
     }
 
@@ -353,16 +646,16 @@
         padding: 5px 10px !important;
         font-size: 12px !important;
         font-weight: normal !important;
-        border: 1px solid #bbb !important;
+        border: 1px solid var(--line-neutral) !important;
         border-radius: 20px !important;
-        background: #f1f1f1 !important;
-        color: #111 !important;
+        background: var(--surface-inset) !important;
+        color: var(--text-strong) !important;
         box-shadow: none !important;
       }
       
       /* Panel de controles de Distribución */
       #tarjetaDistribucion .panelControlesDistribucion {
-        background: #eef0f2;
+        background: var(--panel-controls);
         border-radius: 14px;
         padding: 10px 12px 12px;
         margin-top: 10px;
@@ -382,9 +675,9 @@
 
      /* Navegación mensual de Evolución: botones deshabilitados */
       #navegacionMesEvolucion button:disabled {
-        background: #f3f4f6 !important;
-        color: #b0b5bd !important;
-        border-color: #e5e7eb !important;
+        background: var(--surface-disabled) !important;
+        color: var(--text-disabled) !important;
+        border-color: var(--divider-faint) !important;
         opacity: 0.6 !important;
         cursor: default !important;
       }
@@ -427,10 +720,10 @@
         font-size: 12px;
         font-weight: normal;
         white-space: nowrap;
-        border: 1px solid #bbb;
+        border: 1px solid var(--line-neutral);
         border-radius: 20px;
-        background: #f5f5f5;
-        color: #111;
+        background: var(--surface-soft);
+        color: var(--text-strong);
       }
 
       #navegacionMesEvolucionGrupo button:disabled {
@@ -446,6 +739,11 @@
 <body>
 
 <div class="app">
+
+<button id="selectorTemaPrincipal" class="selector-tema" type="button" aria-label="Modo oscuro" aria-pressed="false" title="Activar modo oscuro">
+  <span data-icono-tema="oscuro" aria-hidden="true">🌙</span>
+  <span data-icono-tema="claro" aria-hidden="true">☀️</span>
+</button>
 
   <!-- LOGIN -->
   <section id="loginView" class="hidden">
@@ -582,8 +880,8 @@
     max-width:520px;
     margin:8px auto 12px;
     padding:12px 14px;
-    background:#fff3cd;
-    border:1px solid #e6c75a;
+    background:var(--notice-surface);
+    border:1px solid var(--notice-border);
     border-radius:10px;
     text-align:left;
   "
@@ -600,10 +898,10 @@
       cursor:pointer;
       font-size:13px;
       font-weight:600;
-      border:1px solid #ccc;
+      border:1px solid var(--field-border);
       border-radius:6px;
       
-      color:#333;
+      color:var(--text-soft);
     "
   >
     Cerrar aviso
@@ -618,7 +916,7 @@
     max-width:520px;
     margin:8px auto 12px;
     padding:14px;
-    background:#fff6e5;
+    background:var(--gold-surface-strong);
     border:2px solid #f59e0b;
     border-radius:12px;
     display:none;
@@ -631,7 +929,7 @@
     gap:8px;
     flex-wrap:wrap;
   ">
-    <strong style="font-size:16px;color:#292524;">
+    <strong style="font-size:16px;color:var(--text-warm);">
       ⚙️ Modo Administración
     </strong>
 
@@ -650,8 +948,8 @@
       style="
         width:100%;
         padding:13px 12px;
-        background:#fffaf0;
-        color:#292524;
+        background:var(--gold-surface);
+        color:var(--text-warm);
         border:2px solid #f59e0b;
         border-radius:10px;
         font-size:14px;
@@ -669,8 +967,8 @@
       style="
         width:100%;
         padding:13px 12px;
-        background:#fffaf0;
-        color:#292524;
+        background:var(--gold-surface);
+        color:var(--text-warm);
         border:2px solid #f59e0b;
         border-radius:10px;
         font-size:14px;
@@ -689,8 +987,8 @@
       style="
         width:100%;
         padding:13px 12px;
-        background:#fffaf0;
-        color:#292524;
+        background:var(--gold-surface);
+        color:var(--text-warm);
         border:2px solid #f59e0b;
         border-radius:10px;
         font-size:14px;
@@ -709,8 +1007,8 @@
       style="
         width:100%;
         padding:13px 12px;
-        background:#fffaf0;
-        color:#292524;
+        background:var(--gold-surface);
+        color:var(--text-warm);
         border:2px solid #f59e0b;
         border-radius:10px;
         font-size:14px;
@@ -731,7 +1029,7 @@
   class="card hidden"
   style="
     display:none;
-    background:#fff6e5;
+    background:var(--gold-surface-strong);
     border:2px solid #f59e0b;
     border-radius:12px;
     padding:14px;
@@ -758,9 +1056,9 @@
         padding:5px 8px;
         font-size:11px;
         width:auto;
-        background:#fff;
-        color:#333;
-        border:1px solid #999;
+        background:var(--surface-short);
+        color:var(--text-soft);
+        border:1px solid var(--line-strong);
         border-radius:6px;
         cursor:pointer;
       "
@@ -783,7 +1081,7 @@
 
 <div id="adminJugadores" class="card hidden"
      style="
-       background:#fff6e5;
+       background:var(--gold-surface-strong);
        border:2px solid #f59e0b;
        border-radius:12px;
        padding:14px;
@@ -810,9 +1108,9 @@
         font-size:11px;
         width:auto;
         flex-shrink:0;
-        background:#fff;
-        color:#333;
-        border:1px solid #999;
+        background:var(--surface-short);
+        color:var(--text-soft);
+        border:1px solid var(--line-strong);
         border-radius:6px;
         cursor:pointer;
       "
@@ -834,7 +1132,7 @@
         font-size:12px;
         width:auto;
         background:#f59e0b;
-        color:#111;
+        color:var(--text-strong);
         border:1px solid #d97706;
         border-radius:6px;
         cursor:pointer;
@@ -852,7 +1150,7 @@
   <div id="formNuevoJugador"
        class="hidden"
        style="
-         background:#ffffff;
+         background:var(--surface-full);
          border:1px solid #f59e0b;
          border-radius:10px;
          padding:12px;
@@ -928,7 +1226,7 @@
           id="btnEnviarInvitacionJugador"
           style="
             background:#f59e0b;
-            color:#111;
+            color:var(--text-strong);
             border:1px solid #d97706;
             border-radius:6px;
             padding:9px 12px;
@@ -943,9 +1241,9 @@
           type="button"
           id="btnCancelarNuevoJugador"
           style="
-            background:#ffffff;
-            color:#333;
-            border:1px solid #999;
+            background:var(--surface-full);
+            color:var(--text-soft);
+            border:1px solid var(--line-strong);
             border-radius:6px;
             padding:9px 12px;
             font-size:13px;
@@ -984,8 +1282,8 @@
   #adminPaises #btnCancelarNuevoPais,
   #adminPaises #btnConsultarRondasAdmin,
   #adminPaises #btnCerrarAdminPaises {
-    background: #fffaf0 !important;
-    color: #292524 !important;
+    background: var(--gold-surface) !important;
+    color: var(--text-warm) !important;
     border: 2px solid #f59e0b !important;
     border-radius: 10px !important;
     padding: 10px 12px !important;
@@ -1004,7 +1302,7 @@
     max-width:520px;
     margin:8px auto 12px;
     padding:14px;
-    background:#fff6e5;
+    background:var(--gold-surface-strong);
     border:2px solid #f59e0b;
     border-radius:12px;
   "
@@ -1017,7 +1315,7 @@
   margin-bottom:12px;
 ">
   <h3 style="
-    color:#92400e;
+    color:var(--text-amber);
     margin:0;
     font-size:17px;
     line-height:1.3;
@@ -1034,9 +1332,9 @@
       width:auto;
       flex:0 0 auto;
       padding:6px 10px;
-      background:#fff;
-      color:#444;
-      border:1px solid #aaa;
+      background:var(--surface-short);
+      color:var(--text-detail);
+      border:1px solid var(--line-medium);
       border-radius:7px;
       font-size:13px;
       cursor:pointer;
@@ -1049,7 +1347,7 @@
 
   <p style="
     font-size:13px;
-    color:#57534e;
+    color:var(--text-warm-muted);
   ">
     Desde aquí podrás consultar y corregir
     la asignación de países a continentes.
@@ -1066,8 +1364,8 @@
       id="btnAdminPaisesCatalogo"
       style="
         padding:10px 12px;
-        background:#fffaf0;
-        color:#292524;
+        background:var(--gold-surface);
+        color:var(--text-warm);
         border:2px solid #f59e0b;
         border-radius:9px;
         font-size:13px;
@@ -1083,8 +1381,8 @@
       id="btnAdminPaisesRondas"
       style="
         padding:10px 12px;
-        background:#fffaf0;
-        color:#292524;
+        background:var(--gold-surface);
+        color:var(--text-warm);
         border:2px solid #f59e0b;
         border-radius:9px;
         font-size:13px;
@@ -1113,7 +1411,7 @@
   style="
     margin:12px 0;
     padding:12px;
-    border:1px solid #ccc;
+    border:1px solid var(--field-border);
     border-radius:8px;
   "
 >
@@ -1220,8 +1518,8 @@
   style="
     width:100%;
     padding:12px;
-    background:#fffaf0;
-    color:#292524;
+    background:var(--gold-surface);
+    color:var(--text-warm);
     border:2px solid #f59e0b;
     border-radius:10px;
     font-size:14px;
@@ -1236,7 +1534,7 @@
 <style>
   /* Panel de administración de avisos */
   #adminAvisos {
-    background: #fff6e5 !important;
+    background: var(--gold-surface-strong) !important;
     border: 2px solid #f59e0b !important;
     border-radius: 12px !important;
     padding: 14px !important;
@@ -1244,13 +1542,13 @@
 
   /* Título */
   #adminAvisos > strong {
-    color: #92400e;
+    color: var(--text-amber);
     font-size: 16px;
   }
 
   /* Campo de texto */
   #adminAvisos #textoAdminAviso {
-    background: #fffaf0;
+    background: var(--gold-surface);
     border: 1px solid #f59e0b;
     border-radius: 8px;
   }
@@ -1259,8 +1557,8 @@
   #adminAvisos #btnCancelarAdminAviso,
   #adminAvisos #btnDesactivarAviso,
   #adminAvisos #btnPublicarAviso {
-    background: #fffaf0 !important;
-    color: #292524 !important;
+    background: var(--gold-surface) !important;
+    color: var(--text-warm) !important;
     border: 2px solid #f59e0b !important;
     border-radius: 10px !important;
     padding: 10px 12px !important;
@@ -1279,7 +1577,7 @@
 .titulo-estadistica {
   font-size:14px;
   font-weight:700;
-  color:#222;
+  color:var(--text-body);
   text-align:left;
 }
 </style>
@@ -1293,8 +1591,8 @@
     max-width:520px;
     margin:8px auto 12px;
     padding:12px;
-    background:#f5f5f5;
-    border:1px solid #ccc;
+    background:var(--surface-soft);
+    border:1px solid var(--field-border);
     border-radius:10px;
   "
 >
@@ -1329,8 +1627,8 @@
     type="button"
     id="btnDesactivarAviso"
     style="
-      background:#fee2e2;
-      border:1px solid #fca5a5;
+      background:var(--danger-surface);
+      border:1px solid var(--danger-border);
     "
   >
     Desactivar aviso
@@ -1375,8 +1673,8 @@
     font-size:14px;
     line-height:36px;
     box-sizing:border-box;
-    background:#dbeafe;
-    border:1px solid #93c5fd;
+    background:var(--highlight);
+    border:1px solid var(--highlight-border);
     border-radius:10px;
   "
 >
@@ -1394,8 +1692,8 @@
     font-size:12px;
     line-height:36px;
     box-sizing:border-box;
-    background:#dbeafe;
-    border:1px solid #93c5fd;
+    background:var(--highlight);
+    border:1px solid var(--highlight-border);
     border-radius:10px;
   "
 >
@@ -1414,8 +1712,8 @@
     font-size:14px;
     line-height:36px;
     box-sizing:border-box;
-    background:#dbeafe;
-    border:1px solid #93c5fd;
+    background:var(--highlight);
+    border:1px solid var(--highlight-border);
     border-radius:10px;
   "
   >
@@ -1888,7 +2186,7 @@
         font-size:14px;
         font-weight:600;
         cursor:pointer;
-        border:1px solid #9ca3af;
+        border:1px solid var(--line-slate);
       "
     >
       ✕ Cerrar info
@@ -2081,7 +2379,7 @@
       justify-content:end;
       font-size:13px;
       font-weight:500;
-      color:#777;
+      color:var(--text-secondary);
       white-space:nowrap;
     ">
       <span style="text-align:center;">👥</span>
@@ -2110,7 +2408,7 @@
     width:auto;
     padding:5px 10px;
     font-size:12px;
-    border:1px solid #9ca3af;
+    border:1px solid var(--line-slate);
   "
 >
   ◀ Anterior
@@ -2123,7 +2421,7 @@
     width:auto;
     padding:5px 10px;
     font-size:12px;
-    border:1px solid #9ca3af;
+    border:1px solid var(--line-slate);
   "
 >
   Actual
@@ -2136,7 +2434,7 @@
     width:auto;
     padding:5px 10px;
     font-size:12px;
-    border:1px solid #9ca3af;
+    border:1px solid var(--line-slate);
   "
 >
   Siguiente ▶
@@ -2152,8 +2450,8 @@
     font-size:13px;
     font-weight:500;
     box-sizing:border-box;
-    border-top:1px solid #ddd;
-    border-bottom:1px solid #ddd;
+    border-top:1px solid var(--divider);
+    border-bottom:1px solid var(--divider);
     padding-top:3px;
     padding-bottom:3px;
     position:relative;
@@ -2183,7 +2481,7 @@
   <h2 class="home-section-title">
     💯 Club de los 100
   </h2>
-  <div style="font-size:11px;color:#777;margin-bottom:10px;">
+  <div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;">
     1..5: días con esa cantidad de rondas de 100 puntos.<br>
     Total: acumulado de rondas de 100 puntos.<br>
     Desde el 1 de octubre de 2026.
@@ -2206,10 +2504,10 @@
     style="
       min-width:0;
       padding:5px 4px;
-      border:1px solid #c5c9cc;
+      border:1px solid var(--button-border);
       border-radius:5px;
-      background:#e1e4e6;
-      color:#111;
+      background:var(--button-idle);
+      color:var(--text-strong);
       font-size:11px;
       font-weight:600;
       cursor:pointer;
@@ -2224,10 +2522,10 @@
     style="
       min-width:0;
       padding:5px 4px;
-      border:1px solid #111;
+      border:1px solid var(--selected-border);
       border-radius:5px;
-      background:#111;
-      color:#fff;
+      background:var(--button-selected);
+      color:var(--button-selected-text);
       font-size:11px;
       font-weight:600;
       cursor:pointer;
@@ -2258,10 +2556,10 @@
       style="
         font-size:12px;
         padding:5px 10px;
-        border:1px solid #bbb;
+        border:1px solid var(--line-neutral);
         border-radius:8px;
-        background:#f5f5f5;
-        color:#111;
+        background:var(--surface-soft);
+        color:var(--text-strong);
         cursor:pointer;
       ">
       ◀ Anterior
@@ -2271,10 +2569,10 @@
       style="
         font-size:12px;
         padding:5px 10px;
-        border:1px solid #bbb;
+        border:1px solid var(--line-neutral);
         border-radius:8px;
-        background:#f5f5f5;
-        color:#111;
+        background:var(--surface-soft);
+        color:var(--text-strong);
         cursor:pointer;
       ">
       Actual
@@ -2284,10 +2582,10 @@
       style="
         font-size:12px;
         padding:5px 10px;
-        border:1px solid #bbb;
+        border:1px solid var(--line-neutral);
         border-radius:8px;
-        background:#f5f5f5;
-        color:#111;
+        background:var(--surface-soft);
+        color:var(--text-strong);
         cursor:pointer;
       ">
       Siguiente ▶
@@ -2326,7 +2624,7 @@
         width:auto;
         padding:5px 10px;
         font-size:12px;
-        border:1px solid #9ca3af;
+        border:1px solid var(--line-slate);
       "
     >
       ◀ Anterior
@@ -2339,7 +2637,7 @@
         width:auto;
         padding:5px 10px;
         font-size:12px;
-        border:1px solid #9ca3af;
+        border:1px solid var(--line-slate);
       "
     >
       Actual
@@ -2352,7 +2650,7 @@
         width:auto;
         padding:5px 10px;
         font-size:12px;
-        border:1px solid #9ca3af;
+        border:1px solid var(--line-slate);
       "
     >
       Siguiente ▶
@@ -2379,18 +2677,18 @@
   gap:6px;
   margin:8px 0 10px;
 ">
-  <div style="background:#f1f1f1;border-radius:8px;padding:6px 4px;text-align:center;">
-    <div style="font-size:11px;color:#777;">Top-1</div>
+  <div style="background:var(--surface-inset);border-radius:8px;padding:6px 4px;text-align:center;">
+    <div style="font-size:11px;color:var(--text-secondary);">Top-1</div>
     <div id="valorTop1Mes" style="font-size:15px;font-weight:600;">—</div>
   </div>
 
-  <div style="background:#f1f1f1;border-radius:8px;padding:6px 4px;text-align:center;">
-    <div style="font-size:11px;color:#777;">Top-20</div>
+  <div style="background:var(--surface-inset);border-radius:8px;padding:6px 4px;text-align:center;">
+    <div style="font-size:11px;color:var(--text-secondary);">Top-20</div>
     <div id="valorTop20Mes" style="font-size:15px;font-weight:600;">—</div>
   </div>
 
-  <div style="background:#e5e7eb;border-radius:8px;padding:6px 4px;text-align:center;">
-    <div style="font-size:11px;color:#666;">Diferencia</div>
+  <div style="background:var(--tile);border-radius:8px;padding:6px 4px;text-align:center;">
+    <div style="font-size:11px;color:var(--text-muted);">Diferencia</div>
     <div id="valorDiferenciaTop20Mes" style="font-size:15px;font-weight:600;">—</div>
   </div>
 </div>
@@ -2411,7 +2709,7 @@
       width:auto;
       padding:5px 10px;
       font-size:12px;
-      border:1px solid #9ca3af;
+      border:1px solid var(--line-slate);
     "
   >
     ◀ Anterior
@@ -2424,7 +2722,7 @@
       width:auto;
       padding:5px 10px;
       font-size:12px;
-      border:1px solid #9ca3af;
+      border:1px solid var(--line-slate);
     "
   >
     Actual
@@ -2437,7 +2735,7 @@
       width:auto;
       padding:5px 10px;
       font-size:12px;
-      border:1px solid #9ca3af;
+      border:1px solid var(--line-slate);
     "
   >
     Siguiente ▶
@@ -2463,18 +2761,18 @@
     gap:6px;
     margin:8px 0 10px;
   ">
-    <div style="background:#f1f1f1;border-radius:8px;padding:6px 4px;text-align:center;">
-      <div style="font-size:11px;color:#777;">Top-1</div>
+    <div style="background:var(--surface-inset);border-radius:8px;padding:6px 4px;text-align:center;">
+      <div style="font-size:11px;color:var(--text-secondary);">Top-1</div>
       <div id="valorTop1Historico" style="font-size:15px;font-weight:600;">—</div>
     </div>
   
-    <div style="background:#f1f1f1;border-radius:8px;padding:6px 4px;text-align:center;">
-      <div style="font-size:11px;color:#777;">Top-50</div>
+    <div style="background:var(--surface-inset);border-radius:8px;padding:6px 4px;text-align:center;">
+      <div style="font-size:11px;color:var(--text-secondary);">Top-50</div>
       <div id="valorTop50Historico" style="font-size:15px;font-weight:600;">—</div>
     </div>
   
-    <div style="background:#e5e7eb;border-radius:8px;padding:6px 4px;text-align:center;">
-      <div style="font-size:11px;color:#666;">Diferencia</div>
+    <div style="background:var(--tile);border-radius:8px;padding:6px 4px;text-align:center;">
+      <div style="font-size:11px;color:var(--text-muted);">Diferencia</div>
       <div id="valorDiferenciaTop50" style="font-size:15px;font-weight:600;">—</div>
     </div>
   </div>
@@ -2585,7 +2883,7 @@
         width:auto;
         padding:5px 10px;
         font-size:12px;
-        border:1px solid #9ca3af;
+        border:1px solid var(--line-slate);
       "
     >
       ◀ Anterior
@@ -2598,7 +2896,7 @@
         width:auto;
         padding:5px 10px;
         font-size:12px;
-        border:1px solid #9ca3af;
+        border:1px solid var(--line-slate);
       "
     >
       Actual
@@ -2611,7 +2909,7 @@
         width:auto;
         padding:5px 10px;
         font-size:12px;
-        border:1px solid #9ca3af;
+        border:1px solid var(--line-slate);
       "
     >
       Siguiente ▶
@@ -2647,9 +2945,9 @@
       font-size:13px;
       font-weight:600;
       border-radius:8px;
-      border:1px solid #c5c9cc;
-      background:#e1e4e6;
-      color:#111;
+      border:1px solid var(--button-border);
+      background:var(--button-idle);
+      color:var(--text-strong);
       min-width:0;
     "
   >
@@ -2664,9 +2962,9 @@
         font-size:13px;
         font-weight:600;
         border-radius:8px;
-        border:1px solid #111;
-        background:#111;
-        color:#fff;
+        border:1px solid var(--selected-border);
+        background:var(--button-selected);
+        color:var(--button-selected-text);
       "
     >
       Mensual
@@ -2680,9 +2978,9 @@
         font-size:13px;
         font-weight:600;
         border-radius:8px;
-        border:1px solid #c5c9cc;
-        background:#e1e4e6;
-        color:#111;
+        border:1px solid var(--button-border);
+        background:var(--button-idle);
+        color:var(--text-strong);
       "
     >
       Continentes
@@ -2730,10 +3028,10 @@
     style="
       min-width:0;
       padding:5px 4px;
-      border:1px solid #111;
+      border:1px solid var(--selected-border);
       border-radius:5px;
-      background:#111;
-      color:#fff;
+      background:var(--button-selected);
+      color:var(--button-selected-text);
       font-size:11px;
       font-weight:600;
       cursor:pointer;
@@ -2748,10 +3046,10 @@
     style="
       min-width:0;
       padding:5px 4px;
-      border:1px solid #c5c9cc;
+      border:1px solid var(--button-border);
       border-radius:5px;
-      background:#e1e4e6;
-      color:#111;
+      background:var(--button-idle);
+      color:var(--text-strong);
       font-size:11px;
       font-weight:600;
       cursor:pointer;
@@ -2814,10 +3112,10 @@
       style="
         min-width:0;
         padding:5px 4px;
-        border:1px solid #111;
+        border:1px solid var(--selected-border);
         border-radius:5px;
-        background:#111;
-        color:#fff;
+        background:var(--button-selected);
+        color:var(--button-selected-text);
         font-size:11px;
         font-weight:600;
         cursor:pointer;
@@ -2832,10 +3130,10 @@
       style="
         min-width:0;
         padding:5px 4px;
-        border:1px solid #c5c9cc;
+        border:1px solid var(--button-border);
         border-radius:5px;
-        background:#e1e4e6;
-        color:#111;
+        background:var(--button-idle);
+        color:var(--text-strong);
         font-size:11px;
         font-weight:600;
         cursor:pointer;
@@ -2850,10 +3148,10 @@
       style="
         min-width:0;
         padding:5px 4px;
-        border:1px solid #c5c9cc;
+        border:1px solid var(--button-border);
         border-radius:5px;
-        background:#e1e4e6;
-        color:#111;
+        background:var(--button-idle);
+        color:var(--text-strong);
         font-size:11px;
         font-weight:600;
         cursor:pointer;
@@ -2938,6 +3236,11 @@
   >
     <span>👤 Perfil</span>
 
+    <span class="controles-cabecera-perfil">
+      <button class="selector-tema" type="button" aria-label="Modo oscuro" aria-pressed="false" title="Activar modo oscuro">
+        <span data-icono-tema="oscuro" aria-hidden="true">🌙</span>
+        <span data-icono-tema="claro" aria-hidden="true">☀️</span>
+      </button>
     <button
       id="backFromProfile"
       type="button"
@@ -2948,12 +3251,13 @@
         padding:5px 9px;
         font-size:12px;
         border-radius:8px;
-        background:#d1d5db;
-        border:1px solid #9ca3af;
+        background:var(--button-neutral);
+        border:1px solid var(--line-slate);
       "
     >
       ← Volver
     </button>
+    </span>
   </h2>
 
   <!-- FONDO GRIS INTERIOR -->
@@ -2997,8 +3301,8 @@
           padding:6px 10px;
           font-size:12px;
           border-radius:8px;
-          background:#d1d5db;
-          border:1px solid #9ca3af;
+          background:var(--button-neutral);
+          border:1px solid var(--line-slate);
         "
       >
         ✏️ Cambiar alias
@@ -3032,8 +3336,8 @@
         padding:5px 9px;
         font-size:12px;
         border-radius:8px;
-        background:#d1d5db;
-        border:1px solid #9ca3af;
+        background:var(--button-neutral);
+        border:1px solid var(--line-slate);
       "
     >
       ← Volver
@@ -3069,8 +3373,8 @@
         padding:5px 9px;
         font-size:12px;
         border-radius:8px;
-        background:#d1d5db;
-        border:1px solid #9ca3af;
+        background:var(--button-neutral);
+        border:1px solid var(--line-slate);
       "
     >
       ← Volver
@@ -3103,7 +3407,7 @@
     <button
       type="button"
       id="btnEvolucionAnterior"
-      width:auto;padding:5px 10px;font-size:12px;border:1px solid #bbb;border-radius:6px;
+      width:auto;padding:5px 10px;font-size:12px;border:1px solid var(--line-neutral);border-radius:6px;
     >
       ◀ Anterior
     </button>
@@ -3111,7 +3415,7 @@
     <button
       type="button"
       id="btnEvolucionActual"
-      width:auto;padding:5px 10px;font-size:12px;border:1px solid #bbb;border-radius:6px;
+      width:auto;padding:5px 10px;font-size:12px;border:1px solid var(--line-neutral);border-radius:6px;
     >
       Actual
     </button>
@@ -3119,7 +3423,7 @@
     <button
       type="button"
       id="btnEvolucionSiguiente"
-      width:auto;padding:5px 10px;font-size:12px;border:1px solid #bbb;border-radius:6px;
+      width:auto;padding:5px 10px;font-size:12px;border:1px solid var(--line-neutral);border-radius:6px;
     >
       Siguiente ▶
     </button>
@@ -3157,9 +3461,9 @@
       flex-shrink:0;
       padding:5px 10px;
       font-size:12px;
-      background:#d1d5db;
-      color:#111;
-      border:1px solid #9ca3af;
+      background:var(--button-neutral);
+      color:var(--text-strong);
+      border:1px solid var(--line-slate);
       border-radius:8px;
     "
   >
@@ -3184,7 +3488,7 @@
       type="button"
       data-periodo="todo"
       class="active"
-      style="background:#222;color:white;"
+      style="background:var(--button-active);color:var(--button-selected-text);"
     >Todo</button>
   </div>
 
@@ -3207,7 +3511,7 @@
           width:auto;
           padding:5px 10px;
           font-size:12px;
-          border:1px solid #9ca3af;
+          border:1px solid var(--line-slate);
         "
       >
         ◀ Anterior
@@ -3220,7 +3524,7 @@
           width:auto;
           padding:5px 10px;
           font-size:12px;
-          border:1px solid #9ca3af;
+          border:1px solid var(--line-slate);
         "
       >
         Actual
@@ -3233,7 +3537,7 @@
           width:auto;
           padding:5px 10px;
           font-size:12px;
-          border:1px solid #9ca3af;
+          border:1px solid var(--line-slate);
         "
       >
         Siguiente ▶
@@ -3248,7 +3552,7 @@
     Gráfica pendiente de cargar...
   </div>
 
-  <p style="font-size:11px;color:#666;line-height:1.5;">
+  <p style="font-size:11px;color:var(--text-muted);line-height:1.5;">
     El eje horizontal representa las puntuaciones y el vertical
     el porcentaje de partidas en intervalos de 25 puntos.
     Por ejemplo, un 15 % entre 800 y 824 puntos significa
@@ -3278,8 +3582,8 @@
         padding:5px 9px;
         font-size:12px;
         border-radius:8px;
-        background:#d1d5db;
-        border:1px solid #9ca3af;
+        background:var(--button-neutral);
+        border:1px solid var(--line-slate);
       "
     >
       ← Volver
@@ -3293,18 +3597,18 @@
     gap:6px;
     margin:8px 0 10px;
   ">
-    <div style="background:#f1f1f1;border-radius:8px;padding:6px 4px;text-align:center;">
-      <div style="font-size:11px;color:#777;">Top-1</div>
+    <div style="background:var(--surface-inset);border-radius:8px;padding:6px 4px;text-align:center;">
+      <div style="font-size:11px;color:var(--text-secondary);">Top-1</div>
       <div id="valorTop1Personal" style="font-size:15px;font-weight:600;">—</div>
     </div>
   
-    <div style="background:#f1f1f1;border-radius:8px;padding:6px 4px;text-align:center;">
-      <div style="font-size:11px;color:#777;">Top-10</div>
+    <div style="background:var(--surface-inset);border-radius:8px;padding:6px 4px;text-align:center;">
+      <div style="font-size:11px;color:var(--text-secondary);">Top-10</div>
       <div id="valorTop10Personal" style="font-size:15px;font-weight:600;">—</div>
     </div>
   
-    <div style="background:#e5e7eb;border-radius:8px;padding:6px 4px;text-align:center;">
-      <div style="font-size:11px;color:#666;">Diferencia</div>
+    <div style="background:var(--tile);border-radius:8px;padding:6px 4px;text-align:center;">
+      <div style="font-size:11px;color:var(--text-muted);">Diferencia</div>
       <div id="valorDiferenciaTop10Personal" style="font-size:15px;font-weight:600;">—</div>
     </div>
   </div>
@@ -3343,8 +3647,8 @@
       padding:5px 9px;
       font-size:12px;
       border-radius:8px;
-      background:#d1d5db;
-      border:1px solid #9ca3af;
+      background:var(--button-neutral);
+      border:1px solid var(--line-slate);
     "
     onclick="document.getElementById('backFromProfile').click()"
   >
@@ -3356,9 +3660,9 @@
   <style>
     #historialMesAnterior:disabled,
     #historialMesSiguiente:disabled {
-      background: #f3f4f6 !important;
-      color: #b0b5bd !important;
-      border-color: #e5e7eb !important;
+      background: var(--surface-disabled) !important;
+      color: var(--text-disabled) !important;
+      border-color: var(--divider-faint) !important;
       opacity: 0.6;
       cursor: default;
     }
@@ -3399,7 +3703,7 @@
         width:auto;
         padding:5px 9px;
         font-size:12px;
-        border:1px solid #9ca3af;
+        border:1px solid var(--line-slate);
         border-radius:16px;
       "
     >◀ Anterior</button>
@@ -3412,7 +3716,7 @@
         width:auto;
         padding:5px 9px;
         font-size:12px;
-        border:1px solid #9ca3af;
+        border:1px solid var(--line-slate);
         border-radius:16px;
       "
     >Actual</button>
@@ -3425,14 +3729,14 @@
         width:auto;
         padding:5px 9px;
         font-size:12px;
-        border:1px solid #9ca3af;
+        border:1px solid var(--line-slate);
         border-radius:16px;
       "
     >Siguiente ▶</button>
 
   </div>
 </div>
- <div id="historialMesResumen" style="text-align:center;font-size:12px;font-weight:700;color:#777;margin-bottom:6px;"></div>
+ <div id="historialMesResumen" style="text-align:center;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;"></div>
 
   <!-- PARTIDAS -->
 <div id="historialMesResultados"
@@ -3444,6 +3748,45 @@
   </div>
    
   </section>
+
+<script>
+  (() => {
+    const raiz = document.documentElement;
+    const botones = document.querySelectorAll(".selector-tema");
+
+    function actualizarBotonesTema() {
+      const oscuro = raiz.dataset.tema === "oscuro";
+      botones.forEach(boton => {
+        boton.setAttribute("aria-pressed", String(oscuro));
+        boton.title = oscuro ? "Activar modo claro" : "Activar modo oscuro";
+      });
+    }
+
+    botones.forEach(boton => {
+      boton.addEventListener("click", () => {
+        const tema = raiz.dataset.tema === "oscuro" ? "claro" : "oscuro";
+        raiz.dataset.tema = tema;
+        actualizarBotonesTema();
+
+        try {
+          localStorage.setItem("maptaos-tema", tema);
+        } catch {
+          // El cambio sigue disponible durante esta visita.
+        }
+
+        ["evolutionChart", "evolutionChartGrupo"].forEach(id => {
+          window.Chart?.getChart(id)?.update("none");
+        });
+      });
+    });
+
+    actualizarBotonesTema();
+  })();
+
+  function colorTemaMapTaos(variable) {
+    return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+  }
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -3737,7 +4080,7 @@ while (true) {
     ]) {
       const celda = document.createElement("td");
       celda.textContent = valor;
-      celda.style.cssText = "padding:7px 4px;border-bottom:1px solid #f3d7a4;";
+      celda.style.cssText = "padding:7px 4px;border-bottom:1px solid var(--gold-divider);";
       fila.appendChild(celda);
     }
 
@@ -3789,7 +4132,7 @@ jugadorActual = data;
 
 playerName.innerHTML =
   '<span id="btnMiPerfil" role="button" title="Mi perfil" ' +
-  'style="cursor:pointer; background:#e9ecef; border:1px solid #c5c9cc; padding:4px 7px; border-radius:8px; font-size:13px; font-weight:400;">👤 Perfil</span> ' +
+  'style="cursor:pointer; background:var(--profile-chip); border:1px solid var(--button-border); padding:4px 7px; border-radius:8px; font-size:13px; font-weight:400;">👤 Perfil</span> ' +
   (data.alias || data.nombre);
 
 document
@@ -4773,18 +5116,18 @@ if (mostrarMediasRondas && valores.length > 0) {
           margin-right:5px;
           font-size:11px;
           font-weight:400;
-          color:#888;
+          color:var(--text-subtle);
           white-space:nowrap;
         ">Medias</span>
     ` +
       mediasRondas.map(valor => {
       const color = mejor === peor
-        ? "#777777"
+        ? "var(--text-steady)"
         : valor === mejor
-          ? "#15803d"
+          ? "var(--text-positive)"
           : valor === peor
-            ? "#c44e52"
-            : "#777777";
+            ? "var(--text-negative)"
+            : "var(--text-steady)";
 
       return `
         <span style="
@@ -4930,9 +5273,9 @@ if (filaAnterior) {
   }
 }
       return `
-  <div style="
+  <div class="fila-ranking" ${fila.posicion >= 1 && fila.posicion <= 3 ? `data-podio="${fila.posicion}"` : ""} style="
     padding:10px 0;
-    border-bottom:1px solid #ddd;
+    border-bottom:1px solid var(--ranking-row-line, var(--divider));
   ">
 
     <div style="
@@ -4962,7 +5305,7 @@ if (filaAnterior) {
 
     const nombre = this.textContent.trim();
 
-    this.style.backgroundColor = '#bfdbfe';
+    this.style.backgroundColor = 'var(--highlight-pressed)';
 
     requestAnimationFrame(() => {
       requestAnimationFrame(async () => {
@@ -4996,7 +5339,7 @@ if (filaAnterior) {
 </span>
       </span>
 
-      <strong style="
+      <strong class="puntuacion-ranking" style="
         display:flex;
         align-items:center;
         gap:5px;
@@ -5021,7 +5364,7 @@ if (filaAnterior) {
       margin-top:6px;
       margin-left:35px;
       font-size:13px;
-      color:#666;
+      color:var(--text-muted);
       width:calc(100% - 55px);
     ">
       ${textoRondas}
@@ -5596,9 +5939,9 @@ if (btnMesAnterior) {
     }
 
       return `
-        <div style="
+        <div class="fila-ranking" ${fila.posicion >= 1 && fila.posicion <= 3 ? `data-podio="${fila.posicion}"` : ""} style="
           padding:10px 0;
-          border-bottom:1px solid #ddd;
+          border-bottom:1px solid var(--ranking-row-line, var(--divider));
         ">
 
           <div style="
@@ -5625,7 +5968,7 @@ if (btnMesAnterior) {
           
               const nombre = this.textContent.trim();
           
-              this.style.backgroundColor = '#bfdbfe';
+              this.style.backgroundColor = 'var(--highlight-pressed)';
           
               requestAnimationFrame(() => {
                 requestAnimationFrame(async () => {
@@ -5660,7 +6003,7 @@ if (btnMesAnterior) {
               </span>
             </span>
 
-            <strong>
+            <strong class="puntuacion-ranking">
               ${fila.puntos}
             </strong>
 
@@ -5670,7 +6013,7 @@ if (btnMesAnterior) {
             display:flex;
             margin-top:5px;
             font-size:12px;
-            color:#666;
+            color:var(--text-muted);
           ">
             <span style="
               width:28px;
@@ -5880,7 +6223,7 @@ const fechaAyer = new Date(
     return `
       <div style="
         padding:10px 0;
-        border-bottom:1px solid #ddd;
+        border-bottom:1px solid var(--divider);
       ">
 
         <div style="
@@ -5935,7 +6278,7 @@ const fechaAyer = new Date(
           margin-top:5px;
           margin-left:28px;
           font-size:12px;
-          color:#666;
+          color:var(--text-muted);
         ">
           📊 <strong>${Math.round(jugador.media)}</strong>
           &nbsp;·&nbsp;
@@ -6064,13 +6407,13 @@ document.getElementById("selectorPeriodoClub100")
         botonSelector.dataset.periodoClub100 === periodoClub100;
 
       botonSelector.style.background =
-        activo ? "#111" : "#e1e4e6";
+        activo ? "var(--button-selected)" : "var(--button-idle)";
 
       botonSelector.style.color =
-        activo ? "#fff" : "#111";
+        activo ? "var(--button-selected-text)" : "var(--text-strong)";
 
       botonSelector.style.borderColor =
-        activo ? "#111" : "#c5c9cc";
+        activo ? "var(--selected-border)" : "var(--button-border)";
     });
 
     
@@ -6247,7 +6590,7 @@ while (true) {
       align-items:center;
       gap:2px;
       padding:8px 0;
-      border-bottom:2px solid #bbb;
+      border-bottom:2px solid var(--line-neutral);
       font-size:12px;
       font-weight:600;
       text-align:center;
@@ -6294,7 +6637,7 @@ while (true) {
         align-items:center;
         gap:2px;
         padding:9px 0;
-        border-bottom:1px solid #ddd;
+        border-bottom:1px solid var(--divider);
         font-size:12px;
         text-align:center;
       ">
@@ -6495,7 +6838,7 @@ for (const [fecha, partidas] of porFecha) {
   const aviso = document.createElement("div");
   aviso.textContent = "Las medallas de hoy (+1) son provisionales.";
   aviso.style.cssText =
-    "font-size:12px;color:#666;margin-bottom:10px;";
+    "font-size:12px;color:var(--text-muted);margin-bottom:10px;";
   contenedor.appendChild(aviso);
 
 
@@ -6512,7 +6855,7 @@ cabecera.style.cssText = `
   padding:0 4px 7px;
   font-size:12px;
   text-align:center;
-  border-bottom:1px solid #d5d8da;
+  border-bottom:1px solid var(--divider-table);
 `;
 
 ["", "", "🥇", "🥈", "🥉", "Total"].forEach(texto => {
@@ -6561,7 +6904,7 @@ const mostrarMedallasDiarias = (definitivas, provisionales, esTotal = false) => 
       transform:translateY(-50%);
       font-size:8px;
       font-weight:400;
-      color:#777;
+      color:var(--text-secondary);
       white-space:nowrap;
     `;
 
@@ -6602,7 +6945,7 @@ clasificacion.forEach((jugador, indice) => {
     gap:2px;
     align-items:center;
     padding:9px 4px;
-    border-bottom:1px solid #eee;
+    border-bottom:1px solid var(--divider-subtle);
     font-size:12px;
   `;
 
@@ -6619,7 +6962,7 @@ clasificacion.forEach((jugador, indice) => {
   posicion.textContent = String(jugador.posicionRanking);
   posicion.style.cssText = `
     text-align:center;
-    color:#666;
+    color:var(--text-muted);
   `;
   fila.appendChild(posicion);
 
@@ -6653,7 +6996,7 @@ celdaNombre.addEventListener("click", async () => {
   // Mostrar claramente que se está abriendo el perfil
   celdaNombre.textContent = "⏳ Abriendo perfil...";
   celdaNombre.style.fontWeight = "700";
-  celdaNombre.style.color = "#2563eb";
+  celdaNombre.style.color = "var(--text-link)";
   celdaNombre.style.cursor = "wait";
 
   try {
@@ -6830,7 +7173,7 @@ async function cargarMedalleroMensual() {
       html += `
         <div style="
           ${indice > 0
-            ? "border-top:1px solid #d5d8da; padding-top:16px;"
+            ? "border-top:1px solid var(--divider-table); padding-top:16px;"
             : ""}
           margin-bottom:6px;
         ">
@@ -6842,7 +7185,7 @@ async function cargarMedalleroMensual() {
           ">
             ${nombresMeses[mes - 1]} ${anio}
             ${esMesActual
-              ? '<span style="font-weight:500; color:#777;"> · PROVISIONAL</span>'
+              ? '<span style="font-weight:500; color:var(--text-secondary);"> · PROVISIONAL</span>'
               : ""}
           </div>
 
@@ -6873,7 +7216,7 @@ async function cargarMedalleroMensual() {
         ? `
           <div style="
             margin-top:5px;
-            color:#999;
+            color:var(--text-quiet);
           ">
             —
           </div>
@@ -6890,7 +7233,7 @@ async function cargarMedalleroMensual() {
               <div style="
                 margin-top:7px;
                 ${jugadores.length > 1
-                  ? "border-top:1px solid #d5d8da; padding-top:5px;"
+                  ? "border-top:1px solid var(--divider-table); padding-top:5px;"
                   : ""}
               ">
                 
@@ -6920,7 +7263,7 @@ async function cargarMedalleroMensual() {
                 <div style="
                   margin-top:4px;
                   font-size:12px;
-                  color:#777;
+                  color:var(--text-secondary);
                 ">
                   ${Number(jugador.puntos).toLocaleString("es-ES")}
                 </div>
@@ -7087,7 +7430,7 @@ while (true) {
           top:50%;
           transform:translateY(-50%);
           font-size:8px;
-          color:#777;
+          color:var(--text-secondary);
         ">
           +${provisionales}
         </span>
@@ -7104,7 +7447,7 @@ while (true) {
       padding:0 4px 7px;
       font-size:12px;
       text-align:center;
-      border-bottom:1px solid #d5d8da;
+      border-bottom:1px solid var(--divider-table);
     ">
       <div></div>
       <div></div>
@@ -7132,10 +7475,10 @@ while (true) {
         gap:2px;
         align-items:center;
         padding:9px 4px;
-        border-bottom:1px solid #eee;
+        border-bottom:1px solid var(--divider-subtle);
         font-size:12px;
       ">
-        <div style="text-align:center;color:#666;">
+        <div style="text-align:center;color:var(--text-muted);">
           ${jugador.oros + jugador.platas + jugador.bronces === 0
             ? "—"
             : jugador.posicion}
@@ -7186,7 +7529,7 @@ while (true) {
     <div style="
       margin-top:8px;
       font-size:11px;
-      color:#777;
+      color:var(--text-secondary);
     ">
       Número principal: medallas consolidadas.
       +n: medallas provisionales del mes actual.
@@ -7347,7 +7690,7 @@ while (true) {
             top:50%;
             transform:translateY(-50%);
             font-size:8px;
-            color:#777;
+            color:var(--text-secondary);
           ">
             +${provisionales}
           </span>
@@ -7364,7 +7707,7 @@ while (true) {
       padding:0 4px 7px;
       font-size:12px;
       text-align:center;
-      border-bottom:1px solid #d5d8da;
+      border-bottom:1px solid var(--divider-table);
     ">
       <div></div>
       <div></div>
@@ -7392,10 +7735,10 @@ while (true) {
         gap:2px;
         align-items:center;
         padding:9px 4px;
-        border-bottom:1px solid #eee;
+        border-bottom:1px solid var(--divider-subtle);
         font-size:12px;
       ">
-        <div style="text-align:center;color:#666;">
+        <div style="text-align:center;color:var(--text-muted);">
           ${total === 0 ? "—" : jugador.posicion}
         </div>
 
@@ -7444,7 +7787,7 @@ while (true) {
     <div style="
       margin-top:8px;
       font-size:11px;
-      color:#777;
+      color:var(--text-secondary);
     ">
       Número principal: medallas consolidadas.
       +n: medallas provisionales del mes actual.
@@ -7535,7 +7878,7 @@ async function cargarMedalleroPorContinente() {
             top:50%;
             transform:translateY(-50%);
             font-size:8px;
-            color:#777;
+            color:var(--text-secondary);
           ">
             +${provisionales}
           </span>
@@ -7624,7 +7967,7 @@ async function cargarMedalleroPorContinente() {
       <div style="
         margin-top:15px;
         padding:9px 12px;
-        background:#d5dde2;
+        background:var(--table-heading);
         border-radius:7px;
         font-weight:700;
         font-size:14px;
@@ -7640,7 +7983,7 @@ async function cargarMedalleroPorContinente() {
         padding:9px 4px 7px;
         font-size:12px;
         text-align:center;
-        border-bottom:1px solid #d5d8da;
+        border-bottom:1px solid var(--divider-table);
       ">
         <div></div>
         <div></div>
@@ -7653,7 +7996,7 @@ async function cargarMedalleroPorContinente() {
 
     if (clasificacion.length === 0) {
       html += `
-        <div style="padding:12px;font-size:13px;color:#777;">
+        <div style="padding:12px;font-size:13px;color:var(--text-secondary);">
           Todavía no hay medallas.
         </div>
       `;
@@ -7671,10 +8014,10 @@ async function cargarMedalleroPorContinente() {
           gap:2px;
           align-items:center;
           padding:9px 4px;
-          border-bottom:1px solid #eee;
+          border-bottom:1px solid var(--divider-subtle);
           font-size:12px;
         ">
-          <div style="text-align:center;color:#666;">
+          <div style="text-align:center;color:var(--text-muted);">
             ${jugador.oros + jugador.platas + jugador.bronces === 0
               ? "—"
               : jugador.posicion}
@@ -7724,7 +8067,7 @@ async function cargarMedalleroPorContinente() {
   });
 
     html += `
-      <div style="margin-top:10px;font-size:11px;color:#777;">
+      <div style="margin-top:10px;font-size:11px;color:var(--text-secondary);">
         Número principal: medallas consolidadas.
         +n: medallas provisionales del mes actual.
         Las provisionales no cuentan para la clasificación.
@@ -7878,7 +8221,7 @@ contenedor.innerHTML =
               justify-content:space-between;
               align-items:center;
               padding:7px 0;
-              border-bottom:1px solid #ddd;
+              border-bottom:1px solid var(--divider);
             "
           >
         
@@ -7888,7 +8231,7 @@ contenedor.innerHTML =
                 width:26px;
                 text-align:center;
                 font-weight:400;
-                color:#666666;
+                color:var(--text-muted-full);
               ">${medalla || fila.posicion}</span> 
             <strong
               data-jugador-id="${Number(fila.jugador_id)}"
@@ -7898,7 +8241,7 @@ contenedor.innerHTML =
               )"
               style="
                 cursor:pointer;
-                color:#666666;
+                color:var(--text-muted-full);
               "
             >
               ${String(nombre || "")
@@ -7918,13 +8261,13 @@ contenedor.innerHTML =
               align-items:center;
               flex-shrink:0;
             ">
-              <strong style="color:#666666;">
+              <strong style="color:var(--text-muted-full);">
                 ${Number(fila.porcentaje).toFixed(1).replace(".", ",")} %
               </strong>
         
               <span style="
                 font-size:12px;
-                color:#777;
+                color:var(--text-secondary);
               ">
                 ${fila.rondas_jugadas}
               </span>
@@ -7937,7 +8280,7 @@ contenedor.innerHTML =
 
     return `
       <div style="
-        background:#eef1f3;
+        background:var(--panel);
         border-radius:12px;
         padding:12px;
         margin-bottom:14px;
@@ -7956,7 +8299,7 @@ contenedor.innerHTML =
   <span style="
     font-size:11px;
     font-weight:400;
-    color:#777;
+    color:var(--text-secondary);
   ">
     ${jugadores.length > 0 ? jugadores[0].apariciones : 0} apariciones
   </span>
@@ -7967,7 +8310,7 @@ contenedor.innerHTML =
     justify-content:flex-end;
     margin-bottom:2px;
     font-size:11px;
-    color:#777;
+    color:var(--text-secondary);
   ">
   <div style="
     display:grid;
@@ -7988,9 +8331,9 @@ contenedor.innerHTML =
         margin-top:8px;
         width:100%;
         padding:7px;
-        border:1px solid #ccc;
+        border:1px solid var(--field-border);
         border-radius:8px;
-        background:#e1e4e6;
+        background:var(--button-idle);
         font-weight:600;
         cursor:pointer;
       "
@@ -8132,7 +8475,7 @@ while (true) {
       html += `
         <div style="
           ${indiceMes > 0
-            ? "border-top:1px solid #d5d8da; padding-top:16px;"
+            ? "border-top:1px solid var(--divider-table); padding-top:16px;"
             : ""}
           margin-bottom:10px;
         ">
@@ -8144,7 +8487,7 @@ while (true) {
           ">
             ${nombresMeses[mes - 1]} ${anio}
             ${esMesActual
-              ? '<span style="font-weight:500; color:#777;"> · PROVISIONAL</span>'
+              ? '<span style="font-weight:500; color:var(--text-secondary);"> · PROVISIONAL</span>'
               : ""}
           </div>
       `;
@@ -8179,7 +8522,7 @@ html += `
   ">
 
     <div style="
-      background:#d5dde2;
+      background:var(--table-heading);
       text-align:center;
       font-size:13px;
       font-weight:700;
@@ -8207,10 +8550,10 @@ medallas.forEach((medalla, indiceMedalla) => {
     html += `
       <div style="
         text-align:center;
-        color:#999;
+        color:var(--text-quiet);
         font-size:12px;
         padding:4px 2px 5px;
-        ${indiceMedalla > 0 ? "border-left:2px solid #fff;" : ""}
+        ${indiceMedalla > 0 ? "border-left:2px solid var(--medal-divider);" : ""}
       ">
         —
       </div>
@@ -8255,7 +8598,7 @@ medallas.forEach((medalla, indiceMedalla) => {
       text-align:center;
       padding:2px 2px 4px;
       line-height:1.15;
-      ${indiceMedalla > 0 ? "border-left:2px solid #fff;" : ""}
+      ${indiceMedalla > 0 ? "border-left:2px solid var(--medal-divider);" : ""}
     ">
       ${nombresJugadores}
     </div>
@@ -8465,7 +8808,7 @@ const aparicionesPorPais = new Map();
         padding:4px 0 8px;
         font-size:11px;
         font-weight:600;
-        color:#666;
+        color:var(--text-muted);
         text-align:right;
       ">
         <span>Media</span>
@@ -8504,7 +8847,7 @@ const aparicionesPorPais = new Map();
           justify-content:space-between;
           gap:8px;
           padding:8px 0;
-          border-bottom:1px solid #e1e4e6;
+          border-bottom:1px solid var(--divider-soft);
         ">
           <span style="flex:1;min-width:0;">
             ${indice + 1}. ${dato.pais} ${nombrePais}
@@ -8520,7 +8863,7 @@ const aparicionesPorPais = new Map();
             white-space:nowrap;
           ">
             <strong>${dato.media.toFixed(2)}</strong>
-            <span style="font-size:12px;color:#666;">
+            <span style="font-size:12px;color:var(--text-muted);">
               ${aparicionesPorPais.get(dato.pais) || 0}
             </span>
           </span>
@@ -8592,7 +8935,7 @@ const aparicionesPorPais = new Map();
     contenedorApariciones.innerHTML = `
       <div style="
         font-size:12px;
-        color:#666;
+        color:var(--text-muted);
         margin-bottom:10px;
       ">
         ${listaApariciones.length} países 
@@ -8604,7 +8947,7 @@ const aparicionesPorPais = new Map();
         justify-content:space-between;
         font-size:11px;
         font-weight:600;
-        color:#666;
+        color:var(--text-muted);
         padding:5px 0;
       ">
         <span></span>
@@ -8618,7 +8961,7 @@ const aparicionesPorPais = new Map();
           align-items:center;
           gap:8px;
           padding:7px 0;
-          border-bottom:1px solid #e1e4e6;
+          border-bottom:1px solid var(--divider-soft);
           font-size:13px;
         ">
           <span style="min-width:0;">
@@ -8642,10 +8985,10 @@ const aparicionesPorPais = new Map();
             display:block;
             margin:12px auto 2px;
             padding:6px 14px;
-            border:1px solid #999;
+            border:1px solid var(--line-strong);
             border-radius:7px;
-            background:#fff;
-            color:#333;
+            background:var(--surface-short);
+            color:var(--text-soft);
             font-size:12px;
             cursor:pointer;
           "
@@ -8947,7 +9290,7 @@ contenedor.innerHTML = ranking
     return `
       <div style="
         padding:8px 0;
-        border-bottom:1px solid #ddd;
+        border-bottom:1px solid var(--divider);
       ">
 
         <div style="
@@ -8968,7 +9311,7 @@ contenedor.innerHTML = ranking
               display:inline-block;
               width:24px;
               font-weight:400;
-              color:#666666;
+              color:var(--text-muted-full);
             ">
               ${i + 1}
             </span>
@@ -8976,7 +9319,7 @@ contenedor.innerHTML = ranking
             <strong style="
               display:inline-block;
               width:42px;
-              color:#666666;
+              color:var(--text-muted-full);
             ">
               ${fila.mejor}
             </strong>
@@ -8989,7 +9332,7 @@ contenedor.innerHTML = ranking
               )"
               style="
                 cursor:pointer;
-                color:#666666;
+                color:var(--text-muted-full);
                 white-space:nowrap;
                 margin-left:-10px;
               "
@@ -9005,7 +9348,7 @@ contenedor.innerHTML = ranking
 
           <span style="
             font-size:12px;
-            color:#777;
+            color:var(--text-secondary);
             white-space:nowrap;
           ">
             ${fecha}
@@ -9026,7 +9369,7 @@ contenedor.innerHTML = ranking
           margin-top:5px;
           margin-left:66px;
           font-size:12px;
-          color:#666;
+          color:var(--text-muted);
         ">
           📊 <strong>${fila.media}</strong>
           &nbsp;·&nbsp;
@@ -9042,7 +9385,7 @@ contenedor.innerHTML = ranking
 
 contenedor.innerHTML = `
   <div style="
-    background:#eef1f3;
+    background:var(--panel);
     border-radius:12px;
     padding:10px;
   ">
@@ -9131,7 +9474,7 @@ async function cargarMediaHistorica() {
   
     contenedor.innerHTML = `
       <div style="
-        background:#eef1f3;
+        background:var(--panel);
         border-radius:12px;
         padding:12px;
         margin-bottom:14px;
@@ -9160,7 +9503,7 @@ async function cargarMediaHistorica() {
             justify-content:space-between;
             align-items:center;
             padding:10px 0;
-            border-bottom:1px solid #ddd;
+            border-bottom:1px solid var(--divider);
             gap:8px;
           ">
 
@@ -9176,7 +9519,7 @@ async function cargarMediaHistorica() {
                 text-align:center;
                 flex-shrink:0;
                 font-weight:400;
-                color:#666666;
+                color:var(--text-muted-full);
               ">
                 ${medalla || fila.posicion}
               </span>
@@ -9185,7 +9528,7 @@ async function cargarMediaHistorica() {
                 onclick="abrirPerfilJugador(${fila.jugador_id}, '${nombre}')"
                 style="
                   cursor:pointer;
-                  color:#666666;
+                  color:var(--text-muted-full);
                   white-space:nowrap;
                   overflow:hidden;
                   text-overflow:ellipsis;
@@ -9207,7 +9550,7 @@ async function cargarMediaHistorica() {
               display:inline-block;
               width:32px;
               text-align:right;
-              color:#666666;
+              color:var(--text-muted-full);
             ">
               ${fila.media}
             </strong>
@@ -9217,7 +9560,7 @@ async function cargarMediaHistorica() {
                 width:30px;
                 margin-left:4px;
                 font-size:12px;
-                color:#666;
+                color:var(--text-muted);
                 text-align:left;
               ">
                 🎮${fila.partidas}
@@ -9700,7 +10043,7 @@ for (const [fecha, partidas] of porFecha) {
           font-size:9px;
           font-weight:400;
           line-height:1;
-          color:#777;
+          color:var(--text-secondary);
           white-space:nowrap;
         ">+${provisional}</span>
       ` : ""}
@@ -9720,7 +10063,7 @@ for (const [fecha, partidas] of porFecha) {
       line-height:1.3;
       min-height:20px;
     ">
-    <div style="font-size:12px;font-weight:700;color:#666;text-align:left;">Diarias</div>
+    <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-align:left;">Diarias</div>
 
       ${medallas.map((numero, i) => `
         <div style="text-align:center;">
@@ -9815,7 +10158,7 @@ while (true) {
           font-size:9px;
           font-weight:400;
           line-height:1;
-          color:#777;
+          color:var(--text-secondary);
           white-space:nowrap;
         ">+${provisional}</span>
       ` : ""}
@@ -9834,7 +10177,7 @@ while (true) {
       font-size:12px;
       line-height:1.3;
     ">
-      <div style="font-size:12px;font-weight:700;color:#666;text-align:left;">Mensuales</div>
+      <div style="font-size:12px;font-weight:700;color:var(--text-muted);text-align:left;">Mensuales</div>
 
       ${medallas.map((numero, i) => `
         <div style="text-align:center;">
@@ -9921,7 +10264,7 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
           font-size:9px;
           font-weight:400;
           line-height:1;
-          color:#777;
+          color:var(--text-secondary);
           white-space:nowrap;
         ">+${prov}</span>
       ` : ""}
@@ -9987,7 +10330,7 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
   html += `
     <div style="
       grid-column:1 / -1;
-      border-top:1px solid #ccc;
+      border-top:1px solid var(--field-border);
       height:0;
       margin-top:3px;
     "></div>
@@ -10097,7 +10440,7 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
         padding:4px 0 8px;
         font-size:11px;
         font-weight:600;
-        color:#666;
+        color:var(--text-muted);
         text-align:right;
       ">
         <span style="grid-column:5;text-align:center;">Media</span>
@@ -10139,7 +10482,7 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
           gap:2px;
           align-items:center;
           padding:7px 0;
-          border-bottom:1px solid #e1e4e6;
+          border-bottom:1px solid var(--divider-soft);
           font-size:13px;
           text-align:left;
         ">
@@ -10166,7 +10509,7 @@ async function cargarMedallasContinentesPerfil(jugadorId) {
             grid-column:6;
             text-align:center;
             font-size:11px;
-            color:#666;
+            color:var(--text-muted);
           ">
             ${dato.cantidad}
           </span>
@@ -10477,7 +10820,7 @@ function mostrarDetalleBarraDistribucion(
     ? nombreJugadorDistribucionActual
     : "Resto de jugadores";
 
-  const color = esJugador ? "#15803d" : "#ea580c";
+  const color = esJugador ? "var(--text-positive)" : "var(--text-orange)";
 
   detalle.style.display = "block";
 
@@ -10498,7 +10841,7 @@ function mostrarDetalleBarraDistribucion(
           width:auto;
           padding:2px 8px;
           font-size:12px;
-          border:1px solid #aaa;
+          border:1px solid var(--line-medium);
         "
       >✕</button>
     </div>
@@ -10587,10 +10930,10 @@ function alturaMaximaGauss(serie) {
     elementos += `
         <line x1="${izquierda}" y1="${y}"
           x2="${ancho - derecha}" y2="${y}"
-          stroke="#9ca3af" stroke-width="1"/>
+          stroke="var(--line-slate)" stroke-width="1"/>
 
       <text x="${izquierda - 7}" y="${y + 4}"
-        text-anchor="end" font-size="18" fill="#666">
+        text-anchor="end" font-size="18" fill="var(--text-muted)">
         ${Number(porcentaje.toFixed(1))}%
       </text>
     `;
@@ -10616,7 +10959,7 @@ function alturaMaximaGauss(serie) {
         y="${yJugador}"
         width="${anchoBarra}"
         height="${arriba + altoGrafica - yJugador}"
-        fill="#16a34a"
+        fill="var(--distribution-player-bar)"
         opacity="0.35"
         data-grupo="jugador"
         data-intervalo="${i}"
@@ -10632,7 +10975,7 @@ function alturaMaximaGauss(serie) {
         y="${yRivales}"
         width="${anchoBarra}"
         height="${arriba + altoGrafica - yRivales}"
-        fill="#ea580c"
+        fill="var(--distribution-group)"
         opacity="0.35"
         data-grupo="rivales"
         data-intervalo="${i}"
@@ -10673,14 +11016,14 @@ function alturaMaximaGauss(serie) {
     rivales,
     xPuntuacion,
     posicionY,
-    "#ea580c"
+    "var(--distribution-group)"
   );
 
   elementos += generarCurvaGaussDistribucion(
     jugador,
     xPuntuacion,
     posicionY,
-    "#15803d"
+    "var(--distribution-player)"
   );
 
   // Media del jugador: verde
@@ -10691,7 +11034,7 @@ function alturaMaximaGauss(serie) {
       <line
         x1="${xMediaJugador}" y1="${arriba}"
         x2="${xMediaJugador}" y2="${arriba + altoGrafica}"
-        stroke="#15803d"
+        stroke="var(--distribution-player)"
         stroke-width="5"
         stroke-dasharray="7 4"
         pointer-events="none"
@@ -10707,7 +11050,7 @@ function alturaMaximaGauss(serie) {
       <line
         x1="${xMediaResto}" y1="${arriba}"
         x2="${xMediaResto}" y2="${arriba + altoGrafica}"
-        stroke="#ea580c"
+        stroke="var(--distribution-group)"
         stroke-width="5"
         stroke-dasharray="7 4"
         pointer-events="none"
@@ -10734,7 +11077,7 @@ function alturaMaximaGauss(serie) {
       y1="${arriba + altoGrafica}"
       x2="${ancho - derecha}"
       y2="${arriba + altoGrafica}"
-      stroke="#111"
+      stroke="var(--text-strong)"
       stroke-width="1.5"
     />
   `;
@@ -10753,7 +11096,7 @@ function alturaMaximaGauss(serie) {
 
     elementos += `
       <text x="${x}" y="${alto - 25}"
-        text-anchor="middle" font-size="18" fill="#666">
+        text-anchor="middle" font-size="18" fill="var(--text-muted)">
         ${puntos}
       </text>
     `;
@@ -10778,7 +11121,7 @@ ${avisosCurvas.length > 0 ? `
     margin:4px 0 8px;
     font-size:11px;
     line-height:1.4;
-    color:#666;
+    color:var(--text-muted);
     text-align:left;
   ">
     Curva no disponible para
@@ -10810,7 +11153,7 @@ ${avisosCurvas.length > 0 ? `
           display:inline-block;
           width:10px;
           height:10px;
-          background:#15803d;
+          background:var(--distribution-player);
           flex-shrink:0;
         "></span>
         ${nombreJugadorDistribucionActual}
@@ -10827,7 +11170,7 @@ ${avisosCurvas.length > 0 ? `
         display:inline-block;
         width:10px;
         height:10px;
-        background:#ea580c;
+        background:var(--distribution-group);
         flex-shrink:0;
       "></span>
       Resto de jugadores
@@ -10844,7 +11187,7 @@ ${avisosCurvas.length > 0 ? `
         display:inline-block;
         width:22px;
         height:0;
-        border-top:4px dashed #15803d;
+        border-top:4px dashed var(--distribution-player);
         flex-shrink:0;
       "></span>
       Media de ${nombreJugadorDistribucionActual}
@@ -10860,7 +11203,7 @@ ${avisosCurvas.length > 0 ? `
         display:inline-block;
         width:22px;
         height:0;
-        border-top:4px dashed #ea580c;
+        border-top:4px dashed var(--distribution-group);
         flex-shrink:0;
       "></span>
       Media del resto
@@ -10936,7 +11279,7 @@ async function cargarEstadisticasDistribucion(jugadorId) {
         <div style="font-size:12px;font-weight:bold;">
           ${periodo.etiqueta}
         </div>
-        <div style="font-size:10px;color:#777;">
+        <div style="font-size:10px;color:var(--text-secondary);">
           ${periodo.fechaInicio} a ${periodo.fechaFin}
         </div>
       </div>
@@ -10949,8 +11292,8 @@ async function cargarEstadisticasDistribucion(jugadorId) {
         display:none;
         margin:8px 0 12px;
         padding:6px 10px;
-        background:#fff;
-        border:1px solid #cbd5e1;
+        background:var(--surface-short);
+        border:1px solid var(--line-cool);
         border-radius:8px;
         font-size:12px;
         text-align:left;
@@ -10968,13 +11311,13 @@ async function cargarEstadisticasDistribucion(jugadorId) {
         table-layout:fixed;
       ">
         <thead>
-          <tr style="border-bottom:1px solid #aaa;">
+          <tr style="border-bottom:1px solid var(--line-medium);">
             <th style="width:34%;text-align:left;padding:6px 2px;"></th>
             <th style="
               width:33%;
               text-align:right;
               padding:2px 3px;
-              color:#15803d;
+              color:var(--text-positive);
               overflow-wrap:anywhere;
               white-space:nowrap;
             ">
@@ -10984,7 +11327,7 @@ async function cargarEstadisticasDistribucion(jugadorId) {
               width:33%;
               text-align:right;
               padding:2px 3px;
-              color:#ea580c;
+              color:var(--text-orange);
             ">
               Resto
             </th>
@@ -11011,7 +11354,7 @@ async function cargarEstadisticasDistribucion(jugadorId) {
     
      
       <div style="
-        border-top:1px solid #aaa;
+        border-top:1px solid var(--line-medium);
         margin-top:8px;
         padding-top:6px;
         font-size:12px;
@@ -11053,10 +11396,10 @@ async function cargarEstadisticasDistribucion(jugadorId) {
         <div style="
           margin-top:8px;
           padding-top:6px;
-          border-top:1px solid #ccc;
+          border-top:1px solid var(--field-border);
           font-size:11px;
           line-height:1.4;
-          color:#666;
+          color:var(--text-muted);
         ">
           <strong>Desv. típica:</strong>
           mide la regularidad de las puntuaciones.
@@ -11114,17 +11457,17 @@ contenedor.querySelectorAll(".franja-distribucion").forEach(franja => {
         text-align:right;
       ">
         <thead>
-          <tr style="border-bottom:1px solid #bbb;">
+          <tr style="border-bottom:1px solid var(--line-neutral);">
             <th style="text-align:left;padding:2px 3px;"></th>
             <th style="
-              color:#15803d;
+              color:var(--text-positive);
               padding:2px 3px;
               white-space:nowrap;
               font-size:11px;
             ">
               ${nombreJugador}
             </th>
-            <th style="color:#ea580c;padding:2px 3px;">
+            <th style="color:var(--text-orange);padding:2px 3px;">
               Resto
             </th>
           </tr>
@@ -11135,7 +11478,7 @@ contenedor.querySelectorAll(".franja-distribucion").forEach(franja => {
             <td>${partidasJugador}</td>
             <td>${partidasRivales}</td>
           </tr>
-          <tr style="border-top:1px solid #e5e7eb;">
+          <tr style="border-top:1px solid var(--divider-faint);">
             <td style="text-align:left;padding:2px 3px;">Porcentaje</td>
             <td>${porcentajeJugador.toFixed(1)} %</td>
             <td>${porcentajeRivales.toFixed(1)} %</td>
@@ -11188,8 +11531,8 @@ function actualizarSelectorDistribucion() {
       boton.dataset.periodo === periodoDistribucionActivo;
 
     boton.classList.toggle("active", activo);
-    boton.style.background = activo ? "#222" : "#e7ebee";
-    boton.style.color = activo ? "#fff" : "#222";
+    boton.style.background = activo ? "var(--button-active)" : "var(--button-secondary)";
+    boton.style.color = activo ? "var(--button-selected-text)" : "var(--text-body)";
   });
 
   // Mostrar navegación solamente en modo Mes.
@@ -11505,14 +11848,14 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
       gap:6px;
       margin-top:8px;
       font-size:12px;
-      color:#666;
+      color:var(--text-muted);
     ">
       
     <span style="display:inline-flex;align-items:center;gap:5px;">
       <span style="
         display:inline-block;
         width:16px;
-        border-top:3px solid #6495ed;
+        border-top:3px solid var(--chart-score);
       "></span>
       Media diaria
     </span>
@@ -11521,7 +11864,7 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
       <span style="
         display:inline-block;
         width:16px;
-        border-top:3px dashed #ec4899;
+        border-top:3px dashed var(--chart-mean);
       "></span>
       Media
     </span>
@@ -11530,7 +11873,7 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
       <span style="
         display:inline-block;
         width:16px;
-        border-top:2px dashed #1d4ed8;
+        border-top:2px dashed var(--chart-trend);
       "></span>
       Tendencia
     </span>
@@ -11540,7 +11883,7 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
     <div style="
       margin-top:12px;
       font-size:11px;
-      color:#777;
+      color:var(--text-secondary);
       text-align:center;
       line-height:1.4;
     ">
@@ -11561,8 +11904,8 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
         {
           label: "Media diaria",
           data: puntuaciones,
-          borderColor: "#6495ed",
-          backgroundColor: "#6495ed",
+          borderColor: () => colorTemaMapTaos("--chart-score"),
+          backgroundColor: () => colorTemaMapTaos("--chart-score"),
           borderWidth: 2,
           tension: 0.40,
           cubicInterpolationMode: "monotone",
@@ -11573,7 +11916,7 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
         {
           label: "Media del período",
           data: puntuaciones.map(() => mediaPeriodo),
-          borderColor: "#ec4899",
+          borderColor: () => colorTemaMapTaos("--chart-mean"),
           borderWidth: 1.5,
           borderDash: [6, 6],
           pointRadius: 0,
@@ -11582,7 +11925,7 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
         {
           label: "Tendencia",
           data: tendencia,
-          borderColor: "#1d4ed8",
+          borderColor: () => colorTemaMapTaos("--chart-trend"),
           borderWidth: 1.5,
           borderDash: [5, 5],
           pointRadius: 0,
@@ -11607,17 +11950,20 @@ function mostrarEvolucionGrupo(resultados, periodo = "todo") {
       scales: {
         x: {
           ticks: {
+            color: () => colorTemaMapTaos("--chart-axis-text"),
             autoSkip: true,
             maxTicksLimit: 6,
             maxRotation: 0,
             minRotation: 0,
             font: { size: 10 }
           },
-          grid: { display: false }
+          grid: { display: false },
+          border: { color: () => colorTemaMapTaos("--chart-grid") }
         },
         y: {
           beginAtZero: false,
-          ticks: { padding: 0 },
+          grid: { color: () => colorTemaMapTaos("--chart-grid") },
+          ticks: { color: () => colorTemaMapTaos("--chart-axis-text"), padding: 0 },
           border: { display: false }
         }
       }
@@ -12042,8 +12388,8 @@ profileContent.innerHTML = `
 
     <!-- RESULTADO DE HOY -->
     <div style="
-      background:#f8f9fa; 
-      border:1px solid #d1d5db;
+      background:var(--surface-subtle);
+      border:1px solid var(--divider-strong);
       border-radius:10px;
       padding:10px 12px;
       text-align:center;
@@ -12083,7 +12429,7 @@ profileContent.innerHTML = `
           ${rondasHoyTexto}
         </div>
       ` : `
-        <div style="font-size:13px; color:#777;">
+        <div style="font-size:13px; color:var(--text-secondary);">
           📍 Todavía no ha jugado hoy
         </div>
       `}
@@ -12094,8 +12440,8 @@ profileContent.innerHTML = `
 
 <!-- RONDAS DE 100 DEL MES ACTUAL -->
 <div style="
-  background:#f8f9fa;
-  border:1px solid #d1d5db;
+  background:var(--surface-subtle);
+  border:1px solid var(--divider-strong);
   border-radius:10px;
   padding:10px 12px;
   margin-bottom:12px;
@@ -12121,10 +12467,10 @@ profileContent.innerHTML = `
       style="
         min-width:0;
         padding:5px 4px;
-        border:1px solid #111;
+        border:1px solid var(--selected-border);
         border-radius:5px;
-        background:#111;
-        color:#fff;
+        background:var(--button-selected);
+        color:var(--button-selected-text);
         font-size:11px;
         font-weight:600;
         cursor:pointer;
@@ -12139,10 +12485,10 @@ profileContent.innerHTML = `
       style="
         min-width:0;
         padding:5px 4px;
-        border:1px solid #c5c9cc;
+        border:1px solid var(--button-border);
         border-radius:5px;
-        background:#e1e4e6;
-        color:#111;
+        background:var(--button-idle);
+        color:var(--text-strong);
         font-size:11px;
         font-weight:600;
         cursor:pointer;
@@ -12169,10 +12515,10 @@ profileContent.innerHTML = `
         width:auto;
         font-size:12px;
         padding:5px 10px;
-        border:1px solid #bbb;
+        border:1px solid var(--line-neutral);
         border-radius:20px;
-        background:#f5f5f5;
-        color:#111;
+        background:var(--surface-soft);
+        color:var(--text-strong);
         cursor:pointer;
       ">
       ◀ Anterior
@@ -12183,10 +12529,10 @@ profileContent.innerHTML = `
         width:auto;
         font-size:12px;
         padding:5px 10px;
-        border:1px solid #bbb;
+        border:1px solid var(--line-neutral);
         border-radius:20px;
-        background:#f5f5f5;
-        color:#111;
+        background:var(--surface-soft);
+        color:var(--text-strong);
         cursor:pointer;
       ">
       Actual
@@ -12197,10 +12543,10 @@ profileContent.innerHTML = `
         width:auto;
         font-size:12px;
         padding:5px 10px;
-        border:1px solid #bbb;
+        border:1px solid var(--line-neutral);
         border-radius:20px;
-        background:#f5f5f5;
-        color:#111;
+        background:var(--surface-soft);
+        color:var(--text-strong);
         cursor:pointer;
       ">
       Siguiente ▶
@@ -12231,7 +12577,7 @@ profileContent.innerHTML = `
 
     ${[1, 2, 3, 4, 5].map(n => `
       <div id="perfil100Dias${n}" style="
-        border-top:1px solid #d1d5db;
+        border-top:1px solid var(--divider-strong);
         padding:9px 0;
       ">
         ${dias100Mes[n] || ""}
@@ -12239,7 +12585,7 @@ profileContent.innerHTML = `
     `).join("")}
 
     
-      <div id="perfil100Total" style="border-top:1px solid #d1d5db;padding:9px 0;font-weight:700;">
+      <div id="perfil100Total" style="border-top:1px solid var(--divider-strong);padding:9px 0;font-weight:700;">
         ${total100Mes || ""}
       </div>
 
@@ -12248,7 +12594,7 @@ profileContent.innerHTML = `
 
   <div id="perfil100Info" style="
     font-size:10px;
-    color:#777;
+    color:var(--text-secondary);
     margin-top:4px;
     white-space:pre-line;
   ">
@@ -12275,8 +12621,8 @@ profileContent.innerHTML = `
 <!-- TARJETA: MEDIA HISTÓRICA -->
 <div style="
   min-width:0;
-  background:#f8f9fa;
-  border:1px solid #d1d5db;
+  background:var(--surface-subtle);
+  border:1px solid var(--divider-strong);
   border-radius:10px;
   padding:10px 6px;
   box-sizing:border-box;
@@ -12295,14 +12641,14 @@ profileContent.innerHTML = `
   ">
 
     <div>
-      <div style="font-size:13px;color:#777;">Media</div>
+      <div style="font-size:13px;color:var(--text-secondary);">Media</div>
       <div style="font-size:21px;font-weight:700;">
         ${mediaHistoricaJugador?.media ?? media}
       </div>
     </div>
 
     <div>
-      <div style="font-size:13px;color:#777;">Puesto</div>
+      <div style="font-size:13px;color:var(--text-secondary);">Puesto</div>
       <div style="
         font-size:21px;
         font-weight:700;
@@ -12322,8 +12668,8 @@ profileContent.innerHTML = `
 <!-- TARJETA: ESTE MES -->
 <div style="
   min-width:0;
-  background:#f8f9fa;
-  border:1px solid #d1d5db;
+  background:var(--surface-subtle);
+  border:1px solid var(--divider-strong);
   border-radius:10px;
   padding:10px 6px;
   box-sizing:border-box;
@@ -12344,14 +12690,14 @@ profileContent.innerHTML = `
   ">
 
     <div style="min-width:0;">
-      <div style="font-size:13px;color:#777;">Media</div>
+      <div style="font-size:13px;color:var(--text-secondary);">Media</div>
       <div style="font-size:21px;font-weight:700;">
         ${mediaMesPerfil ?? "—"}
       </div>
     </div>
 
     <div style="min-width:0;">
-      <div style="font-size:13px;color:#777;">Puesto</div>
+      <div style="font-size:13px;color:var(--text-secondary);">Puesto</div>
       <div style="
         font-size:21px;
         font-weight:700;
@@ -12364,14 +12710,14 @@ profileContent.innerHTML = `
     </div>
 
     <div style="min-width:0;">
-      <div style="font-size:13px;color:#777;">Mejor</div>
+      <div style="font-size:13px;color:var(--text-secondary);">Mejor</div>
       <div style="font-size:21px;font-weight:700;">
         ${mejorMes ?? "—"}
       </div>
     </div>
 
     <div style="min-width:0;">
-      <div style="font-size:13px;color:#777;">Partidas</div>
+      <div style="font-size:13px;color:var(--text-secondary);">Partidas</div>
       <div style="
         font-size:21px;
         font-weight:700;
@@ -12399,8 +12745,8 @@ profileContent.innerHTML = `
 <!-- PARTIDAS -->
 <div style="
   min-width:0;
-  background:#f8f9fa;
-  border:1px solid #d1d5db;
+  background:var(--surface-subtle);
+  border:1px solid var(--divider-strong);
   border-radius:10px;
   padding:10px 3px;
   text-align:center;
@@ -12425,7 +12771,7 @@ profileContent.innerHTML = `
     <div style="
       font-size:13px;
       font-weight:500;
-      color:#666;
+      color:var(--text-muted);
       margin-top:3px;
     ">
       ${porcentajeParticipacionPerfil}%
@@ -12438,8 +12784,8 @@ profileContent.innerHTML = `
   <!-- RACHA -->
   <div style="
     min-width:0;
-    background:#f8f9fa;
-    border:1px solid #d1d5db;
+    background:var(--surface-subtle);
+    border:1px solid var(--divider-strong);
     border-radius:10px;
     padding:10px 3px;
     text-align:center;
@@ -12451,7 +12797,7 @@ profileContent.innerHTML = `
     <div style="font-size:21px;font-weight:700;">
       ${racha}
     </div>
-    <div style="font-size:13px;color:#777;">
+    <div style="font-size:13px;color:var(--text-secondary);">
       días
     </div>
   </div>
@@ -12459,8 +12805,8 @@ profileContent.innerHTML = `
   <!-- MEJOR RESULTADO -->
   <div style="
     min-width:0;
-    background:#f8f9fa;
-    border:1px solid #d1d5db;
+    background:var(--surface-subtle);
+    border:1px solid var(--divider-strong);
     border-radius:10px;
     padding:10px 3px;
     text-align:center;
@@ -12474,7 +12820,7 @@ profileContent.innerHTML = `
     </div>
     <div style="
       font-size:13px;
-      color:#777;
+      color:var(--text-secondary);
       white-space:nowrap;
     ">
       ${fechaMejor}
@@ -12488,8 +12834,8 @@ profileContent.innerHTML = `
 <!-- TARJETA ÚNICA DE MEDALLAS -->
 <div style="
   grid-column:1 / -1;
-  background:#f8f9fa;
-  border:1px solid #d1d5db;
+  background:var(--surface-subtle);
+  border:1px solid var(--divider-strong);
   border-radius:10px;
   padding:10px;
 ">
@@ -12506,7 +12852,7 @@ profileContent.innerHTML = `
       font-size:12px;
       text-align:center;
       padding-bottom:6px;
-      border-bottom:1px solid #b8bec5;
+      border-bottom:1px solid var(--control-border);
       min-height:28px;
     ">
       <div></div>
@@ -12522,7 +12868,7 @@ profileContent.innerHTML = `
     Pendiente de cargar
   </div>
 
-  <div style="border-top:1px solid #e1e4e6;margin:5px 0;"></div>
+  <div style="border-top:1px solid var(--divider-soft);margin:5px 0;"></div>
 
   <!-- MEDALLAS MENSUALES -->
 
@@ -12535,13 +12881,13 @@ profileContent.innerHTML = `
     <span>🥉0</span>
   </div>
 
-  <div style="border-top:1px solid #e1e4e6;margin:5px 0;"></div>
+  <div style="border-top:1px solid var(--divider-soft);margin:5px 0;"></div>
 
   <!-- MEDALLAS CONTINENTALES MENSUALES -->
   <div style="
     font-size:12px;
     font-weight:700;
-    color:#666;
+    color:var(--text-muted);
     text-align:left;
     margin-bottom:6px;
   ">
@@ -12559,8 +12905,8 @@ profileContent.innerHTML = `
 <!-- PARTIDAS PERFECTAS DEL JUGADOR -->
 <div style="
   grid-column:1 / -1;
-  background:#f8f9fa;
-  border:1px solid #d1d5db;
+  background:var(--surface-subtle);
+  border:1px solid var(--divider-strong);
   border-radius:10px;
   padding:10px;
 ">
@@ -12649,7 +12995,7 @@ profileContent.innerHTML = `
         return `
           <div style="
             padding:6px 0;
-            border-bottom:1px solid #ddd;
+            border-bottom:1px solid var(--divider);
           ">
 
             <div style="
@@ -12692,7 +13038,7 @@ profileContent.innerHTML = `
     : `
       <div style="
         font-size:12px;
-        color:#777;
+        color:var(--text-secondary);
         text-align:center;
         padding:8px 0;
       ">
@@ -12702,7 +13048,7 @@ profileContent.innerHTML = `
 
   <div style="
     font-size:11px;
-    color:#777;
+    color:var(--text-secondary);
     margin-top:10px;
     text-align:center;
   ">
@@ -12716,8 +13062,8 @@ profileContent.innerHTML = `
 <!-- TARJETA DE DIFICULTAD DE PAÍSES DEL JUGADOR -->
 <div style="
   grid-column:1 / -1;
-  background:#f8f9fa;
-  border:1px solid #d1d5db;
+  background:var(--surface-subtle);
+  border:1px solid var(--divider-strong);
   border-radius:10px;
   padding:10px;
 ">
@@ -12726,7 +13072,7 @@ profileContent.innerHTML = `
     🌍 Mis países
   </div>
 
-  <div style="font-size:12px;color:#666;margin-bottom:10px;">
+  <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">
     Histórico desde el 1-10-2026
   </div>
 
@@ -12739,7 +13085,7 @@ profileContent.innerHTML = `
   </div>
 
   <div style="
-    border-top:1px solid #e1e4e6;
+    border-top:1px solid var(--divider-soft);
     margin:12px 0;
   "></div>
 
@@ -12870,13 +13216,13 @@ document.getElementById("selectorPeriodoPerfil100")
         botonSelector.dataset.periodo === periodoPerfil100;
 
       botonSelector.style.background =
-        activo ? "#111" : "#e1e4e6";
+        activo ? "var(--button-selected)" : "var(--button-idle)";
 
       botonSelector.style.color =
-        activo ? "#fff" : "#111";
+        activo ? "var(--button-selected-text)" : "var(--text-strong)";
 
       botonSelector.style.borderColor =
-        activo ? "#111" : "#c5c9cc";
+        activo ? "var(--selected-border)" : "var(--button-border)";
 
     });
 
@@ -13085,7 +13431,7 @@ document.getElementById("valorDiferenciaTop10Personal")
       return `
         <div style="
           padding:8px 0;
-          border-bottom:1px solid #ddd;
+          border-bottom:1px solid var(--divider);
         ">
 
           
@@ -13113,7 +13459,7 @@ document.getElementById("valorDiferenciaTop10Personal")
             ${fecha}
           </span>
         
-          <strong style="
+          <strong class="puntuacion-ranking" style="
             text-align:right;
             font-size:13px;
           ">
@@ -13558,7 +13904,7 @@ const textoRondas = puntos
   .join("");
 
      return `
-  <div style="padding:8px 0; border-bottom:1px solid #ddd;">
+  <div class="fila-ranking" ${posiciones[i] >= 1 && posiciones[i] <= 3 ? `data-podio="${posiciones[i]}"` : ""} style="padding:8px 0; border-bottom:1px solid var(--ranking-row-line, var(--divider));">
 
   <div style="
     display:flex;
@@ -13579,7 +13925,7 @@ const textoRondas = puntos
     ${posiciones[i]}
   </span>
 
-  <strong style="
+  <strong class="puntuacion-ranking" style="
     display:inline-block;
     width:42px;
   ">
@@ -13600,7 +13946,7 @@ const textoRondas = puntos
   margin-left:5px;
   font-size:11px;
   font-weight:400;
-  color:#777;
+  color:var(--text-secondary);
   white-space:nowrap;
 ">
   ×${apariciones[fila.jugador_id]}
@@ -13610,7 +13956,7 @@ const textoRondas = puntos
   
     <span style="
       font-size:12px;
-      color:#777;
+      color:var(--text-secondary);
       white-space:nowrap;
     ">
       ${fecha}
@@ -13775,9 +14121,9 @@ top50.forEach((fila, i) => {
         .join("");
 
       return `
-        <div style="
+        <div class="fila-ranking" ${posiciones[i] >= 1 && posiciones[i] <= 3 ? `data-podio="${posiciones[i]}"` : ""} style="
           padding:8px 0;
-          border-bottom:1px solid #ddd;
+          border-bottom:1px solid var(--ranking-row-line, var(--divider));
         ">
 
           <div style="
@@ -13801,7 +14147,7 @@ top50.forEach((fila, i) => {
                 ${posiciones[i]}
               </span>
 
-              <strong style="
+              <strong class="puntuacion-ranking" style="
                 display:inline-block;
                 width:42px;
               ">
@@ -13822,7 +14168,7 @@ top50.forEach((fila, i) => {
                 margin-left:5px;
                 font-size:11px;
                 font-weight:400;
-                color:#777;
+                color:var(--text-secondary);
                 white-space:nowrap;
               ">
                 ×${apariciones[fila.jugador_id]}
@@ -13832,7 +14178,7 @@ top50.forEach((fila, i) => {
 
             <span style="
               font-size:12px;
-              color:#777;
+              color:var(--text-secondary);
               white-space:nowrap;
             ">
               ${fecha}
@@ -13969,14 +14315,14 @@ contenedor.innerHTML = `
   gap:14px;
   margin-top:8px;
   font-size:12px;
-  color:#666;
+  color:var(--text-muted);
 ">
 
   <span style="display:inline-flex;align-items:center;gap:5px;">
     <span style="
       display:inline-block;
       width:25px;
-      border-top:3px solid #6495ed;
+      border-top:3px solid var(--chart-score);
     "></span>
     Final Score
   </span>
@@ -13985,7 +14331,7 @@ contenedor.innerHTML = `
     <span style="
       display:inline-block;
       width:25px;
-      border-top:3px dashed #ec4899;
+      border-top:3px dashed var(--chart-mean);
     "></span>
     Media
   </span>
@@ -13994,7 +14340,7 @@ contenedor.innerHTML = `
     <span style="
       display:inline-block;
       width:25px;
-      border-top:2px dashed #1d4ed8;
+      border-top:2px dashed var(--chart-trend);
     "></span>
     Tendencia
   </span>
@@ -14045,8 +14391,8 @@ datasets: [
   {
     label: "Final Score",
     data: puntuaciones,
-    borderColor: "#6495ed",
-    backgroundColor: "#6495ed",
+    borderColor: () => colorTemaMapTaos("--chart-score"),
+    backgroundColor: () => colorTemaMapTaos("--chart-score"),
     borderWidth: 2,
     tension: 0.40,
     cubicInterpolationMode: "monotone",
@@ -14057,8 +14403,8 @@ datasets: [
   {
     label: "Media",
     data: puntuaciones.map(() => mediaPeriodo),
-    borderColor: "#ec4899",
-    backgroundColor: "#ec4899",
+    borderColor: () => colorTemaMapTaos("--chart-mean"),
+    backgroundColor: () => colorTemaMapTaos("--chart-mean"),
     borderWidth: 1.5,
     borderDash: [6, 6],
     pointRadius: 0,
@@ -14069,7 +14415,7 @@ datasets: [
   {
     label: "Tendencia",
     data: tendencia,
-    borderColor: "#1d4ed8",
+    borderColor: () => colorTemaMapTaos("--chart-trend"),
     borderWidth: 1.5,
     borderDash: [5, 5],
     pointRadius: 0,
@@ -14122,6 +14468,7 @@ plugins: {
       scales: {
         x: {
           ticks: {
+            color: () => colorTemaMapTaos("--chart-axis-text"),
             autoSkip: true,
             maxTicksLimit: 6,
             maxRotation: 0,
@@ -14137,7 +14484,9 @@ plugins: {
       
         y: {
           beginAtZero: false,
+          grid: { color: () => colorTemaMapTaos("--chart-grid") },
           ticks: {
+            color: () => colorTemaMapTaos("--chart-axis-text"),
             padding: 0
           },
           border: {
@@ -14366,7 +14715,7 @@ async function editarAlias() {
 
 document.getElementById("playerName").innerHTML =
   '<span id="btnMiPerfil" role="button" title="Mi perfil" ' +
-  'style="cursor:pointer; background:#e9ecef; padding:4px 7px; border-radius:8px; font-size:13px; font-weight:400;">👤 Perfil</span> ' +
+  'style="cursor:pointer; background:var(--profile-chip); padding:4px 7px; border-radius:8px; font-size:13px; font-weight:400;">👤 Perfil</span> ' +
   aliasLimpio;
 
 document
@@ -14648,7 +14997,7 @@ btnAdminPaisesCatalogo.addEventListener("click", async () => {
     const fila = document.createElement("div");
 
     fila.style.cssText =
-      "padding:7px 0;border-bottom:1px solid #ddd;font-size:14px;";
+      "padding:7px 0;border-bottom:1px solid var(--divider);font-size:14px;";
 
 const nombrePais = document.createElement("span");
 nombrePais.textContent = `${item.pais} (${item.codigo})`;
@@ -14824,7 +15173,7 @@ if (errorCatalogo) {
       const fila = document.createElement("div");
 
       fila.style.cssText =
-        "padding:10px 0;border-bottom:1px solid #ddd;";
+        "padding:10px 0;border-bottom:1px solid var(--divider);";
 
       const bandera = data[`pais_${i}`] || "Sin bandera";
       const continente =
@@ -15252,7 +15601,7 @@ async function cargarAdminJugadores() {
       : "—";
 
     return `
-      <tr style="border-bottom:1px solid #ddd;">
+      <tr style="border-bottom:1px solid var(--divider);">
         <td style="padding:8px 5px;">${escaparHTML(jugador.id)}</td>
         <td style="padding:8px 5px;">${escaparHTML(jugador.nombre)}</td>
         <td style="padding:8px 5px;">${escaparHTML(jugador.alias)}</td>
@@ -15272,10 +15621,10 @@ async function cargarAdminJugadores() {
               font-size:11px;
               padding:5px 8px;
               white-space:nowrap;
-              border:1px solid #999;
+              border:1px solid var(--line-strong);
               border-radius:5px;
-              background:#fff;
-              color:#222;
+              background:var(--surface-short);
+              color:var(--text-body);
               cursor:pointer;
             "
           >
@@ -15287,7 +15636,7 @@ async function cargarAdminJugadores() {
             ? `<button type="button"
                  class="btnReenviarInvitacion"
                  data-jugador-id="${jugador.id}"
-                 style="font-size:11px;padding:5px 8px;white-space:nowrap;border:1px solid #999;border-radius:5px;background:#fff;color:#222;cursor:pointer;">
+                 style="font-size:11px;padding:5px 8px;white-space:nowrap;border:1px solid var(--line-strong);border-radius:5px;background:var(--surface-short);color:var(--text-body);cursor:pointer;">
                  Reenviar invitación
                </button>`
             : "—"}
@@ -15300,7 +15649,7 @@ async function cargarAdminJugadores() {
     <div style="overflow-x:auto;">
       <table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">
         <thead>
-          <tr style="border-bottom:2px solid #ddd;">
+          <tr style="border-bottom:2px solid var(--divider);">
             <th style="padding:8px 5px;">ID</th>
             <th style="padding:8px 5px;">Nombre</th>
             <th style="padding:8px 5px;">Alias</th>
@@ -15603,9 +15952,9 @@ Object.values(botones).forEach(id => {
   const boton = document.getElementById(id);
 
 if (boton) {
-  boton.style.background = "#e1e4e6";
-  boton.style.color = "#111";
-  boton.style.border = "1px solid #c5c9cc";
+  boton.style.background = "var(--button-idle)";
+  boton.style.color = "var(--text-strong)";
+  boton.style.border = "1px solid var(--button-border)";
 }
 });
   
@@ -15613,9 +15962,9 @@ const botonActivo =
   document.getElementById(botones[seccion]);
 
 if (botonActivo) {
-  botonActivo.style.background = "#111";
-  botonActivo.style.color = "#fff";
-  botonActivo.style.border = "1px solid #111";
+  botonActivo.style.background = "var(--button-selected)";
+  botonActivo.style.color = "var(--button-selected-text)";
+  botonActivo.style.border = "1px solid var(--selected-border)";
 }
 
 // Si estamos en una sección del menú "Más",
@@ -15631,13 +15980,13 @@ if (
   seccion === "dificultadPaises" ||
   seccion === "estadisticasGrupo"
 ) {
-  btnMasRankings.style.background = "#111";
-  btnMasRankings.style.color = "#fff";
-  btnMasRankings.style.border = "1px solid #111";
+  btnMasRankings.style.background = "var(--button-selected)";
+  btnMasRankings.style.color = "var(--button-selected-text)";
+  btnMasRankings.style.border = "1px solid var(--selected-border)";
 } else {
-  btnMasRankings.style.background = "#e1e4e6";
-  btnMasRankings.style.color = "#111";
-  btnMasRankings.style.border = "1px solid #c5c9cc";
+  btnMasRankings.style.background = "var(--button-idle)";
+  btnMasRankings.style.color = "var(--text-strong)";
+  btnMasRankings.style.border = "1px solid var(--button-border)";
 }
   
   Object.values(secciones).forEach(id => {
@@ -15674,15 +16023,15 @@ btnMasRankings.addEventListener("click", () => {
       const boton = document.getElementById(id);
 
       if (boton) {
-        boton.style.background = "#e1e4e6";
-        boton.style.color = "#111";
-        boton.style.border = "1px solid #c5c9cc";
+        boton.style.background = "var(--button-idle)";
+        boton.style.color = "var(--text-strong)";
+        boton.style.border = "1px solid var(--button-border)";
       }
     });
 
-    btnMasRankings.style.background = "#111";
-    btnMasRankings.style.color = "#fff";
-    btnMasRankings.style.border = "1px solid #111";
+    btnMasRankings.style.background = "var(--button-selected)";
+    btnMasRankings.style.color = "var(--button-selected-text)";
+    btnMasRankings.style.border = "1px solid var(--selected-border)";
 
   } else {
 
@@ -15775,15 +16124,15 @@ botonesMedalleroMensual.forEach(opcion => {
       const seleccionado = boton === opcion;
 
       boton.style.background =
-        seleccionado ? "#111" : "#e1e4e6";
+        seleccionado ? "var(--button-selected)" : "var(--button-idle)";
 
       boton.style.color =
-        seleccionado ? "#fff" : "#111";
+        seleccionado ? "var(--button-selected-text)" : "var(--text-strong)";
 
       boton.style.border =
         seleccionado
-          ? "1px solid #111"
-          : "1px solid #c5c9cc";
+          ? "1px solid var(--selected-border)"
+          : "1px solid var(--button-border)";
 
     });
 
@@ -15848,15 +16197,15 @@ botonesMedalleroContinentes.forEach(opcion => {
       const seleccionado = boton === opcion;
 
       boton.style.background =
-        seleccionado ? "#111" : "#e1e4e6";
+        seleccionado ? "var(--button-selected)" : "var(--button-idle)";
 
       boton.style.color =
-        seleccionado ? "#fff" : "#111";
+        seleccionado ? "var(--button-selected-text)" : "var(--text-strong)";
 
       boton.style.border =
         seleccionado
-          ? "1px solid #111"
-          : "1px solid #c5c9cc";
+          ? "1px solid var(--selected-border)"
+          : "1px solid var(--button-border)";
     });
 
   });
@@ -15895,15 +16244,15 @@ function mostrarVistaMedallero(botonSeleccionado) {
 
     // Resaltar el botón seleccionado
     boton.style.background =
-      seleccionado ? "#111" : "#e1e4e6";
+      seleccionado ? "var(--button-selected)" : "var(--button-idle)";
 
     boton.style.color =
-      seleccionado ? "#fff" : "#111";
+      seleccionado ? "var(--button-selected-text)" : "var(--text-strong)";
 
     boton.style.border =
       seleccionado
-        ? "1px solid #111"
-        : "1px solid #c5c9cc";
+        ? "1px solid var(--selected-border)"
+        : "1px solid var(--button-border)";
 
   });
 
