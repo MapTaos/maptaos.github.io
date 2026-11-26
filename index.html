@@ -12096,29 +12096,50 @@ profileContent.innerHTML = `
   💯 Rondas de 100
   </div>
   
-  <div id="selectorPeriodoPerfil100" style="
-    display:flex;
-    justify-content:center;
-    gap:6px;
-    margin:10px 0;
-  ">
-    <button data-periodo="mensual" style="
-      background:#111;
-      color:#fff;
-      border:1px solid #111;
-      border-radius:6px;
-      padding:6px 16px;
-      cursor:pointer;
-    ">Mensual</button>
+  <div
+    id="selectorPeriodoPerfil100"
+    style="
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:6px;
+      margin-bottom:10px;
+    "
+  >
+    <button
+      type="button"
+      data-periodo="mensual"
+      style="
+        min-width:0;
+        padding:5px 4px;
+        border:1px solid #111;
+        border-radius:5px;
+        background:#111;
+        color:#fff;
+        font-size:11px;
+        font-weight:600;
+        cursor:pointer;
+      "
+    >
+      Mensual
+    </button>
   
-    <button data-periodo="total" style="
-      background:#e1e4e6;
-      color:#111;
-      border:1px solid #c5c9cc;
-      border-radius:6px;
-      padding:6px 16px;
-      cursor:pointer;
-    ">Total</button>
+    <button
+      type="button"
+      data-periodo="total"
+      style="
+        min-width:0;
+        padding:5px 4px;
+        border:1px solid #c5c9cc;
+        border-radius:5px;
+        background:#e1e4e6;
+        color:#111;
+        font-size:11px;
+        font-weight:600;
+        cursor:pointer;
+      "
+    >
+      Total
+    </button>
   </div>
 
   <div style="
